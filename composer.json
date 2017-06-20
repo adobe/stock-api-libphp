@@ -1,0 +1,41 @@
+{
+    "name": "astock/stock-api-libphp",
+    "description": "Adobe Stock API library",
+    "license": "proprietary",
+    "require": {
+        "php": "~7.1",
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "require-dev": {
+        "astock/phpcs-psr2-stock": "~1.4",
+        "phpunit/phpunit": "~6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "AdobeStock\\Api\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "AdobeStock\\Api\\Test\\": "test"
+        }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@git.corp.adobe.com:AdobeStock/phpcs-psr2-stock.git"
+        }
+    ],
+    "config": {
+        "bin-dir": "vendor/bin/"
+    },
+    "scripts": {
+        "check": [
+            "@lint",
+            "@test"
+        ],
+        "lint": "vendor/bin/phpcs-psr2-stock src test",
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html data/clover"
+    }
+}

@@ -1,0 +1,70 @@
+<?php
+/*************************************************************************
+ * ADOBE CONFIDENTIAL
+ * ___________________
+ *
+ *  Copyright 2017 Adobe Systems Incorporated
+ *  All Rights Reserved.
+ *
+ * NOTICE:  All information contained herein is, and remains
+ * the property of Adobe Systems Incorporated and its suppliers,
+ * if any.  The intellectual and technical concepts contained
+ * herein are proprietary to Adobe Systems Incorporated and its
+ * suppliers and are protected by all applicable intellectual property
+ * laws, including trade secret and copyright laws.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Adobe Systems Incorporated.
+ **************************************************************************/
+
+namespace AdobeStock\Api\Client;
+
+use \AdobeStock\Api\Exception\StockApi as StockApiException;
+use \AdobeStock\Api\Request\SearchCategory as SearchCategoryRequest;
+use \AdobeStock\Api\Core\Config as CoreConfig;
+use \AdobeStock\Api\Client\Http\HttpInterface as HttpClientInterface;
+use \AdobeStock\Api\Response\SearchCategory as SearchCategoryResponse;
+use \AdobeStock\Api\Utils\APIUtils;
+
+class SearchCategory
+{
+    /**
+     * Configuration that need to be initialized
+     * before calling apis.
+     * @var CoreConfig
+     */
+    private $_config;
+
+    /**
+     * Constructor.
+     * @param CoreConfig $config config to be initialized.
+     */
+    public function __construct(CoreConfig $config)
+    {
+        $this->_config = $config;
+    }
+
+    /**
+     * Get information about a category of Stock assets, such as travel
+     * or animals for a specified category identifier, optionally localized.
+     * @param SearchCategoryRequest $request      object containing
+     * category-id and locale
+     * @param string                $access_token Users ims access token
+     * @param HttpClientInterface   $http_client  client that to be used in calling apis.
+     * @return SearchCategoryResponse consists of is, name and link of the asset category.
+     * @throws StockException if category id is not set.
+     */
+    public function getCategory(SearchCategoryRequest $request, string $access_token, HttpClientInterface $http_client) : SearchCategoryResponse
+    {
+        if ($request->getCategoryId() === null) {
+            throw StockApiException::withMessage('Category Id cannot be null');
+        }
+
+        $end_point = $this->_config->getEndPoints()['category'];
+        $request_url = $end_point . '?' . http_build_query($request);
+        $headers = APIUtils::generateCommonAPIHeaders($this->_config, $access_token);
+        $raw_response = $http_client->doGet($request_url, $headers);
+        $search_category_response = new SearchCategoryResponse(json_decode($raw_response, true));
+        return $search_category_response;
+    }
+}

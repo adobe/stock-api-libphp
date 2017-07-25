@@ -22,7 +22,6 @@ namespace AdobeStock\Api\Test\Helper;
 use \GuzzleHttp\ClientInterface as GuzzleHttpClientInterface;
 use \PHPUnit\Framework\TestCase;
 use \Psr\Http\Message\ResponseInterface;
-use \PHPUnit_Framework_MockObject_MockObject;
 
 abstract class BaseTest extends TestCase
 {

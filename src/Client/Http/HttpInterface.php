@@ -3,7 +3,7 @@
  * ADOBE CONFIDENTIAL
  * ___________________
  *
- *  Copyright 2016 Adobe Systems Incorporated
+ *  Copyright 2017 Adobe Systems Incorporated
  *  All Rights Reserved.
  *
  * NOTICE:  All information contained herein is, and remains
@@ -17,18 +17,17 @@
  * from Adobe Systems Incorporated.
  **************************************************************************/
 
-namespace AdobeStock\Api\Test;
+namespace AdobeStock\Api\Client\Http;
 
-use \AdobeStock\Api\Test\Helper\BaseTest;
+use \GuzzleHttp\Psr7\Stream;
 
-class ExampleTest extends BaseTest
+interface HttpInterface
 {
     /**
-     * @test
+     * Method to execute GET queries using custom http clients.
+     * @param string $url     Endpoint that needs to hit.
+     * @param array  $headers associative array of headers.
+     * @return Stream raw response returned from the api call.
      */
-    public function mytest()
-    {
-        $http_client = $this->getHttpClientMock();
-        $this->assertTrue(true);
-    }
+    public function doGet(string $url, array $headers) : Stream;
 }

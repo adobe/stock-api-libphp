@@ -94,4 +94,19 @@ class AdobeStock
         $response = $this->_search_category_factory->getCategory($request, $access_token, $this->_http_client);
         return $response;
     }
+
+    /**
+     * Get category information for zero or more category identifiers.
+     * If you request information without specifying a category,
+     * this returns a list of all stock categories.
+     * @param SearchCategoryRequest $request      object containing
+     * category-id and locale
+     * @param string                $access_token Users ims access token
+     * @return array list of SearchCategoryResponse objects each containing information about asset category.
+     */
+    public function searchCategoryTree(SearchCategoryRequest $request, string $access_token) : array
+    {
+        $response = $this->_search_category_factory->getCategoryTree($request, $access_token, $this->_http_client);
+        return $response;
+    }
 }

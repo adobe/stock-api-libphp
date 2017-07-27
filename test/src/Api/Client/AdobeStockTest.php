@@ -80,4 +80,66 @@ class AdobeStockTest extends TestCase
              ->will($this->returnValue($response));
         $this->assertEquals($response, $mock->searchCategory($request, ''));
     }
+
+    /**
+     * @test
+     */
+    public function searchCategoryTreeShouldReturnSearchCategoryResponseArray()
+    {
+        $raw_response = '{
+            "id": 1043,
+            "link": "/Category/travel/1043",
+            "name": "Travel"
+        }';
+        $response_array = [];
+        $request = new SearchCategoryRequest();
+        $request->setCategoryId(11);
+        $response = new SearchCategoryResponse(json_decode($raw_response, true));
+        $response_array[] = $response;
+        
+        $mock = $this->getMockBuilder(AdobeStock::class)
+        ->disableOriginalConstructor()
+        ->getMock();
+        $mock->method('searchCategoryTree')
+        ->will($this->returnValue($response_array));
+        $this->assertEquals($response_array, $mock->searchCategoryTree($request, ''));
+    }
+    
+    /**
+     * @test
+     * @expectedException \AdobeStock\Api\Exception\StockApi
+     */
+    public function searchCategoryTreeShouldThrowExceptionIfApiKeyIsIncorrect()
+    {
+        $raw_response = '{
+            "id": 1043,
+            "link": "/Category/travel/1043",
+            "name": "Travel"
+        }';
+        $response_array = [];
+        $request = new SearchCategoryRequest();
+        $request->setCategoryId(11);
+        $response = new SearchCategoryResponse(json_decode($raw_response, true));
+        $response_array[] = $response;
+        $adobe_stock_client = new AdobeStock('APIKey', 'Product', 'STAGE', null);
+        $this->assertEquals($response_array, $adobe_stock_client->searchCategoryTree($request, ''));
+    }
+
+    /**
+     * @test
+     * @expectedException \AdobeStock\Api\Exception\StockApi
+     */
+    public function searchCategoryShouldThrowExceptionIfApiKeyIsIncorrect()
+    {
+        $raw_response = '{
+            "id": 1043,
+            "link": "/Category/travel/1043",
+            "name": "Travel"
+        }';
+        $request = new SearchCategoryRequest();
+        $request->setCategoryId(11);
+        $response = new SearchCategoryResponse(json_decode($raw_response, true));
+        $adobe_stock_client = new AdobeStock('APIKey', 'Product', 'STAGE', null);
+        $this->assertEquals($response, $adobe_stock_client->searchCategory($request, ''));
+    }
 }

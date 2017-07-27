@@ -56,7 +56,7 @@ In order to use the Stock APIs, one must initialize `AdobeStock` by passing conf
 #### SearchCategory
 `AdobeStock` class allows you to access the Search/Category and Search/CategoryTree Stock APIs. Each stock asset is placed into a category that classifies the asset, such as "Travel" or "Hobbies and Leisure" and each category has a unique identifying number, a name, and a path that you can use to access other assets in the same category.
 
- You can construct the `SearchCategoryRequest` object to set category identifier and locale information. Then you can call `searchCategory` method to get information about a category of stock assets in the form of `SearchCategoryResponse` object.
+ You can construct the `SearchCategoryRequest` object to set category identifier and locale information. Then you can call `searchCategory` method to get information about a category of stock assets in the form of `SearchCategoryResponse` object. You can also call `searchCategoryTree` method to retrieve information for zero or more category identifiers in the form of list of `SearchCategoryResponse` object.
 
 ##### Instantiation
 You can construct the object of this class with below arguments -
@@ -66,6 +66,7 @@ You can construct the object of this class with below arguments -
    
 * Returns:
     `SearchCategoryResponse` - The response object containing the search category API results matching the request object returned by `searchCategory` method.
+    `List of SearchCategoryResponse` - The list of response object containing the search category tree API results matching the request object returned by `searchCategoryTree` method.
    
 
 ##### Example
@@ -76,19 +77,23 @@ Sample code to instantiate the SearchCategory API -
         //Instantiating and Initializing AdobeStock
         $client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'STAGE', new Http());
         //Users ims token
-        $accessToken = 'ims_token';
+        $access_token = 'ims_token';
 
         //Constructing SearchCategoryRequest
         $request = new SearchCategoryRequest();
         $request->setCategoryId(1043)->setLocale('En-US');
 
         //Now you can call searchCategory to get category information
-        $response = $client->searchCategory($request, $accessToken);
+        $response = $client->searchCategory($request, $access_token);
+        //You can also call searchCategoryTree to get information about list of categories
+        $response = $client->searchCategoryTree($request, $access_token);
 
 ```
 ##### Methods
-* `AdobeStock` class methods can throw StockException if request is not valid or API returns with an error. It allows you to -
-   * `searchCategory` - Method to get information about a category of Stock assets, such as travel or animals for a specified category identifier, optionally localized. You need to pass `SearchCategoryRequest` object containing category identifier and locale(optional) parameters. If the request object is not valid or API returns with error, the method will throw the StockException.
+* `AdobeStock` class methods can throw StockApiException if request is not valid or API returns with an error. It allows you to -
+   * `searchCategory` - Method to get information about a category of Stock assets, such as travel or animals for a specified category identifier, optionally localized. You need to pass `SearchCategoryRequest` object containing category identifier and locale(optional) parameters. If the request object is not valid or API returns with error, the method will throw the `StockApiException`.
+
+   * `searchCategoryTree` - Method to get category information for zero or more category identifiers. You need to pass `SearchCategoryRequest` object containing category identifier and locale parameters (both optional). If request object does not contain category identifier, this returns a list of all stock categories. If the request object is not valid or API returns with error, the method will throw the `StockApiException`.
 
 #### SearchCategoryRequest
 In order to make SearchCategory/SearchCategoryTree API call, you need to create a `SearchCategoryRequest` object to define the search criterion for search category results. You can set category identifier and location language code supported by Stock Search Category/Category Tree API here.

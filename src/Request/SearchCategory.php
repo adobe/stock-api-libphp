@@ -63,9 +63,9 @@ class SearchCategory
 
     /**
      * Getter for CategoryId.
-     * @return int Unique identifier for an existing category.
+     * @return ?int Unique identifier for an existing category.
      */
-    public function getCategoryId() : int
+    public function getCategoryId() : ?int
     {
         return $this->category_id;
     }

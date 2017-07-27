@@ -76,7 +76,53 @@ class SearchCategoryFactoryTest extends TestCase
             "link": "/Category/travel/1043",
             "name": "Travel"
         }'));
-        $finalResponse = $this->_search_category_factory->getCategory($this->_request, '', $this->_mocked_http_client);
-        $this->assertEquals('Travel', $finalResponse->getName());
+        $final_response = $this->_search_category_factory->getCategory($this->_request, '', $this->_mocked_http_client);
+        $this->assertEquals('Travel', $final_response->getName());
+    }
+
+    /**
+     * @test
+     * @expectedException \AdobeStock\Api\Exception\StockApi
+     */
+    public function getCategoryShouldThrowExceptionIfCategoryIdIsNull()
+    {
+        $this->_request = new SearchCategoryRequest();
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for('{
+            "id": 1043,
+            "link": "/Category/travel/1043",
+            "name": "Travel"
+        }'));
+        $final_response = $this->_search_category_factory->getCategory($this->_request, '', $this->_mocked_http_client);
+    }
+
+    /**
+     * @test
+     * @expectedException \AdobeStock\Api\Exception\StockApi
+     */
+    public function getCategoryTreeShouldThrowExceptionIfCategoryIdIsNull()
+    {
+        $this->_request = new SearchCategoryRequest();
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for('{
+            "id": 1043,
+            "link": "/Category/travel/1043",
+            "name": "Travel"
+        }'));
+        $final_response = $this->_search_category_factory->getCategoryTree($this->_request, '', $this->_mocked_http_client);
+    }
+
+    /**
+     * @test
+     */
+    public function getCategoryTreeShouldReturnValidResponse()
+    {
+        $this->_request = new SearchCategoryRequest();
+        $this->_request->setCategoryId(1043);
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for('[{
+            "id": 1043,
+            "link": "/Category/travel/1043",
+            "name": "Travel"
+        }]'));
+        $final_response = $this->_search_category_factory->getCategoryTree($this->_request, '', $this->_mocked_http_client);
+        $this->assertEquals('Travel', $final_response[0]->getName());
     }
 }

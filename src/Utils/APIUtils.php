@@ -30,14 +30,19 @@ class APIUtils
      * @param string     $access_token Access token string to be used with api calls
      * @return array $headers map containing all the common API headers
      */
-    public static function generateCommonAPIHeaders(CoreConfig $config, string $access_token) : array
+    public static function generateCommonAPIHeaders(CoreConfig $config, string $access_token = null) : array
     {
         $request_id = static::getUUID();
+        
+        if ($access_token !== null) {
+            $access_token = 'Bearer ' . $access_token;
+        }
+        
         $headers = [
             'headers' => [
                 'x-api-key' => $config->getApiKey(),
                 'x-product' => $config->getProduct(),
-                'Authorization' => 'Bearer ' . $access_token,
+                'Authorization' => $access_token,
                 'x-request-id' => $request_id,
             ],
         ];

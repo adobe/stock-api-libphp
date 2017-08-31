@@ -16,6 +16,7 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe Systems Incorporated.
  **************************************************************************/
+
 namespace AdobeStock\Api\Test;
 
 use \AdobeStock\Api\Client\AdobeStock;
@@ -23,40 +24,25 @@ use \AdobeStock\Api\Request\SearchCategory as SearchCategoryRequest;
 use \PHPUnit\Framework\TestCase;
 use \AdobeStock\Api\Client\Http\HttpClient;
 use \AdobeStock\Api\Response\SearchCategory as SearchCategoryResponse;
+use \AdobeStock\Api\Response\SearchFiles as SearchFilesResponse;
+use \AdobeStock\Api\Core\Constants as CoreConstants;
+use \AdobeStock\Api\Request\SearchFiles as SearchFilesRequest;
+use \AdobeStock\Api\Models\SearchParameters as SearchParametersModels;
 
+/**
+ * @runTestsInSeparateProcesses
+ * @preserveGlobalState disabled
+ */
 class AdobeStockTest extends TestCase
 {
-    /**
-     * Adobe Stock client for accesing stock apis.
-     * @var AdobeStock
-     */
-    private $_adobe_stock_client;
-
-    /**
-     * Mocked Http client.
-     * @var HttpClient.
-     */
-    private $_mocked_http_client;
-
-    /**
-     * @test
-     * @before
-     */
-    public function initializeConstructorOfAdobeStockClient()
-    {
-        $this->_mocked_http_client = $this->createMock(HttpClient::class);
-        $this->_adobe_stock_client = new AdobeStock('APIKey', 'Product', 'STAGE', null);
-        $this->_adobe_stock_client = new AdobeStock('APIKey', 'Product', 'STAGE', $this->_mocked_http_client);
-        $this->assertInstanceOf(AdobeStock::class, $this->_adobe_stock_client);
-    }
-
     /**
      * @test
      */
     public function setHttpClientShouldSetCustomHttpClient()
     {
-        $this->_adobe_stock_client->setHttpClient($this->_mocked_http_client);
-        $this->assertNotNull($this->_adobe_stock_client);
+        $adobe_client = new \AdobeStock\Api\Client\AdobeStock('APIKey', 'Product', 'STAGE', null);
+        $adobe_client->setHttpClient($this->createMock(HttpClient::class));
+        $this->assertNotNull($adobe_client);
     }
 
     /**
@@ -73,12 +59,12 @@ class AdobeStockTest extends TestCase
         $request->setCategoryId(11);
         $response = new SearchCategoryResponse(json_decode($raw_response, true));
         
-        $mock = $this->getMockBuilder(AdobeStock::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $mock->method('searchCategory')
-             ->will($this->returnValue($response));
-        $this->assertEquals($response, $mock->searchCategory($request, ''));
+        $external_mock = \Mockery::mock('overload:AdobeStock\Api\Client\SearchCategory');
+        $external_mock->shouldReceive('getCategory')->once()->andReturn($response);
+        
+        $adobe_client = new \AdobeStock\Api\Client\AdobeStock('APIKey', 'Product', 'STAGE', $this->createMock(HttpClient::class));
+        $adobe_client->searchCategory($request, '');
+        $this->assertEquals($response, $adobe_client->searchCategory($request, ''));
     }
 
     /**
@@ -97,49 +83,198 @@ class AdobeStockTest extends TestCase
         $response = new SearchCategoryResponse(json_decode($raw_response, true));
         $response_array[] = $response;
         
-        $mock = $this->getMockBuilder(AdobeStock::class)
-        ->disableOriginalConstructor()
-        ->getMock();
-        $mock->method('searchCategoryTree')
-        ->will($this->returnValue($response_array));
-        $this->assertEquals($response_array, $mock->searchCategoryTree($request, ''));
-    }
-    
-    /**
-     * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
-     */
-    public function searchCategoryTreeShouldThrowExceptionIfApiKeyIsIncorrect()
-    {
-        $raw_response = '{
-            "id": 1043,
-            "link": "/Category/travel/1043",
-            "name": "Travel"
-        }';
-        $response_array = [];
-        $request = new SearchCategoryRequest();
-        $request->setCategoryId(11);
-        $response = new SearchCategoryResponse(json_decode($raw_response, true));
-        $response_array[] = $response;
-        $adobe_stock_client = new AdobeStock('APIKey', 'Product', 'STAGE', null);
-        $this->assertEquals($response_array, $adobe_stock_client->searchCategoryTree($request, ''));
+        $external_mock = \Mockery::mock('overload:AdobeStock\Api\Client\SearchCategory');
+        $external_mock->shouldReceive('getCategoryTree')->once()->andReturn($response_array);
+        
+        $adobe_client = new \AdobeStock\Api\Client\AdobeStock('APIKey', 'Product', 'STAGE', null);
+        $adobe_client->searchCategoryTree($request, '');
+        $this->assertEquals($response_array, $adobe_client->searchCategoryTree($request, ''));
     }
 
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
-    public function searchCategoryShouldThrowExceptionIfApiKeyIsIncorrect()
+    public function testSearchFilesInitialize()
     {
-        $raw_response = '{
-            "id": 1043,
-            "link": "/Category/travel/1043",
-            "name": "Travel"
-        }';
-        $request = new SearchCategoryRequest();
-        $request->setCategoryId(11);
-        $response = new SearchCategoryResponse(json_decode($raw_response, true));
-        $adobe_stock_client = new AdobeStock('APIKey', 'Product', 'STAGE', null);
-        $this->assertEquals($response, $adobe_stock_client->searchCategory($request, ''));
+        $results_columns = CoreConstants::getResultColumns();
+        $search_params = new SearchParametersModels();
+        $search_params->setWords('tree')->setLimit(3)->setOffset(0);
+        
+        $result_column_array = [
+            $results_columns['NB_RESULTS'],
+            $results_columns['COUNTRY_NAME'],
+            $results_columns['ID'],
+        ];
+        $request = new SearchFilesRequest();
+        $request->setLocale('En_US');
+        $request->setSearchParams($search_params);
+        $request->setResultColumns($result_column_array);
+        $external_mock = \Mockery::mock('overload:AdobeStock\Api\Client\SearchFiles');
+        $external_mock->shouldReceive('searchFilesInitialize')->once();
+        $adobe_client = new \AdobeStock\Api\Client\AdobeStock('APIKey', 'Product', 'STAGE', null);
+        $this->assertNotNull($adobe_client->searchFilesInitialize($request, ''));
+    }
+
+    /**
+     * @test
+     */
+    public function testGetNextResponse()
+    {
+        $raw_response = [
+            'nb_results' => 5716623,
+            'files' => [
+            [
+                'id' => 104846837,
+                'country_name' => 'United States of America',
+            ],
+            [
+                'id' => 92291518,
+                'country_name' => 'Spain',
+            ],
+            [
+                'id' => 83502495,
+                'country_name' => 'Russian Federation',
+            ],
+            ],
+        ];
+
+        $response = new SearchFilesResponse();
+        $response->initializeResponse($raw_response);
+    
+        $external_mock = \Mockery::mock('overload:AdobeStock\Api\Client\SearchFiles');
+        $external_mock->shouldReceive('getNextResponse')->once()->andReturn($response);
+    
+        $adobe_client = new \AdobeStock\Api\Client\AdobeStock('APIKey', 'Product', 'STAGE', null);
+        $this->assertEquals($response, $adobe_client->getNextResponse());
+    }
+    
+    /**
+     * @test
+     */
+    public function testGetPreviousResponse()
+    {
+        $raw_response = [
+            'nb_results' => 5716623,
+            'files' => [
+            [
+                'id' => 92291518,
+                'country_name' => 'Spain',
+            ],
+            [
+                'id' => 83502495,
+                'country_name' => 'Russian Federation',
+            ],
+            [
+                'id' => 70577212,
+                'country_name' => 'Ukraine',
+            ],
+            ],
+        ];
+        $response = new SearchFilesResponse();
+        $response->initializeResponse($raw_response);
+        $external_mock = \Mockery::mock('overload:AdobeStock\Api\Client\SearchFiles');
+        $external_mock->shouldReceive('getPreviousResponse')->once()->andReturn($response);
+        $adobe_client = new \AdobeStock\Api\Client\AdobeStock('APIKey', 'Product', 'STAGE', null);
+        $this->assertEquals($response, $adobe_client->getPreviousResponse());
+    }
+    
+    /**
+     * @test
+     */
+    public function testGetLastResponse()
+    {
+        $raw_response = [
+            'nb_results' => 5716623,
+            'files' => [
+                [
+                    'id' => 92291518,
+                    'country_name' => 'Spain',
+                ],
+                [
+                    'id' => 83502495,
+                    'country_name' => 'Russian Federation',
+                ],
+                [
+                    'id' => 70577212,
+                    'country_name' => 'Ukraine',
+                ],
+            ],
+        ];
+        $response = new SearchFilesResponse();
+        $response->initializeResponse($raw_response);
+        $external_mock = \Mockery::mock('overload:AdobeStock\Api\Client\SearchFiles');
+        $external_mock->shouldReceive('getLastResponse')->once()->andReturn($response);
+        
+        $adobe_client = new \AdobeStock\Api\Client\AdobeStock('APIKey', 'Product', 'STAGE', null);
+        $this->assertEquals($response, $adobe_client->getLastResponse());
+    }
+    /**
+     * @test
+     */
+    public function testGetResponsePage()
+    {
+        $raw_response = [
+            'nb_results' => 5716623,
+            'files' => [
+                [
+                    'id' => 92291518,
+                    'country_name' => 'Spain',
+                ],
+                [
+                    'id' => 83502495,
+                    'country_name' => 'Russian Federation',
+                ],
+                [
+                    'id' => 70577212,
+                    'country_name' => 'Ukraine',
+                ],
+            ],
+        ];
+        $response = new SearchFilesResponse();
+        $response->initializeResponse($raw_response);
+        $external_mock = \Mockery::mock('overload:AdobeStock\Api\Client\SearchFiles');
+        $external_mock->shouldReceive('getResponsePage')->once()->andReturn($response);
+        
+        $adobe_client = new \AdobeStock\Api\Client\AdobeStock('APIKey', 'Product', 'STAGE', null);
+        $this->assertEquals($response, $adobe_client->getResponsePage(1));
+    }
+    
+    /**
+     * @test
+     */
+    public function testTotalSearchFiles()
+    {
+        $total_files = 5716623;
+        $external_mock = \Mockery::mock('overload:AdobeStock\Api\Client\SearchFiles');
+        $external_mock->shouldReceive('totalSearchFiles')->once()->andReturn($total_files);
+        
+        $adobe_client = new \AdobeStock\Api\Client\AdobeStock('APIKey', 'Product', 'STAGE', null);
+        $this->assertEquals($total_files, $adobe_client->totalSearchFiles());
+    }
+    
+    /**
+     * @test
+     */
+    public function testTotalSearchPages()
+    {
+        $total_pages = 1905541;
+        $external_mock = \Mockery::mock('overload:AdobeStock\Api\Client\SearchFiles');
+        $external_mock->shouldReceive('totalSearchPages')->once()->andReturn($total_pages);
+        
+        $adobe_client = new \AdobeStock\Api\Client\AdobeStock('APIKey', 'Product', 'STAGE', null);
+        $this->assertEquals($total_pages, $adobe_client->totalSearchPages());
+    }
+    
+    /**
+     * @test
+     */
+    public function testCurrentSearchPageIndex()
+    {
+        $current_page = 1;
+        $external_mock = \Mockery::mock('overload:AdobeStock\Api\Client\SearchFiles');
+        $external_mock->shouldReceive('currentSearchPageIndex')->once()->andReturn($current_page);
+        
+        $adobe_client = new \AdobeStock\Api\Client\AdobeStock('APIKey', 'Product', 'STAGE', null);
+        $this->assertEquals($current_page, $adobe_client->currentSearchPageIndex());
     }
 }

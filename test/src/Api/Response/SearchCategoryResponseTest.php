@@ -36,7 +36,9 @@ class SearchCategoryResponseTest extends TestCase
      */
     public function initializeConstructorOfSearchCategoryResponse()
     {
-        $data = array ('id' => 103,);
+        $data = [
+            'id' => 103,
+        ];
         $this->_response = new SearchCategoryResponse($data);
         $this->assertInstanceOf(SearchCategoryResponse::class, $this->_response);
     }

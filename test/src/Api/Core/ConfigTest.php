@@ -74,7 +74,10 @@ class ConfigTest extends TestCase
      */
     public function setterGetterShouldSetGetEndPoints()
     {
-        $this->_config->setEndPoints(['endPoint']);
+        $end_points = [
+            'endPoint',
+        ];
+        $this->_config->setEndPoints($end_points);
         $this->assertEquals('endPoint', $this->_config->getEndPoints()[0]);
     }
 

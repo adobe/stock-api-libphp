@@ -63,7 +63,7 @@ class SearchCategory
 
     /**
      * Getter for CategoryId.
-     * @return ?int Unique identifier for an existing category.
+     * @return int|null Unique identifier for an existing category.
      */
     public function getCategoryId() : ?int
     {

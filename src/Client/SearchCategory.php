@@ -92,7 +92,7 @@ class SearchCategory
 
     /**
      * Util function to convert json array to SearchCategoryResponse Array.
-     * @param object $response_array raw response.
+     * @param array $response_array raw response.
      * @return array list of SearchCategoryResponse objects
      */
     private function _createSearchCategoryResponseArray(array $response_array) : array

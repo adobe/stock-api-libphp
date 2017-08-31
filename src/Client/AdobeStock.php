@@ -24,6 +24,8 @@ use \AdobeStock\Api\Core\Config as CoreConfig;
 use \AdobeStock\Api\Request\SearchCategory as SearchCategoryRequest;
 use \AdobeStock\Api\Response\SearchCategory as SearchCategoryResponse;
 use \AdobeStock\Api\Client\Http\HttpInterface;
+use \AdobeStock\Api\Request\SearchFiles as SearchFilesRequest;
+use \AdobeStock\Api\Response\SearchFiles as SearchFilesResponse;
 use \AdobeStock\Api\Client\Http\HttpClient;
 
 class AdobeStock
@@ -42,6 +44,12 @@ class AdobeStock
     private $_search_category_factory;
 
     /**
+     * Factory object of all search Files apis.
+     * @var SearchFiles
+     */
+    private $_search_files_factory;
+
+    /**
      * Custom http client object.
      * @var HttpInterface
      */
@@ -58,10 +66,8 @@ class AdobeStock
     public function __construct(string $api_key, string $product, string $target_env, HttpInterface $http_client = null)
     {
         $this->_config = new CoreConfig($api_key, $product, $target_env);
-
-        if ($this->_search_category_factory === null) {
-            $this->_search_category_factory = new SearchCategoryFactory($this->_config);
-        }
+        $this->_search_category_factory = new SearchCategoryFactory($this->_config);
+        $this->_search_files_factory = new SearchFiles($this->_config);
 
         if ($http_client === null) {
             $this->_http_client = new HttpClient();
@@ -108,5 +114,88 @@ class AdobeStock
     {
         $response = $this->_search_category_factory->getCategoryTree($request, $access_token, $this->_http_client);
         return $response;
+    }
+
+    /**
+     * Method to initialize search files.
+     * @param SearchFilesRequest $request
+     * @param string             $access_token
+     * @return AdobeStock
+     */
+    public function searchFilesInitialize(SearchFilesRequest $request, string $access_token = null) : AdobeStock
+    {
+        $this->_search_files_factory->searchFilesInitialize($request, $access_token, $this->_http_client, true);
+        return $this;
+    }
+
+    /**
+     * Method to get next search files response page.
+     * @return SearchFilesResponse
+     */
+    public function getNextResponse() : SearchFilesResponse
+    {
+        $response = $this->_search_files_factory->getNextResponse();
+        return $response;
+    }
+
+    /**
+     * Method to get to previous search files response page.
+     * @return SearchFilesResponse
+     */
+    public function getPreviousResponse() : SearchFilesResponse
+    {
+        $response = $this->_search_files_factory->getPreviousResponse();
+        return $response;
+    }
+
+    /**
+     * Method to get response from last api call.
+     * @return SearchFilesResponse
+     */
+    public function getLastResponse() : SearchFilesResponse
+    {
+        $response = $this->_search_files_factory->getLastResponse();
+        return $response;
+    }
+
+    /**
+     * Method to skip to a specific search files response page.
+     * @param int $page_index
+     * @return SearchFilesResponse
+     */
+    public function getResponsePage(int $page_index) : SearchFilesResponse
+    {
+        $response = $this->_search_files_factory->getResponsePage($page_index);
+        return $response;
+    }
+
+    /**
+     * Method to get total search files available.
+     * @return int
+     */
+    public function totalSearchFiles() : int
+    {
+        $total_files = $this->_search_files_factory->totalSearchFiles();
+        return $total_files;
+    }
+
+    /**
+     * Method to get total search results pages.
+     * @return int
+     */
+    public function totalSearchPages() : int
+    {
+        $total_pages = $this->_search_files_factory->totalSearchPages();
+        return $total_pages;
+    }
+
+    /**
+     * Method to get response from last api call.
+     * @return int
+     */
+    public function currentSearchPageIndex() : int
+    {
+        $current_page = $this->_search_files_factory->currentSearchPageIndex();
+        return $current_page;
     }
 }

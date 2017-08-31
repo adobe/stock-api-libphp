@@ -8,7 +8,8 @@
     },
     "require-dev": {
         "astock/phpcs-psr2-stock": "~1.4",
-        "phpunit/phpunit": "~6.0"
+        "phpunit/phpunit": "~6.0",
+        "mockery/mockery": "^0.9.9"
     },
     "autoload": {
         "psr-4": {

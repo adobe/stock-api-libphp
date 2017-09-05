@@ -20,9 +20,23 @@
 namespace AdobeStock\Api\Utils;
 
 use \AdobeStock\Api\Core\Config as CoreConfig;
+use \AdobeStock\Api\Exception\StockApi as StockApiException;
+use \Imagick;
 
 class APIUtils
 {
+    /**
+     * Maximum longest side that can be used for visual search.
+     * @var integer $_longest_side_maximum
+     */
+    private static $_longest_side_maximum = 23000;
+    
+    /**
+     * Maximum side to which image is downsampled for visual search.
+     * @var integer
+     */
+    private static $_longest_side_downsample_to = 1000;
+    
     /**
      * Generates a map of commonly used headers which is used
      * for Stock API access.
@@ -92,5 +106,67 @@ class APIUtils
         $uuid = vsprintf('%08s%04s%04x%04x%12s', $a);
         
         return $uuid;
+    }
+    
+    /**
+     * Utility method to downsample the image if image size is greater than expected size.
+     * @param string $file_path Path of the image to be downsampled.
+     * @return string downsampled image blob.
+     */
+    public static function downSampleImage(string $file_path) : string
+    {
+        $file_extension = pathinfo($file_path, PATHINFO_EXTENSION);
+        
+        if (!preg_match('/\.(png|jpe?g|gif)$/', $file_path, $file_extension)) {
+            throw StockApiException::withMessage('Only jpg, png and gifs are supported image formats');
+        }
+        
+        list($original_width, $original_height) = getimagesize($file_path);
+        $new_dimension = static::_calculateResizeParameters($original_width, $original_height);
+        $imagick = new \Imagick(realpath($file_path));
+        $imagick->resizeImage($new_dimension['width'], $new_dimension['height'], Imagick::FILTER_GAUSSIAN, 1);
+        
+        return $imagick->getImageBlob();
+    }
+    
+    /**
+     * Calculate width and height to which image to be downsampled.
+     * @param int $original_width  Width of original image.
+     * @param int $original_height Height of original image.
+     * @return array that have width and height of downsampled image.
+     * @throws StockApiException if original image is bigger than 23000 pixels.
+     */
+    private static function _calculateResizeParameters(int $original_width, int $original_height) : array
+    {
+        $new_dimension = [];
+        $new_dimension['width'] = 0;
+        $new_dimension['height'] = 0;
+        
+        if (max($original_width, $original_height) > static::$_longest_side_maximum) {
+            throw StockApiException::withMessage('Image is too large for visual search!');
+        } else {
+            $aspect_ratio = $original_width / $original_height;
+            
+            if ($original_width > $original_height) {
+                
+                if ($original_width > static::$_longest_side_downsample_to) {
+                    $new_dimension['width'] = static::$_longest_side_downsample_to;
+                    $new_dimension['height'] = static::$_longest_side_downsample_to / $aspect_ratio;
+                }
+            } else if ($original_height > static::$_longest_side_downsample_to) {
+                $new_dimension['width'] = static::$_longest_side_downsample_to * $aspect_ratio;
+                $new_dimension['height'] = static::$_longest_side_downsample_to;
+            }
+        }
+        
+        if ($new_dimension['width'] == 0) {
+            $new_dimension['width'] = $original_width;
+        }
+        
+        if ($new_dimension['height'] == 0) {
+            $new_dimension['height'] = $original_height;
+        }
+        
+        return $new_dimension;
     }
 }

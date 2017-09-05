@@ -98,6 +98,11 @@ class SearchFiles
     private $_http_client;
     
     /**
+     * Http Method to be used in Api hit.
+     * @var string
+     */
+    private $_http_method;
+    /**
      * Constructor.
      * @param CoreConfig $config config to be initialized.
      * @throws StockApiException if config is null.
@@ -124,6 +129,10 @@ class SearchFiles
                 throw StockApiException::withMessage('Access Token missing! Result Column is_licensed requires authentication');
             }
         }
+        
+        if ($request->getSearchParams()->getSimilarImage() == true && $request->getSimilarImage() == null) {
+            throw StockApiException::withMessage('Image Data missing! Search parameter similar_image requires similar_image in query parameters');
+        }
     }
     
     /**
@@ -134,6 +143,7 @@ class SearchFiles
      */
     public function getFiles(SearchFilesRequest $search_file_request, string $access_token = null) : SearchFilesResponse
     {
+        $this->_http_method = $this->_getHttpMethod($search_file_request);
         $headers = APIUtils::generateCommonAPIHeaders($this->_config, null);
         $end_point = $this->_config->getEndPoints()['search'];
         $request_url = $end_point . '?' . http_build_query($search_file_request);
@@ -152,7 +162,14 @@ class SearchFiles
         $find = 'search_parameters%5Boffset%5D=' . $previous_offset_value;
         $replace = 'search_parameters%5Boffset%5D=' . $offset_value;
         $request_url = str_replace($find, $replace, $request_url);
-        $response_json = $this->_http_client->doGet($request_url, $headers);
+        
+        if ($this->_http_method == 'GET') {
+            $response_json = $this->_http_client->doGet($request_url, $headers);
+        } else {
+            $similar_image_data = APIUtils::downSampleImage($search_file_request->getSimilarImage());
+            $response_json = $this->_http_client->doMultiPart($request_url, $headers, $similar_image_data);
+        }
+        
         $response_array = json_decode($response_json, true);
         
         if (empty($response_array)) {
@@ -379,5 +396,21 @@ class SearchFiles
         
         $this->_offset = $this->_current_request->getSearchParams()->getOffset();
         return $this;
+    }
+
+    /**
+     * Utility method to choose whether Http method is GET or MultiPart.
+     * @param SearchFilesRequest $request Request params for searchFiles
+     * @return string http method to be called
+     */
+    private function _getHttpMethod(SearchFilesRequest $request) : string
+    {
+        $http_method = 'GET';
+        
+        if (($request->getSearchParams() != null) && ($request->getSimilarImage() != null) && $request->getSearchParams()->getSimilarImage() == true) {
+            $http_method = 'POST';
+        }
+        
+        return $http_method;
     }
 }

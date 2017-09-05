@@ -4,7 +4,8 @@
     "license": "proprietary",
     "require": {
         "php": "~7.1",
-        "guzzlehttp/guzzle": "~6.0"
+        "guzzlehttp/guzzle": "~6.0",
+        "calcinai/php-imagick": "^0.1.2"
     },
     "require-dev": {
         "astock/phpcs-psr2-stock": "~1.4",

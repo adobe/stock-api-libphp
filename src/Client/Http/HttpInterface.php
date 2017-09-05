@@ -30,4 +30,22 @@ interface HttpInterface
      * @return Stream raw response returned from the api call.
      */
     public function doGet(string $url, array $headers) : Stream;
+    
+    /**
+     * Method to execute POST queries using custom http clients.
+     * @param string $url       Endpoint that needs to hit.
+     * @param array  $headers   associative array of headers.
+     * @param array  $post_data data that need to send with post query.
+     * @return Stream raw response returned from the api call.
+     */
+    public function doPost(string $url, array $headers, array $post_data) : Stream;
+    
+    /**
+     * Method to upload multipart data using custom http clients.
+     * @param string $url     Endpoint that needs to hit.
+     * @param array  $headers associative array of headers.
+     * @param string $file    File to be uploaded.
+     * @return Stream raw response returned from the api call.
+     */
+    public function doMultiPart(string $url, array $headers, string $file) : Stream;
 }

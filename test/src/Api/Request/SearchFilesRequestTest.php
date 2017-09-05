@@ -61,6 +61,7 @@ class SearchFilesRequestTest extends TestCase
         $this->assertInstanceOf(SearchParametersModels::class, $this->_request->getSearchParams());
         $this->_request->setResultColumns($result_column_array);
         $this->assertEquals($result_column_array, $this->_request->getResultColumns());
+        $this->_request->setSimilarImage('test/resources/TestFile.png');
     }
     
     /**
@@ -89,5 +90,14 @@ class SearchFilesRequestTest extends TestCase
     public function setResultColumnsThrowException()
     {
         $this->_request->setResultColumns([]);
+    }
+    
+    /**
+     * @test
+     * @expectedException \AdobeStock\Api\Exception\StockApi
+     */
+    public function setSimilarImageThrowExceptionIfFileDoesntExist()
+    {
+        $this->_request->setSimilarImage('');
     }
 }

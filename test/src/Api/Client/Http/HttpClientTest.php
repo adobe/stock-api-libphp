@@ -70,4 +70,57 @@ class HttpClientTest extends TestCase
         $this->_mocked_http_client->method('request')->will($this->throwException($exception));
         $this->_client->doGet('some uri', []);
     }
+    
+    /**
+     * @test
+     */
+    public function executeDoPostSuccessfully()
+    {
+        $response = new Response(200, [], 'response');
+        $this->_mocked_http_client->method('request')->willReturn($response);
+        $this->assertEquals($response->getBody(), $this->_client->doPost('some uri', [], []));
+    }
+    
+    /**
+     * @test
+     * @expectedException \AdobeStock\Api\Exception\StockApi
+     */
+    public function executeDoPostWithException()
+    {
+        $exception = StockApiException::withMessage('Exception thrown');
+        $this->_mocked_http_client->method('request')->will($this->throwException($exception));
+        $this->_client->doPost('some uri', [], []);
+    }
+    
+    /**
+     * @test
+     */
+    public function executeDoMultiPartSuccessfully()
+    {
+        $response = new Response(200, [], 'response');
+        $this->_mocked_http_client->method('request')->willReturn($response);
+        $this->assertEquals($response->getBody(), $this->_client->doMultiPart('some uri', [], 'test/resources/SmallImage.jpg'));
+    }
+    
+    /**
+     * @test
+     * @expectedException \AdobeStock\Api\Exception\StockApi
+     */
+    public function executeDoMultiPartWithException()
+    {
+        $exception = StockApiException::withMessage('Exception thrown');
+        $this->_mocked_http_client->method('request')->will($this->throwException($exception));
+        $this->_client->doMultiPart('some uri', [], 'test/resources/SmallImage.jpg');
+    }
+    
+    /**
+     * @test
+     * @expectedException \AdobeStock\Api\Exception\StockApi
+     */
+    public function executeDoMultiPartWithExceptionIfFileIsNotReadable()
+    {
+        $exception = StockApiException::withMessage('Exception thrown');
+        $this->_mocked_http_client->method('request')->will($this->throwException($exception));
+        $this->_client->doMultiPart('some uri', [], '');
+    }
 }

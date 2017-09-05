@@ -34,4 +34,49 @@ class APIUtilsTest extends TestCase
         $headers = APIUtils::generateCommonAPIHeaders($config, '');
         $this->assertEquals('APIKey', $headers['headers']['x-api-key']);
     }
+    
+    /**
+     * @test
+     */
+    public function downSampleImageShouldResizeImagetoExpectedDimensionsIfWidthisGreaterThanHeight()
+    {
+        $image = APIUtils::downSampleImage('test/resources/TestFileWidth.png');
+        $this->assertNotNull($image);
+    }
+    
+    /**
+     * @test
+     */
+    public function downSampleImageShouldResizeImagetoExpectedDimensionsIfHeightisGreaterThanWidth()
+    {
+        $image = APIUtils::downSampleImage('test/resources/TestFile.png');
+        $this->assertNotNull($image);
+    }
+    
+    /**
+     * @test
+     */
+    public function downSampleImageShouldNotDownSampleSmallImage()
+    {
+        $image = APIUtils::downSampleImage('test/resources/SmallImage.jpg');
+        $this->assertNotNull($image);
+    }
+    
+    /**
+     * @test
+     * @expectedException \AdobeStock\Api\Exception\StockApi
+     */
+    public function downSampleImageShouldThrowExceptionIfImageIsNotSupported()
+    {
+        $image = APIUtils::downSampleImage('test/resources/UnsupportedBMP.bmp');
+    }
+    
+    /**
+     * @test
+     * @expectedException \AdobeStock\Api\Exception\StockApi
+     */
+    public function downSampleImageShouldThrowExceptionIfImageIsBiggerThanExpected()
+    {
+        $image = APIUtils::downSampleImage('test/resources/BigImage.jpg');
+    }
 }

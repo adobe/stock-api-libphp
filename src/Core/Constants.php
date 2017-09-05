@@ -48,7 +48,7 @@ class Constants
     /**
      * @var array Http Method
      */
-    protected static $_httpMethod = [
+    protected static $_http_method = [
         'GET' => 'GET',
         'POST' => 'POST',
     ];
@@ -309,7 +309,7 @@ class Constants
      */
     public static function getHttpMethod()
     {
-        return static::$_httpMethod;
+        return static::$_http_method;
     }
     
     /**

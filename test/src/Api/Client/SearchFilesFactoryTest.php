@@ -459,4 +459,35 @@ class SearchFilesFactoryTest extends TestCase
             
         }
     }
+    
+    /**
+     * @test
+     */
+    public function testVisualSearch()
+    {
+        $this->_mocked_http_client->method('doMultiPart')
+            ->willReturn(Psr7\stream_for(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
+        $this->_request = new SearchFilesRequest();
+        $search_params = new SearchParametersModels();
+        $search_params->setSimilarImage(true);
+        $this->_request->setSearchParams($search_params);
+        $this->_request->setSimilarImage('test/resources/TestFile.png');
+        $response = $this->_search_files_factory->searchFilesInitialize($this->_request, null, $this->_mocked_http_client, true)->getNextResponse();
+    }
+    
+    /**
+     * @test
+     * @expectedException \AdobeStock\Api\Exception\StockApi
+     * @exceptedExceptionMessage Image Data missing! Search parameter similar_image requires similar_image in query parameters
+     */
+    public function testVisualSearchThrowExceptionIfSimilarImageISNotSet()
+    {
+        $this->_mocked_http_client->method('doMultiPart')
+            ->willReturn(Psr7\stream_for(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
+        $this->_request = new SearchFilesRequest();
+        $search_params = new SearchParametersModels();
+        $search_params->setSimilarImage(true);
+        $this->_request->setSearchParams($search_params);
+        $response = $this->_search_files_factory->searchFilesInitialize($this->_request, null, $this->_mocked_http_client, true)->getNextResponse();
+    }
 }

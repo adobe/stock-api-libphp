@@ -41,6 +41,11 @@ class SearchFiles
     public $result_columns;
     
     /**
+     * @var string Similar Image Path
+     */
+    public $similar_image;
+    
+    /**
      * Getter for Locale.
      * @return string|null Language location code.
      */
@@ -109,6 +114,30 @@ class SearchFiles
         }
         
         $this->result_columns = $result_columns;
+        return $this;
+    }
+    
+    /**
+     * Getter for similar image path.
+     * @return string|null Similar image path.
+     */
+    public function getSimilarImage() : ?string
+    {
+        return $this->similar_image;
+    }
+    
+    /**
+     * Setter for similar image path.
+     * @param string $similar_image Similar Image Path.
+     * @return SearchFiles
+     */
+    public function setSimilarImage(string $similar_image) : SearchFiles
+    {
+        if (!file_exists($similar_image)) {
+            throw StockApiException::withMessage('Image File doesn\'t exist on this path');
+        }
+        
+        $this->similar_image = $similar_image;
         return $this;
     }
 }

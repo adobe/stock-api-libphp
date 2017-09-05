@@ -67,6 +67,59 @@ class HttpClient implements HttpInterface
     }
 
     /**
+     * Method to execute POST queries using custom http clients.
+     * @param string $url       Endpoint that needs to hit.
+     * @param array  $headers   associative array of headers.
+     * @param array  $post_data data that need to send with post query.
+     * @return Stream raw response returned from the api call.
+     */
+    public function doPost(string $url, array $headers, array $post_data) : Stream
+    {
+        try {
+            $headers['body'] = json_encode($post_data);
+            $raw_response = $this->_http_client->request('POST', $url, $headers);
+            $http_status_code = $raw_response->getStatusCode();
+            $raw_headers = $this->getHeadersAsString($raw_response);
+            $response_body = $raw_response->getBody();
+        } catch (\Exception $e) {
+            throw StockApiException::withMessageAndErrorCode($e->getMessage(), $e->getCode(), $e);
+        }
+        
+        return $response_body;
+    }
+    
+    /**
+     * Method to upload multipart data using custom http clients.
+     * @param string $url     Endpoint that needs to hit.
+     * @param array  $headers associative array of headers.
+     * @param string $file    File to be uploaded.
+     * @return Stream raw response returned from the api call.
+     */
+    public function doMultiPart(string $url, array $headers, string $file) : Stream
+    {
+        if (!is_readable($file)) {
+            throw StockApiException::withMessage('Image File is not readable');
+        }
+        
+        try {
+            $headers['multipart'] = [
+                    [
+                        'name' => 'image',
+                        'contents' => $file,
+                    ],
+            ];
+            $raw_response = $this->_http_client->request('POST', $url, $headers);
+            $http_status_code = $raw_response->getStatusCode();
+            $raw_headers = $this->getHeadersAsString($raw_response);
+            $response_body = $raw_response->getBody();
+        } catch (\Exception $e) {
+            throw StockApiException::withMessageAndErrorCode($e->getMessage(), $e->getCode(), $e);
+        }
+        
+        return $response_body;
+    }
+    
+    /**
      * Returns the Guzzle array of headers as a string.
      * @param Response $response The Guzzle response.
      * @return string of headers

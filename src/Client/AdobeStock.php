@@ -27,6 +27,9 @@ use \AdobeStock\Api\Client\Http\HttpInterface;
 use \AdobeStock\Api\Request\SearchFiles as SearchFilesRequest;
 use \AdobeStock\Api\Response\SearchFiles as SearchFilesResponse;
 use \AdobeStock\Api\Client\Http\HttpClient;
+use \AdobeStock\Api\Request\License as LicenseRequest;
+use \AdobeStock\Api\Client\License as LicenseFactory;
+use \AdobeStock\Api\Response\License as LicenseResponse;
 
 class AdobeStock
 {
@@ -48,6 +51,12 @@ class AdobeStock
      * @var SearchFiles
      */
     private $_search_files_factory;
+    
+    /**
+     * Factory object of all license apis.
+     * @var LicenseFactory;
+     */
+    private $_license_factory;
 
     /**
      * Custom http client object.
@@ -68,6 +77,7 @@ class AdobeStock
         $this->_config = new CoreConfig($api_key, $product, $target_env);
         $this->_search_category_factory = new SearchCategoryFactory($this->_config);
         $this->_search_files_factory = new SearchFiles($this->_config);
+        $this->_license_factory = new LicenseFactory($this->_config);
 
         if ($http_client === null) {
             $this->_http_client = new HttpClient();
@@ -197,5 +207,63 @@ class AdobeStock
     {
         $current_page = $this->_search_files_factory->currentSearchPageIndex();
         return $current_page;
+    }
+    
+    /**
+     * Requests licensing information about a specific asset for a specific user
+     * @param LicenseRequest $request      object containing
+     * category-id and locale
+     * @param string         $access_token Users ims access token
+     * @return LicenseResponse contains LicenseEntitlement,LicensePurchaseOptions,LicenseMemberInfo,cce_agency and contents
+     */
+    public function getContentInfo(LicenseRequest $request, string $access_token) : LicenseResponse
+    {
+        $response = $this->_license_factory->getContentInfo($request, $access_token, $this->_http_client);
+        return $response;
+    }
+    
+    /**
+     * Requests a license for an asset for a specific user.
+     * @param LicenseRequest $request
+     * @param string         $access_token
+     * @return LicenseResponse contains LicenseEntitlement,LicensePurchaseOptions,LicenseMemberInfo,cce_agency and contents
+     */
+    public function getContentLicense(LicenseRequest $request, string $access_token) : LicenseResponse
+    {
+        $response = $this->_license_factory->getContentLicense($request, $access_token, $this->_http_client);
+        return $response;
+    }
+    
+    /**
+     * It can be used to get the licensing capabilities for a specific user.
+     * This API returns the user's available purchase quota, the member
+     * identifier, and information that you can use to present licensing
+     * options to the user when the user next requests an asset purchase.
+     * In this 3 cases can occur -
+     * User has enough quota to license the next asset.
+     * User doesn't have enough quota and is set up to handle overage.
+     * User doesn't have quota and there is no overage plan.
+     * @param LicenseRequest $request
+     * @param string         $access_token
+     * @return LicenseResponse contains LicenseEntitlement,LicensePurchaseOptions,LicenseMemberInfo,cce_agency and contents
+     */
+    public function getMemberProfile(LicenseRequest $request, string $access_token) : LicenseResponse
+    {
+        $response = $this->_license_factory->getMemberProfile($request, $access_token, $this->_http_client);
+        return $response;
+    }
+    
+    /**
+     * Notifies the system when a user cancels a licensing operation.
+     * It can be used if the user refuses the opportunity to purchase
+     * or license the requested asset.
+     * @param LicenseRequest $request
+     * @param string         $access_token
+     * @return int $response_code
+     */
+    public function abandonLicense(LicenseRequest $request, string $access_token) : int
+    {
+        $response_code = $this->_license_factory->abandonLicense($request, $access_token, $this->_http_client);
+        return $response_code;
     }
 }

@@ -28,6 +28,8 @@ use \AdobeStock\Api\Response\SearchFiles as SearchFilesResponse;
 use \AdobeStock\Api\Core\Constants as CoreConstants;
 use \AdobeStock\Api\Request\SearchFiles as SearchFilesRequest;
 use \AdobeStock\Api\Models\SearchParameters as SearchParametersModels;
+use \AdobeStock\Api\Request\License as LicenseRequest;
+use \AdobeStock\Api\Response\License as LicenseResponse;
 
 /**
  * @runTestsInSeparateProcesses
@@ -276,5 +278,116 @@ class AdobeStockTest extends TestCase
         
         $adobe_client = new \AdobeStock\Api\Client\AdobeStock('APIKey', 'Product', 'STAGE', null);
         $this->assertEquals($current_page, $adobe_client->currentSearchPageIndex());
+    }
+    
+    /**
+     * @test
+     */
+    public function licenseContentInfoShouldReturnLicenseResponse()
+    {
+        $raw_response = '{ "member": {
+                            "stock_id": 1393839
+                            },
+                            "contents": {
+                                "59741022": {
+                                    "content_id": "59741022",
+                                    "size": "Comp",
+                                    "purchase_details": {
+                                        "state": "not_purchased",
+                                        "stock_id": 1393839
+                                    }
+                                }
+                            }
+                        }';
+        $request = new LicenseRequest();
+        $request->setContentId(59741022);
+        $request->setLicenseState('STANDARD');
+        $response = new LicenseResponse(json_decode($raw_response, true));
+        
+        $external_mock = \Mockery::mock('overload:AdobeStock\Api\Client\License');
+        $external_mock->shouldReceive('getContentInfo')->once()->andReturn($response);
+        
+        $adobe_client = new \AdobeStock\Api\Client\AdobeStock('APIKey', 'Product', 'STAGE', null);
+        $this->assertEquals($response, $adobe_client->getContentInfo($request, ''));
+    }
+    
+    /**
+     * @test
+     */
+    public function licenseContentShouldReturnLicenseResponse()
+    {
+        $raw_response = '{
+                         "member": {
+                            "stock_id": 1393839
+                        },
+                        "available_entitlement": null,
+                        "contents": {
+                            "84071201": {
+                                "content_id": "84071201",
+                                "size": "Comp",
+                                "purchase_details": {
+                                    "state": "not_possible",
+                                    "url": "https://primary.staging.adobestock.com/84071201?sso_inbound=1",
+                                    "message": ""
+                                }
+                            }
+                        }
+                        }';
+        $request = new LicenseRequest();
+        $request->setContentId(84071201);
+        $request->setLicenseState('STANDARD');
+        $response = new LicenseResponse(json_decode($raw_response, true));
+        
+        $external_mock = \Mockery::mock('overload:AdobeStock\Api\Client\License');
+        $external_mock->shouldReceive('getContentLicense')->once()->andReturn($response);
+        
+        $adobe_client = new \AdobeStock\Api\Client\AdobeStock('APIKey', 'Product', 'STAGE', null);
+        $this->assertEquals($response, $adobe_client->getContentLicense($request, ''));
+    }
+    
+    /**
+     * @test
+     */
+    public function memberProfileShouldReturnLicenseResponse()
+    {
+        $raw_response = '{ "available_entitlement": {
+                            "quota": 0,
+                            "full_entitlement_quota": []
+                            },
+                            "member": {
+                                "stock_id": 1393839
+                            },
+                            "purchase_options": {
+                                "state": "not_possible",
+                                "requires_checkout": true,
+                                "message": "You have 0 licenses. Purchase on Adobe Stock?",
+                                "url": "https://primary.staging.adobestock.com/84071201?sso_inbound=1&license=1"
+                            }
+                            }';
+        $request = new LicenseRequest();
+        $request->setContentId(84071201);
+        $request->setLicenseState('STANDARD');
+        $response = new LicenseResponse(json_decode($raw_response, true));
+        
+        $external_mock = \Mockery::mock('overload:AdobeStock\Api\Client\License');
+        $external_mock->shouldReceive('getMemberProfile')->once()->andReturn($response);
+        
+        $adobe_client = new \AdobeStock\Api\Client\AdobeStock('APIKey', 'Product', 'STAGE', null);
+        $this->assertEquals($response, $adobe_client->getMemberProfile($request, ''));
+    }
+    
+    /**
+     * @test
+     */
+    public function abandonLicenseShouldReturnLicenseResponse()
+    {
+        $request = new LicenseRequest();
+        $request->setContentId(84071201);
+        
+        $external_mock = \Mockery::mock('overload:AdobeStock\Api\Client\License');
+        $external_mock->shouldReceive('abandonLicense')->once()->andReturn(204);
+        
+        $adobe_client = new \AdobeStock\Api\Client\AdobeStock('APIKey', 'Product', 'STAGE', null);
+        $this->assertEquals(204, $adobe_client->abandonLicense($request, ''));
     }
 }

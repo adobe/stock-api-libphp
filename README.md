@@ -327,3 +327,170 @@ It represents the search result returned from Stock Search/Category API. The `Ad
 * `getName` - Get localised name of the category returned by search/category API
 * `getId` - Get unique identifier of the category returned by search/category API
 * `getLink` - Get path of the category returned by search/category API
+
+### Accessing License 
+##### License
+`License` class allows you to purchase an asset, information about purchasing the asset, information about a user's licensing (entitlement) status, determine whether the user has an existing license for an asset,for notifying the system when a user     abandons a licensing operation, request a license for an asset for that user if user have authorization for licensing assets and fetch the URL of the asset if it is already licensed.
+
+* This is an overview of the process:
+    * Call `getContentInfo` to determine whether the asset is already licensed. If not, call `getMemberProfile` to get your user's purchase options.
+    * If the user opts to continue with the purchase, call `getContentLicense`.
+    * If the user cancels out of the purchase, call `abandonLicense`.
+
+* To license Adobe Stock images :
+    * Call `SearchFiles` to find an asset that you want to license. 
+    * Search returns the `asset's identifier` in the id field.
+    * Get an `access token` for the user.  
+    * Call various License APIs using params like content id ,license state, purchase state, locale to perform these        operations.
+    
+#### Instantiation
+You can construct the object of this class with below arguments -
+* Requires:
+    * `config` - the stock configuration object of `StockConfig` type.
+
+* Returns:
+    * `LicenseResponse` - The response object containing the asset content id, purchase details, license state results matching the request object returned by `getContentInfo` , `getContentLicense`, `getMemberProfile`,`abandonLicense` method.
+    
+#### License Request
+ In order to call `License` APIs you need to create `LicenseRequest` object for licensing assets, for getting licensing information about a specific asset for specific user, for notifying the system when a user abandons a licensing operation, for getting the licensing capabilities for a specific user.
+ 
+|Request Parameter| Setter Methods | Related Constants (If applicable)    |Description|
+|---|---|---|---|
+|content_id|setContentId| |Asset's unique identifer.You can get this from a Search response's id attribute|
+|license|setLicenseState|licenseStateParams |Use only with Content/Info, Content/License, and Member/Profile. The Adobe Stock licensing state for the asset.|
+|locale    |setLocale| |Use only with Member/Profile.Optional. Location language code for the API to use when returning localized messages. The API can usually get the user's default locale through the Authorization header. This value overrides that or provides a locale if not available through Authorization.|
+|state |setPurchaseState|purchaseStateParams|Use only with Member/Abandon.The purchase_options.state from the Member/Profile results.|
+|license_reference|setLicenseReference| |Array of license references of type `LicenseReference`. Use only with Content/License API.|
+##### License State 
+Adobe Stock licensing state for the asset.    
+* Types of License States : 
+    
+    * For images, photos, or illustrations you can request:
+        * `Standard` - Licenses the full-resolution image
+        * `Standard_M` - Licenses a medium-sized image that is approximately 1600x1200 pixels
+        * `Extended` - Extended license for the full-resolution image
+    * For video you can request:
+        * `Video_HD` - Licenses the HD-resolution video
+        * `Video_4K` - Licenses the 4K-resolution video  
+    * For vector assets: `Standard` or `Extended`
+    * For 3D assets:  `Standard`  
+    * For templates: `Standard`
+
+##### Purchase States
+User's purchase relationship to an asset.
+* Various Purchase States :
+    * `NOT_PURCHASED` -  User has not at any time in the past purchased the asset.
+    * `PURCHASED` - User has at some time in the past purchased the asset.
+    * `CANCELLED` - User attempted to buy the asset and for some reason the order did not go through.
+    * `NOT_POSSIBLE` - User must go to the Adobe Stock site to buy plan or asset.
+    * `JUST_PURCHASED` - User bought asset within the current session.
+    * `OVERAGE` - Adobe Stock has a payment instrument on file for the user and can bill the user for additional purchases.
+    
+#### License Response
+After calling various APIs in `License` class, reponse is returned in the form of `LicenseResponse`. It contains following fields. All class objects used in response are defined below.
+
+|Request Parameter| Getter Methods | Related Class     |Description|
+|---|---|---|---|
+|available_entitlement |getEntitlement|LicenseEntitlement|Information about licenses available for the user. See LicenseEntitlement|
+|purchase_options|getPurchaseOptions|LicensePurchaseOptions|Information about the user's purchasing options for the asset. See LicensePurchaseOptions|
+|member|getMemberinfo|LicenseMemberInfo|Information about the user. See LicenseMemberInfo|
+|license_references|getLicenseReferences|LicenseReferenceResponse|List of license references of the user. See LicenseReferenceResponse|
+|contents|getContents|LicenseContent|Mapping from Asset unique identifier to Asset Licensing information. See LicenseContent|
+
+##### LicenseEntitlement
+* LicenseEntitlement gives Information about licenses available for the user.
+    * `Quota` : Quantity of remaining licenses available for the user.
+     * `License Type Id`: Stock Internal ID to know which kind of product can be used for licensing.
+    * `Has Credit Model`: true if the selected entitlement is for an organization and this organization is generation 2.
+    * `Has Agency Model`: true if the selected entitlement is for an organization and this organization is generation 3.
+    * `Is CCE`: true if the selected entitlement for purchasing is one of an organization.
+    * `Full Entitlement Quota`: Full quota of the user available entitlements.
+
+##### LicensePurchaseOptions
+* Information about the user's purchasing options for the asset.
+    * `Purchase State` : User's purchase relationship to an asset.
+    * `Requires Checkout` : Whether a purchase in process requires going to the Adobe Stock site for completion.
+    * `Message` : Message to display to your user in response to a licensing API query.
+    * `PurchaseUrl` : The URL to see purchase options plan.
+    
+##### LicenseMemberInfo
+* Information about the user
+    * `StockId` : User's unique Stock member identifier.
+    
+##### LicenseReferenceResponse
+* License references marked as "required" must be submitted when licensing the image using the corresponding "id" attributes.
+    * `Id` : License reference id.
+    * `Text` : License reference description.
+    * `Required` : Whether license reference must be submitted when licensing the image.
+    
+##### LicenseContent
+* Licensing information for an asset for the user contained in the query response.
+    * `Content Id` : Asset's unique identifier.
+    * `Purchase Details` : Information about the user's purchase/license of this asset.
+    * `Size` : The size of the asset, indicating whether it is the free complementary size or the original full-sized asset.
+    * `Comp` : Information about the complementary or watermarked asset.
+    * `Thumbnail` : Information about the asset thumbnail.
+    
+#### Methods
+* `License` API allows you to call these four methods related to licensing stock assets. It can throw StockException if response is null or there is some API error.
+    * `getContentInfo` requests licensing information about a specific asset for a specific user. You need to pass ims user `accessToken` and  `LicenseRequest` object containing content identifier, license state and locale(optional) parameters. If the request object is not valid or API returns with error, the method will throw the StockApiException.
+    
+    * `getContentLicense` requests a license for an asset for a specific user. You need to pass ims user `accessToken` and `LicenseRequest` object containing content_id ,License Reference and license. If the request object is not valid or API returns with error, the method will throw the StockApiException.
+    
+    * `getMemberProfile` returns the user's available purchase quota, the member identifier, and information that you can use to present licensing options to the user when the user next requests an asset purchase. In this 3 cases can occur -
+        *  User has enough quota to license the next asset.
+        *  User doesn't have enough quota and is set up to handle overage.
+        *  User doesn't have quota and there is no overage plan.
+You need to pass ims user `accessToken` and `LicenseRequest` object containing content_id, license state and locale. If the request object is not valid or API returns with error, the method will throw the StockApiException.
+     
+    * `abandonLicense` notifies the system when a user cancels a licensing operation. It can be used if the user refuses the opportunity to purchase or license the requested asset. You need to pass ims user `accessToken` and `LicenseRequest` object containing content_id and license state. If the request object is not valid or API returns with error, the method will throw the StockApiException.    
+
+#### Examples
+Examples showing how all methods are called with `LicenseRequest` and return `LicenseResponse`.
+
+#### getContentInfo Example
+``` PHP
+
+        $request = new LicenseRequest();
+        $request->setLocale('En_US');
+        $request->setContentId(84071201);
+
+        $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'STAGE', $http_client);
+        $license_response = $this->_adobe_stock_client->getContentInfo($request, '');
+   ```
+#### getContentLicense Example
+  ``` PHP
+  
+        $request = new LicenseRequest();
+        $request->setLocale('En_US');
+        $request->setContentId(84071201);
+        
+        $array = [[
+        'id' => 1,
+        'value' => 'test',
+        ]];
+        $request->setLicenseReference($array);
+        $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'STAGE', $http_client);
+        $license_response = $this->_adobe_stock_client->getContentLicense($request, '');
+  ```
+#### getMemberProfile Example
+``` PHP
+
+        $request = new LicenseRequest();
+        $request->setLocale('En_US');
+        $request->setContentId(84071201);
+    
+        $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'STAGE', $http_client);
+        $license_response = $this->_adobe_stock_client->getMemberProfile($request, '');
+```
+
+#### abandonLicense Example
+``` PHP
+
+        $request = new LicenseRequest();
+        $request->setLocale('En_US');
+        $request->setContentId(84071201);
+    
+        $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'STAGE', $http_client);
+        $license_response = $this->_adobe_stock_client->abandonLicense($request, '');
+```

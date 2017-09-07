@@ -5,7 +5,7 @@
     "require": {
         "php": "~7.1",
         "guzzlehttp/guzzle": "~6.0",
-        "calcinai/php-imagick": "^0.1.2"
+        "ext-imagick": "*"
     },
     "require-dev": {
         "astock/phpcs-psr2-stock": "~1.4",

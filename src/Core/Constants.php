@@ -293,6 +293,16 @@ class Constants
         'JUST_PURCHASED' => 'just_purchased',
         'OVERAGE' => 'overage',
     ];
+    
+    /**
+     * The size of the asset, indicating whether it is the free
+     * complementary size or the original full-sized asset.
+     * @var array assest license size
+     */
+    protected static $_asset_license_size = [
+        'Comp' => 'Comp',
+        'Original' => 'Original',
+    ];
 
     /**
      * Getter for QueryParamProps.
@@ -472,5 +482,14 @@ class Constants
     public static function getPurchaseStateParams() : array
     {
         return static::$_purchaseStateParams;
+    }
+    
+    /**
+     * Getter for assest license size.
+     * @return array of asset License Size
+     */
+    public static function getAssetLicenseSize() : array
+    {
+        return static::$_asset_license_size;
     }
 }

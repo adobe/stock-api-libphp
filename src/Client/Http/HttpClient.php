@@ -23,6 +23,8 @@ use \GuzzleHttp\Client;
 use \GuzzleHttp\Psr7\Response;
 use \AdobeStock\Api\Exception\StockApi as StockApiException;
 use \GuzzleHttp\Psr7\Stream;
+use \GuzzleHttp\HandlerStack;
+use \GuzzleHttp\Psr7\Request;
 
 class HttpClient implements HttpInterface
 {
@@ -134,5 +136,24 @@ class HttpClient implements HttpInterface
         }
 
         return implode("\r\n", $raw_headers);
+    }
+    
+    /**
+     * Returns HandlerStack of http client
+     * @return HandlerStack
+     */
+    public function getHandlerStack() : HandlerStack
+    {
+        return $this->_http_client->getConfig('handler');
+    }
+    
+    /**
+     * Method to send request using guzzle request object
+     * @param Request $request
+     * @return Response
+     */
+    public function sendRequest(Request $request) : Response
+    {
+        return $this->_http_client->send($request);
     }
 }

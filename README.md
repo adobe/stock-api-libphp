@@ -342,6 +342,7 @@ It represents the search result returned from Stock Search/Category API. The `Ad
     * Search returns the `asset's identifier` in the id field.
     * Get an `access token` for the user.  
     * Call various License APIs using params like content id ,license state, purchase state, locale to perform these        operations.
+    * Call `downloadAssetUrl` to fetch the URL of the asset if it is already licensed or `downloadAssetRequest` to fetch the guzzle request object that contains url of the asset that can be downloaded by hitting request or `downloadAssetStream` to get the Image Buffer.
     
 #### Instantiation
 You can construct the object of this class with below arguments -
@@ -444,6 +445,10 @@ After calling various APIs in `License` class, reponse is returned in the form o
 You need to pass ims user `accessToken` and `LicenseRequest` object containing content_id, license state and locale. If the request object is not valid or API returns with error, the method will throw the StockApiException.
      
     * `abandonLicense` notifies the system when a user cancels a licensing operation. It can be used if the user refuses the opportunity to purchase or license the requested asset. You need to pass ims user `accessToken` and `LicenseRequest` object containing content_id and license state. If the request object is not valid or API returns with error, the method will throw the StockApiException.    
+     * `downloadAssetRequest` provides the guzzle request object that contains url of the asset that can be downloaded by hitting request with guzzle client send method if it is already licensed otherwise throws StockApiException showing a message whether user has enough quota and can buy the license or not. You need to pass ims user `accessToken` and `LicenseRequest` object containing content_id and license state. If request is not valid or asset is not licensed or licensing information is not present for the asset or API returns with an error, the method will throw the StockApiException.   
+    * `downloadAssetUrl` provides the URL of the asset if it is already licensed otherwise throws StockApiException showing a message whether user has enough quota and can buy the license or not. You need to pass ims user `accessToken` and `LicenseRequest` object containing content_id and license state. If request is not valid or asset is not licensed or licensing information is not present for the asset or API returns with an error, the method will throw the StockApiException.
+     * `downloadAssetStream` provides the Image Buffer of the asset if it is already licensed otherwise throws StockApiException showing a message whether user has enough quota and can buy the license or not. You need to pass ims user `accessToken` and `LicenseRequest` object containing content_id and license state. If request is not valid or asset is not licensed or licensing information is not present for the asset or API returns with an error, the method will throw the StockApiException.
+     
 
 #### Examples
 Examples showing how all methods are called with `LicenseRequest` and return `LicenseResponse`.
@@ -493,4 +498,38 @@ Examples showing how all methods are called with `LicenseRequest` and return `Li
     
         $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'STAGE', $http_client);
         $license_response = $this->_adobe_stock_client->abandonLicense($request, '');
+```
+#### downloadAssetRequest Example
+``` PHP
+ 
+        $request = new LicenseRequest();
+        $request->setLicenseState('STANDARD');
+        $request->setContentId(84071201);
+   
+        $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'STAGE', $http_client);
+        $guzzle_request = $this->_adobe_stock_client->downloadAssetRequest($request, '');
+ 
+```
+
+#### downloadAssetUrl Example
+``` PHP
+ 
+        $request = new LicenseRequest();
+        $request->setLicenseState('STANDARD');
+        $request->setContentId(84071201);
+   
+        $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'STAGE', $http_client);
+        $url = $this->_adobe_stock_client->downloadAssetUrl($request, '');
+ 
+```
+#### downloadAssetStream Example
+``` PHP
+ 
+        $request = new LicenseRequest();
+        $request->setLicenseState('STANDARD');
+        $request->setContentId(84071201);
+   
+        $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'STAGE', $http_client);
+        $image_stream = $this->_adobe_stock_client->downloadAssetStream($request, '');
+ 
 ```

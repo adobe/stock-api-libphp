@@ -30,6 +30,7 @@ use \AdobeStock\Api\Client\Http\HttpClient;
 use \AdobeStock\Api\Request\License as LicenseRequest;
 use \AdobeStock\Api\Client\License as LicenseFactory;
 use \AdobeStock\Api\Response\License as LicenseResponse;
+use \GuzzleHttp\Psr7\Request;
 
 class AdobeStock
 {
@@ -265,5 +266,41 @@ class AdobeStock
     {
         $response_code = $this->_license_factory->abandonLicense($request, $access_token, $this->_http_client);
         return $response_code;
+    }
+    
+    /**
+     * Provide the guzzle request object that contains url of the asset that can be downloaded by hitting request with guzzle client send method if it is already licensed
+     * @param LicenseRequest $request
+     * @param string         $access_token
+     * @return Request guzzle request object containing url of the asset.
+     */
+    public function downloadAssetRequest(LicenseRequest $request, string $access_token) : Request
+    {
+        $guzzle_request = $this->_license_factory->downloadAssetRequest($request, $access_token, $this->_http_client);
+        return $guzzle_request;
+    }
+    
+    /**
+     * Provide the url of the asset if it is already licensed.
+     * @param LicenseRequest $request
+     * @param string         $access_token
+     * @return string url of the asset.
+     */
+    public function downloadAssetUrl(LicenseRequest $request, string $access_token) : string
+    {
+        $url = $this->_license_factory->downloadAssetUrl($request, $access_token, $this->_http_client);
+        return $url;
+    }
+    
+    /**
+     * Provide the Image Buffer if it is already licensed.
+     * @param LicenseRequest $request
+     * @param string         $access_token
+     * @return string Image stream.
+     */
+    public function downloadAssetStream(LicenseRequest $request, string $access_token) : string
+    {
+        $image_stream = $this->_license_factory->downloadAssetStream($request, $access_token, $this->_http_client);
+        return $image_stream;
     }
 }

@@ -25,6 +25,8 @@ use \AdobeStock\Api\Client\Http\HttpClient;
 use \GuzzleHttp\Psr7;
 use \AdobeStock\Api\Client\License as LicenseFactory;
 use \AdobeStock\Api\Request\License as LicenseRequest;
+use \GuzzleHttp\Psr7\Request;
+use \GuzzleHttp\Psr7\Response;
 
 class LicenseFactoryTest extends TestCase
 {
@@ -318,5 +320,400 @@ class LicenseFactoryTest extends TestCase
         $this->_request->setLicenseState('STANDARD');
         $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for('205'));
         $final_response = $this->_license_factory->abandonLicense($this->_request, 'test', $this->_mocked_http_client);
+    }
+    
+    /**
+     * @test
+     */
+    public function downloadAssetRequestShouldReturnValidRequestObject()
+    {
+        $response = [
+            'member' =>
+            [
+                'stock_id' => '5PAGXppkUvXRR851OtNbz9HaODSXa7BV',
+            ],
+            'available_entitlement' =>
+            [
+                'quota' => 4,
+            ],
+            'contents' =>
+            [
+                '84071201' =>
+                ['content_id' => '84071201',
+                    'size' => 'Comp',
+                    'purchase_details' =>
+                    [
+                        'state' => 'purchased',
+                        'license' => 'Standard',
+                        'date' => '2017-06-21 10:38:52',
+                        'url' => 'https://primary.staging.adobestock.com/Rest/Libraries/Download/84071201/1',
+                        'content_type' => 'image/jpeg',
+                        'width' => 4000,
+                        'height' => 3928,
+                            
+                    ],
+                ],
+            ],
+        ];
+                                
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for(json_encode($response)));
+        $request = new LicenseRequest();
+        $request->setContentId(84071201)->setLicenseState('STANDARD');
+        $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
+        $this->assertEquals($guzzle_request, new Request('GET', ''));
+    }
+    
+    /**
+     * @test
+     * @expectedException AdobeStock\Api\Exception\StockApi
+     * @expectedExceptionMessage Could not find the licensing information for the asset
+     */
+    public function downloadAssetRequestShouldThrowExceptionSinceLicenseInfoNull()
+    {
+        $response = [];
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for(json_encode($response)));
+        $request = new LicenseRequest();
+        $request->setContentId(84071201)->setLicenseState('STANDARD');
+        $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
+    }
+    
+    /**
+     * @test
+     * @expectedException AdobeStock\Api\Exception\StockApi
+     * @expectedExceptionMessage Could not find the purchase details for the asset
+     */
+    public function downloadAssetRequestShouldThrowExceptionSincePurchaseDetailsNull()
+    {
+        $response = [
+            'member' =>
+            [
+                'stock_id' => '5PAGXppkUvXRR851OtNbz9HaODSXa7BV',
+            ],
+            'available_entitlement' =>
+            [
+                'quota' => 4,
+            ],
+            'contents' =>
+            [
+                '84071201' =>
+                ['content_id' => '84071201',
+                    'size' => 'Comp',
+                    'purchase_options' =>
+                        [
+                            'state' => 'not_possible',
+                        ],
+                ],
+            ],
+        ];
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for(json_encode($response)));
+        $request = new LicenseRequest();
+        $request->setContentId(84071201)->setLicenseState('STANDARD');
+        $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
+    }
+    
+    /**
+     * @test
+     * @expectedException AdobeStock\Api\Exception\StockApi
+     * @expectedExceptionMessage Content not licensed but have enough quota or overage plan, so first buy the license
+     */
+    public function downloadAssetRequestShouldThrowExceptionSinceAssetNotPurchasedButCanBeLicensed()
+    {
+        $response = [
+            'member' =>
+            [
+                'stock_id' => '5PAGXppkUvXRR851OtNbz9HaODSXa7BV',
+            ],
+            'available_entitlement' =>
+            [
+                'quota' => 4,
+            ],
+            'contents' =>
+            [
+                '84071201' =>
+                [
+                    'content_id' => '84071201',
+                    'size' => 'Comp',
+                    'purchase_details' =>
+                    [
+                        'state' => 'not_purchased',
+                    ],
+                ],
+            ],
+            'purchase_options' =>
+            [
+                'state' => 'not_possible',
+                'requires_checkout' => 'false',
+                'message' => 'This will use 1 of your 6 licenses.',
+            ],
+        ];
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for(json_encode($response)));
+        $request = new LicenseRequest();
+        $request->setContentId(84071201)->setLicenseState('STANDARD');
+        $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
+    }
+    
+    /**
+     * @test
+     * @expectedException AdobeStock\Api\Exception\StockApi
+     * @expectedExceptionMessage Content not licensed and also you do not have enough quota or overage plan
+     */
+    public function downloadAssetRequestShouldThrowExceptionSinceAssetNotPurchasedAndCannotBeLicensed()
+    {
+        $response = [
+            'member' =>
+            [
+                'stock_id' => '5PAGXppkUvXRR851OtNbz9HaODSXa7BV',
+            ],
+            'available_entitlement' =>
+            [
+                'quota' => 0,
+            ],
+            'contents' =>
+            [
+                '84071201' =>
+                [
+                    'content_id' => '84071201',
+                    'size' => 'Comp',
+                    'purchase_details' =>
+                    [
+                        'state' => 'not_purchased',
+                    ],
+                ],
+            ],
+            'purchase_options' =>
+            [
+                'state' => 'not_possible',
+                'requires_checkout' => 'false',
+                'message' => 'This will use 1 of your 6 licenses.',
+            ],
+        ];
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for(json_encode($response)));
+        $request = new LicenseRequest();
+        $request->setContentId(84071201)->setLicenseState('STANDARD');
+        $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
+    }
+    
+    /**
+     * @test
+     * @expectedException AdobeStock\Api\Exception\StockApi
+     * @expectedExceptionMessage Content not licensed but have enough quota or overage plan, so first buy the license
+     */
+    public function downloadAssetRequestShouldThrowExceptionSinceAssetNotPurchasedButOveragePlanPresent()
+    {
+        $response = [
+            'member' =>
+            [
+                'stock_id' => '5PAGXppkUvXRR851OtNbz9HaODSXa7BV',
+            ],
+            'available_entitlement' =>
+            [
+                'quota' => 4,
+            ],
+            'contents' =>
+            [
+                '84071201' =>
+                [
+                    'content_id' => '84071201',
+                    'size' => 'Comp',
+                    'purchase_details' =>
+                    [
+                        'state' => 'not_purchased',
+                    ],
+                ],
+            ],
+            'purchase_options' =>
+            [
+                'state' => 'overage',
+                'requires_checkout' => 'false',
+                'message' => 'This will use 1 of your 6 licenses.',
+            ],
+        ];
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for(json_encode($response)));
+        $request = new LicenseRequest();
+        $request->setContentId(84071201)->setLicenseState('STANDARD');
+        $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
+    }
+    
+    /**
+     * @test
+     * @expectedException AdobeStock\Api\Exception\StockApi
+     * @expectedExceptionMessage Could not find the purchase details for the asset
+     */
+    public function downloadAssetRequestShouldThrowExceptionSinceAssetUrlNotPresent()
+    {
+        $response = [
+            'member' =>
+            [
+                'stock_id' => '5PAGXppkUvXRR851OtNbz9HaODSXa7BV',
+            ],
+            'available_entitlement' =>
+            [
+                'quota' => 4,
+            ],
+            'contents' =>
+            [
+                '84071201' =>
+                ['content_id' => '84071201',
+                    'size' => 'Comp',
+                    'purchase_details' =>
+                    [
+                        'state' => 'purchased',
+                        'license' => 'Standard',
+                        'date' => '2017-06-21 10:38:52',
+                        'content_type' => 'image/jpeg',
+                        'width' => 4000,
+                        'height' => 3928,
+                            
+                    ],
+                ],
+            ],
+        ];
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for(json_encode($response)));
+        $request = new LicenseRequest();
+        $request->setContentId(84071201)->setLicenseState('STANDARD');
+        $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
+    }
+    
+    /**
+     * @test
+     * @expectedException AdobeStock\Api\Exception\StockApi
+     * @expectedExceptionMessage Could not find the available licenses for the user
+     */
+    public function downloadAssetRequestShouldThrowExceptionSinceEntitlementIsNotPresent()
+    {
+        $response = [
+            'member' =>
+            [
+                'stock_id' => '5PAGXppkUvXRR851OtNbz9HaODSXa7BV',
+            ],
+            'contents' =>
+            [
+                '84071201' =>
+                [
+                    'content_id' => '84071201',
+                    'size' => 'Comp',
+                    'purchase_details' =>
+                    [
+                        'state' => 'not_purchased',
+                    ],
+                ],
+            ],
+            'purchase_options' =>
+            [
+                'state' => 'overage',
+                'requires_checkout' => 'false',
+                'message' => 'This will use 1 of your 6 licenses.',
+            ],
+        ];
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for(json_encode($response)));
+        $request = new LicenseRequest();
+        $request->setContentId(84071201)->setLicenseState('STANDARD');
+        $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
+    }
+    
+    /**
+     * @test
+     * @expectedException AdobeStock\Api\Exception\StockApi
+     * @expectedExceptionMessage Could not find the user purchasing options for the asset
+     */
+    public function downloadAssetRequestShouldThrowExceptionSincePurchasingOptionsIsNotPresent()
+    {
+        $response = [
+            'member' =>
+            [
+                'stock_id' => '5PAGXppkUvXRR851OtNbz9HaODSXa7BV',
+            ],
+            'available_entitlement' =>
+            [
+                'quota' => 4,
+            ],
+            'contents' =>
+            [
+                '84071201' =>
+                [
+                    'content_id' => '84071201',
+                    'size' => 'Comp',
+                    'purchase_details' =>
+                    [
+                        'state' => 'not_purchased',
+                    ],
+                ],
+            ],
+        ];
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for(json_encode($response)));
+        $request = new LicenseRequest();
+        $request->setContentId(84071201)->setLicenseState('STANDARD');
+        $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
+    }
+    
+    /**
+     * @test
+     * @expectedException AdobeStock\Api\Exception\StockApi
+     * @expectedExceptionMessage Could not find the purchase details for the asset
+     */
+    public function downloadAssetRequestShouldThrowExceptionSincePurchasingStateIsNotPresent()
+    {
+        $response = [
+            'member' =>
+            [
+                'stock_id' => '5PAGXppkUvXRR851OtNbz9HaODSXa7BV',
+            ],
+            'contents' =>
+            [
+                '84071201' =>
+                [
+                    'content_id' => '84071201',
+                    'size' => 'Comp',
+                    'purchase_details' =>
+                    [
+                    ],
+                ],
+            ],
+        ];
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for(json_encode($response)));
+        $request = new LicenseRequest();
+        $request->setContentId(84071201)->setLicenseState('STANDARD');
+        $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
+    }
+    
+    /**
+     * @test
+     */
+    public function downloadAssetUrlShouldReturnValidUrl()
+    {
+        $request = new LicenseRequest();
+        $guzzle_request = new Request('GET', 'TEST');
+        $mock = $this->getMockBuilder('AdobeStock\Api\Client\License')
+               ->disableOriginalConstructor()
+               ->setMethods([
+                   'downloadAssetRequest',
+               ])
+               ->getMock();
+        $mock->method('downloadAssetRequest')
+             ->will($this->returnValue($guzzle_request));
+        $url = $mock->downloadAssetUrl($request, '', $this->_mocked_http_client);
+        $this->assertEquals('TEST', $url);
+    }
+    
+    /**
+     * @test
+     */
+    public function downloadAssetStreamShouldReturnStream()
+    {
+        $response = new Response(200, [], 'image');
+        $this->_mocked_http_client->method('sendRequest')
+            ->willReturn($response);
+        $request = new LicenseRequest();
+        $guzzle_request = new Request('GET', 'TEST');
+        $mock = $this->getMockBuilder('AdobeStock\Api\Client\License')
+               ->disableOriginalConstructor()
+               ->setMethods([
+                   'downloadAssetRequest',
+               ])
+        ->getMock();
+        $mock->method('downloadAssetRequest')
+        ->will($this->returnValue($guzzle_request));
+        $stream = $mock->downloadAssetStream($request, '', $this->_mocked_http_client);
+        $this->assertEquals('image', $stream);
     }
 }

@@ -30,6 +30,7 @@ use \AdobeStock\Api\Request\SearchFiles as SearchFilesRequest;
 use \AdobeStock\Api\Models\SearchParameters as SearchParametersModels;
 use \AdobeStock\Api\Request\License as LicenseRequest;
 use \AdobeStock\Api\Response\License as LicenseResponse;
+use \GuzzleHttp\Psr7\Request;
 
 /**
  * @runTestsInSeparateProcesses
@@ -389,5 +390,54 @@ class AdobeStockTest extends TestCase
         
         $adobe_client = new \AdobeStock\Api\Client\AdobeStock('APIKey', 'Product', 'STAGE', null);
         $this->assertEquals(204, $adobe_client->abandonLicense($request, ''));
+    }
+    
+    /**
+     * @test
+     */
+    public function testDownloadAssetRequest()
+    {
+        $request = new LicenseRequest();
+        $request->setContentId(59741022);
+        $request->setLicenseState('STANDARD');
+        
+        $guzzle_request = new Request('GET', 'TEST');
+        $external_mock = \Mockery::mock('overload:AdobeStock\Api\Client\License');
+        $external_mock->shouldReceive('downloadAssetRequest')->once()->andReturn($guzzle_request);
+        
+        $adobe_client = new \AdobeStock\Api\Client\AdobeStock('APIKey', 'Product', 'STAGE', null);
+        $this->assertEquals($guzzle_request, $adobe_client->downloadAssetRequest($request, ''));
+    }
+    
+    /**
+     * @test
+     */
+    public function testDownloadAssetUrl()
+    {
+        $request = new LicenseRequest();
+        $request->setContentId(59741022);
+        $request->setLicenseState('STANDARD');
+        
+        $external_mock = \Mockery::mock('overload:AdobeStock\Api\Client\License');
+        $external_mock->shouldReceive('downloadAssetUrl')->once()->andReturn('TEST');
+        
+        $adobe_client = new \AdobeStock\Api\Client\AdobeStock('APIKey', 'Product', 'STAGE', null);
+        $this->assertEquals('TEST', $adobe_client->downloadAssetUrl($request, ''));
+    }
+    
+    /**
+     * @test
+     */
+    public function testDownloadAssetStream()
+    {
+        $request = new LicenseRequest();
+        $request->setContentId(59741022);
+        $request->setLicenseState('STANDARD');
+        
+        $external_mock = \Mockery::mock('overload:AdobeStock\Api\Client\License');
+        $external_mock->shouldReceive('downloadAssetStream')->once()->andReturn('image');
+        
+        $adobe_client = new \AdobeStock\Api\Client\AdobeStock('APIKey', 'Product', 'STAGE', null);
+        $this->assertEquals('image', $adobe_client->downloadAssetStream($request, ''));
     }
 }

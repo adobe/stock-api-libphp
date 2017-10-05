@@ -20,6 +20,9 @@
 namespace AdobeStock\Api\Client\Http;
 
 use \GuzzleHttp\Psr7\Stream;
+use \GuzzleHttp\HandlerStack;
+use \GuzzleHttp\Psr7\Request;
+use \GuzzleHttp\Psr7\Response;
 
 interface HttpInterface
 {
@@ -48,4 +51,17 @@ interface HttpInterface
      * @return Stream raw response returned from the api call.
      */
     public function doMultiPart(string $url, array $headers, string $file) : Stream;
+    
+    /**
+     * Returns HandlerStack of http client
+     * @return HandlerStack
+     */
+    public function getHandlerStack() : HandlerStack;
+    
+    /**
+     * Method to send request using guzzle request object
+     * @param Request $request
+     * @return Response
+     */
+    public function sendRequest(Request $request) : Response;
 }

@@ -26,6 +26,12 @@ use \AdobeStock\Api\Core\Config as CoreConfig;
 use \AdobeStock\Api\Client\Http\HttpInterface as HttpClientInterface;
 use \AdobeStock\Api\Utils\APIUtils;
 use \AdobeStock\Api\Response\License as LicenseResponse;
+use \AdobeStock\Api\Core\Constants as CoreConstants;
+use \GuzzleHttp\Middleware;
+use \GuzzleHttp\Psr7\Request;
+use \GuzzleHttp\HandlerStack;
+use \Psr\Http\Message\RequestInterface;
+use \Psr\Http\Message\ResponseInterface;
 
 class License
 {
@@ -35,7 +41,13 @@ class License
      * @var CoreConfig
      */
     private $_config;
-
+    
+    /**
+     * Redirect url
+     * @var string
+     */
+    private $_url;
+    
     /**
      * Constructor.
      * @param CoreConfig $config config to be initialized.
@@ -161,5 +173,131 @@ class License
         }
         
         return $code;
+    }
+    
+    /**
+     * Provide the guzzle request object that contains url of the asset that can be downloaded by hitting request with guzzle client send method if it is already licensed otherwise throws Exception showing a message whether user has enough quota and can buy the license or not.
+     * @param LicenseRequest      $request      request object containing content_id and license state
+     * @param string              $access_token ims user access token
+     * @param HttpClientInterface $http_client  http client
+     * @throws StockApiException if request is not valid or asset is not licensed licensing information is not present for the asset or API returns with an error
+     * @return Request guzzle request object containing url of the asset.
+     */
+    public function downloadAssetRequest(LicenseRequest $request, string $access_token, HttpClientInterface $http_client) : Request
+    {
+        $purchase_state_params_array = CoreConstants::getPurchaseStateParams();
+        $content_info = $this->getContentInfo($request, $access_token, $http_client);
+        
+        if ($content_info->getContents() === null) {
+            throw StockApiException::withMessage('Could not find the licensing information for the asset');
+        }
+        
+        $purchase_details = $content_info->getContents()[$request->getContentId()]->getPurchaseDetails();
+        
+        if ($purchase_details === null || $purchase_details->getState() === null) {
+            throw StockApiException::withMessage('Could not find the purchase details for the asset');
+        }
+        
+        //when user doesnot have sufficient quota or the entitlement array or the purchase_options array is null then StockApiException is thrown
+        if ($purchase_details->getState() != $purchase_state_params_array['PURCHASED']) {
+            $member_profile = $this->getMemberProfile($request, $access_token, $http_client);
+            
+            if ($member_profile->getEntitlement() === null) {
+                throw StockApiException::withMessage('Could not find the available licenses for the user');
+            }
+            
+            if ($member_profile->getPurchaseOptions() === null) {
+                throw StockApiException::withMessage('Could not find the user purchasing options for the asset');
+            }
+            
+            $can_buy = (bool) (($member_profile->getEntitlement()->getQuota() != 0) || ($member_profile->getPurchaseOptions()->getPurchaseState() == $purchase_state_params_array['OVERAGE']));
+            
+            if ($can_buy) {
+                throw StockApiException::withMessage('Content not licensed but have enough quota or overage plan, so first buy the license');
+            } else {
+                throw StockApiException::withMessage('Content not licensed and also you do not have enough quota or overage plan');
+            }
+        }
+        
+        $content_license = $this->getContentLicense($request, $access_token, $http_client);
+        
+        $purchase_details = $content_license->getContents()[$request->getContentId()]->getPurchaseDetails();
+        
+        if ($purchase_details == null || $purchase_details->getUrl() === null) {
+            throw StockApiException::withMessage('Could not find the purchase details for the asset');
+        }
+        
+        $url = $purchase_details->getUrl();
+        $headers = APIUtils::generateCommonAPIHeaders($this->_config, $access_token);
+        $headers['allow_redirects'] = false;
+        $client_handler = $http_client->getHandlerStack();
+        //adds middleware in the client which controls the redirection behaviour.
+        $this->_addHandler($client_handler);
+        //guzzle get request by client to fetch s3 url
+        $http_client->doGet($url, $headers);
+        //guzzle request object is created which can be used to download asset
+        $guzzle_request = new Request('GET', $this->_url);
+        $client_handler->remove('Redirection check');
+        return $guzzle_request;
+    }
+    
+    /**
+     * Provide the url of the asset if it is already licensed otherwise throws Exception showing a message whether user has enough quota and can buy the license or not.
+     * @param LicenseRequest      $request      request object containing content_id and license state
+     * @param string              $access_token ims user access token
+     * @param HttpClientInterface $http_client  http client
+     * @throws StockApiException if request is not valid or asset is not licensed licensing information is not present for the asset or API returns with an error
+     * @return string url of the asset.
+     */
+    public function downloadAssetUrl(LicenseRequest $request, string $access_token, HttpClientInterface $http_client) : string
+    {
+        $guzzle_request = $this->downloadAssetRequest($request, $access_token, $http_client);
+        //to fetch the s3 url
+        return $guzzle_request->getUri()->__toString();
+    }
+    
+    /**
+     * Provide the Image Buffer if it is already licensed otherwise throws Exception showing a message whether user has enough quota and can buy the license or not.
+     * @param LicenseRequest      $request      request object containing content_id and license state
+     * @param string              $access_token ims user access token
+     * @param HttpClientInterface $http_client  http client
+     * @throws StockApiException if request is not valid or asset is not licensed licensing information is not present for the asset or API returns with an error
+     * @return string Image stream.
+     */
+    public function downloadAssetStream(LicenseRequest $request, string $access_token, HttpClientInterface $http_client) : string
+    {
+        $guzzle_request = $this->downloadAssetRequest($request, $access_token, $http_client);
+        //to fetch the image buffer which is present in the body of the guzzle response
+        return $http_client->sendRequest($guzzle_request)->getBody()->getContents();
+    }
+    
+    /**
+     * Method to add middleware in custom http client
+     * @param HandlerStack $stack
+     */
+    private function _addHandler(HandlerStack $stack)
+    {
+        $stack->push(Middleware::mapRequest(function (RequestInterface $request) {
+            $url = $request->getUri()->__toString();
+            $pattern = '/^.*\.(adobe\.(io|com)|adobestock\.com)/';
+            
+            if (!preg_match($pattern, $url)) {
+                return $request->withoutHeader('Authorization');
+            }
+            
+            return $request;
+        }));
+        
+        $stack->push(Middleware::mapResponse(function (ResponseInterface $response) {
+            $http_status_code = $response->getStatusCode();
+                
+            if (intval($http_status_code / 100) == 3) {
+                $this->_url = $response->getHeader('Location')[0];
+            } else {
+                throw StockApiException::withMessage('No redirection done by server');
+            }
+            
+            return $response;
+        }), 'Redirection check');
     }
 }

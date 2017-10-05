@@ -24,6 +24,8 @@ use \AdobeStock\Api\Client\Http\HttpClient;
 use \GuzzleHttp\Client;
 use \GuzzleHttp\Psr7\Response;
 use \AdobeStock\Api\Exception\StockApi as StockApiException;
+use \GuzzleHttp\HandlerStack;
+use \GuzzleHttp\Psr7\Request;
 
 class HttpClientTest extends TestCase
 {
@@ -122,5 +124,25 @@ class HttpClientTest extends TestCase
         $exception = StockApiException::withMessage('Exception thrown');
         $this->_mocked_http_client->method('request')->will($this->throwException($exception));
         $this->_client->doMultiPart('some uri', [], '');
+    }
+    
+    /**
+     * @test
+     */
+    public function testGetHandlerStack()
+    {
+        $stack = new HandlerStack();
+        $this->_mocked_http_client->method('getConfig')->willReturn($stack);
+        $this->assertEquals($stack, $this->_client->getHandlerStack());
+    }
+    
+    /**
+     * @test
+     */
+    public function testSendRequest()
+    {
+        $response = new Response(200, [], '');
+        $this->_mocked_http_client->method('send')->willReturn($response);
+        $this->assertEquals($response, $this->_client->sendRequest(new Request('GET', '')));
     }
 }

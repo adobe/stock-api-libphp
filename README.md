@@ -533,3 +533,187 @@ Examples showing how all methods are called with `LicenseRequest` and return `Li
         $image_stream = $this->_adobe_stock_client->downloadAssetStream($request, '');
  
 ```
+
+### Accessing LicenseHistory
+#### LicenseHistory
+`AdobeStock` class will allow you to access the LicenseHistory Api. You can construct the `LicenseHistoryRequest` object to set offset, limit, set result columns etc. for the LicenseHistory api.
+
+First, You have to call `initializeLicenseHistory` to initialize license history api which will gives you adobe stock object from where you can call `getNextLicenseHistory`, `getPreviousLicenseHistory` etc. to fetch the results.
+The `AdobeStock` provides paginated interface which allows you to call its methods (for e.g. `getNextLicenseHistory`, `getPreviousLicenseHistory` etc.) multiple times to retrieve the subsequent results in order. It maintains the current state of LicenseHistory request and initially, the state is pointing invalid LicenseHistory files results. As soon as, the `getNextLicenseHistory` method is called, it makes LicenseHistory api call and returns the results with `LicenseHistoryResponse` object. The `getNextLicenseHistory` moves the state to next page and fetch the response for the same. Similarly, the `getPreviousLicenseHistory` and `getLicenseHistoryPage` methods can be used to move one page behind and skip to a particular LicenseHistory page index respectively.
+
+##### Instantiation
+You can construct the object of this class with below arguments -
+* Requires:
+    * `access_token` - the adobe ims user access token.
+    * `request` - the request object of `LicenseHistoryRequest` consisting the locale, results column, search parameters etc.
+
+* Returns:
+    * The response object (`LicenseHistoryResponse`) containing the LicenseHistory files api results matching the request object.
+    
+##### Example
+Sample code to initialize the LicenseHistory Api -
+
+``` PHP
+        $results_columns = Constants::getResultColumns();
+        $params = new SearchParamLicenseHistory();
+        $params->setOffset(0)->setLimit(5);
+        
+        $result_column_array = [
+            $results_columns['THUMBNAIL_110_URL'],
+            $results_columns['THUMBNAIL_110_WIDTH'],
+            $results_columns['THUMBNAIL_110_HEIGHT'],
+        ];
+        
+        $request = new LicenseHistoryRequest();
+        $request->setLocale('En_US');
+        $request->setSearchParams($params);
+        $request->setResultColumns($result_column_array);
+        
+        $this->_adobe_stock_client = new AdobeStock('LucaTest1', 'Spark Page', 'STAGE', $http_client);
+        $response = $this->_adobe_stock_client->initializeLicenseHistory($request, '');
+
+```
+More examples can be found at the end of this document.
+
+##### Methods
+* `AdobeStock` Methods for license history can throw StockException if there are no results available. It allows you to -
+    * `getNextLicenseHistory` - Method to get next LicenseHistory files response page. It moves the state to next page and fetch the LicenseHistory response for the same. If the api returns with error or if there are no more search results available for the request, the method will throw the StockException.
+    
+    * `getPreviousLicenseHistory` -  Method to get previous LicenseHistory files response page. It moves the state to previous page and fetch the LicenseHistory response for the same. If the api returns with error or if there are no more search results available for the request or the state is pointing to invalid state, the method will throw the StockException.
+    
+    * `getLicenseHistoryPage` - Method to skip to a specific LicenseHistory files response page. It moves the state to provided LicenseHistory page and fetch the LicenseHistory response for the same. It will throw StockException if there is any failure while LicenseHistory api or if the provided licenseHistory page index is out of total pages available.
+    
+    * `getLastLicenseHistory` -  Get the response object of recently performed LicenseHistory api call either by using `getNextLicenseHistory` or `getPreviousLicenseHistory` or `getLicenseHistoryPage`. Initially, this method will return null since it is pointing to invalid state and no response available at this point.
+    
+    * `currentLicenseHistoryPageIndex` - Get the current search page index of LicenseHistory response available from recently performed `getNextLicenseHistory` or `getPreviousLicenseHistory` or `getLicenseHistoryPage` method. Initially, since the state is pointing to invalid state, it returns -1.
+    
+    * `getTotalLicenseHistoryPages` - Get the total number of LicenseHistory pages available from recently performed `getNextLicenseHistory` or `getPreviousLicenseHistory` or `getLicenseHistoryPage` method. Initially, since the state is pointing to invalid state, it returns -1.
+    
+    * `getTotalLicenseHistoryFiles` - Get the total number of LicenseHistory files available from recently performed `getNextLicenseHistory` or `getPreviousLicenseHistory` or `getLicenseHistoryPage` method. Initially, since the state is pointing to invalid state, it returns -1.
+    
+#### LicenseHistoryRequest
+In order to make LicenseHistory API call, you need to create a LicenseHistoryRequest object to define the criterion for LicenseHistory files results. You can set the various search parameters, locale and required result columns supported by Stock LicenseHistory api here.
+
+Here is the mapping of LicenseHistory api query parameters with the setters methods that you can use to set the corresponding parameters in PHP Stock SDK -
+
+|API URL Query Parameter| Setter Methods in SearchFilesRequest |Description|
+|---|---|---|
+|locale|setLocale|Sets location language code. For e.g. "en-US", "fr-FR" etc.|
+|search_parameters[*]|setSearchParams|Sets An object of `SearchParamLicenseHistory` where one can set all supported search_parameters|
+|result_columns[]| setResultColumns | Allows to set the list of result columns required in the search results. If you are not setting result columns, it will set all default columns in result_column array at api level. For more details, read Result Columns section below.|    
+
+#### SearchParameters
+`SearchParamLicenseHistory` allows to set the various search_parameters (URL query parameters) supported by LicenseHistory api. This is the class where you can actually set the limit, offset, thumbnail_size etc.
+
+Mapping of query parameter search_parameters[*] with SearchParamLicenseHistory class setter methods -
+
+|Search Parameter| Setter Methods | Description|
+|---|---|---|
+|search_parameters[limit]|setLimit|Allows to set maximum number of assets to return in the call.|
+|search_parameters[offset]|setOffset|Allows to set the start position in results. |
+|search_parameters[thumbnail_size]|setThumbnailSize|Allows to set thumbnail size.Valid values - 110, 160,220,240,500, 1000 |
+
+#### Result Columns
+You can create array of ResultColumn enums to define columns that you want to include in your results.
+
+##### Example
+```PHP
+    $results_columns = Constants::getResultColumns();
+    $result_column_array = [
+            $results_columns['THUMBNAIL_110_URL'],
+            $results_columns['THUMBNAIL_110_WIDTH'],
+            $results_columns['THUMBNAIL_110_HEIGHT'],
+        ];
+```
+##### Note
+If you are not setting result columns, it will set following columns in result_column array by default.
+* Default Result Columns -
+    * `NB_RESULTS`
+    * `LICENSE`
+    * `LICENSE_DATE`
+    * `DOWNLOAD_URL`
+    * `ID`
+    * `TITLE`
+    * `CREATOR_NAME`
+    * `CREATOR_ID`
+    * `WIDTH`
+    * `HEIGHT`
+    * `CONTENT_URL`
+    * `MEDIA_TYPE_ID`
+    * `VECTOR_TYPE`
+    * `CONTENT_TYPE`
+    * `DETAILS_URL`
+    
+#### LicenseHistoryResponse
+It represents the LicenseHistory results returned with Stock LicenseHistory API. The `LicenseHistory` class methods for e.g. `getNextLicenseHistory` returns the object of `LicenseHistoryResponse` initialized with the results returned from the LicenseHistory api.
+LicenseHistoryResponse allows you to -
+* `getNbResults` - Get the value of 'nb_results' column from the LicenseHistory response
+* `getFiles` - Get the list of `StockFile` returned by LicenseHistory api
+
+#### Making a LicenseHistoryRequest and Calling LicenseHistory api
+These are the complete examples showing how a request is created and then LicenseHistory api is called, which in turn returns results in the form of LicenseHistoryRequest.
+* Example to get results by calling getNextLicenseHistory method:
+
+``` PHP
+        $results_columns = Constants::getResultColumns();
+        $params = new SearchParamLicenseHistory();
+        $params->setOffset(0)->setLimit(5);
+        
+        $result_column_array = [
+            $results_columns['THUMBNAIL_110_URL'],
+            $results_columns['THUMBNAIL_110_WIDTH'],
+            $results_columns['THUMBNAIL_110_HEIGHT'],
+        ];
+        
+        $request = new LicenseHistoryRequest();
+        $request->setLocale('En_US');
+        $request->setSearchParams($params);
+        $request->setResultColumns($result_column_array);
+        
+        $this->_adobe_stock_client = new AdobeStock('LucaTest1', 'Spark Page', 'STAGE', $http_client);
+        $response = $this->_adobe_stock_client->initializeLicenseHistory($request, '')->getNextLicenseHistory();
+
+```
+* Example to get previous results by calling getPreviousLicenseHistory method:
+
+``` PHP
+        $results_columns = Constants::getResultColumns();
+        $params = new SearchParamLicenseHistory();
+        $params->setOffset(0)->setLimit(5);
+        
+        $result_column_array = [
+            $results_columns['THUMBNAIL_110_URL'],
+            $results_columns['THUMBNAIL_110_WIDTH'],
+            $results_columns['THUMBNAIL_110_HEIGHT'],
+        ];
+        
+        $request = new LicenseHistoryRequest();
+        $request->setLocale('En_US');
+        $request->setSearchParams($params);
+        $request->setResultColumns($result_column_array);
+        
+        $this->_adobe_stock_client = new AdobeStock('LucaTest1', 'Spark Page', 'STAGE', $http_client);
+        $response = $this->_adobe_stock_client->initializeLicenseHistory($request, '')->getPreviousLicenseHistory();
+        
+```
+* Example to skip to specific page of results by calling getLicenseHistoryPage method:
+
+``` PHP
+        $results_columns = Constants::getResultColumns();
+        $params = new SearchParamLicenseHistory();
+        $params->setOffset(0)->setLimit(5);
+        
+        $result_column_array = [
+            $results_columns['THUMBNAIL_110_URL'],
+            $results_columns['THUMBNAIL_110_WIDTH'],
+            $results_columns['THUMBNAIL_110_HEIGHT'],
+        ];
+        
+        $request = new LicenseHistoryRequest();
+        $request->setLocale('En_US');
+        $request->setSearchParams($params);
+        $request->setResultColumns($result_column_array);
+        
+        $this->_adobe_stock_client = new AdobeStock('LucaTest1', 'Spark Page', 'STAGE', $http_client);
+        $response = $this->_adobe_stock_client->initializeLicenseHistory($request, '')->getLicenseHistoryPage();
+``` 

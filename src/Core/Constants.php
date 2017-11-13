@@ -43,8 +43,9 @@ class Constants
         'license_info' => 'https://stock.adobe.io/Rest/Libraries/1/Content/Info',
         'user_profile' => 'https://stock.adobe.io/Rest/Libraries/1/Member/Profile',
         'abandon' => 'https://stock.adobe.io/Rest/Libraries/1/Member/Abandon',
+        'license_history' => 'https://stock.adobe.io/Rest/Libraries/1/Member/LicenseHistory',
     ];
-    
+
     /**
      * @var array Http Method
      */
@@ -303,6 +304,18 @@ class Constants
         'Comp' => 'Comp',
         'Original' => 'Original',
     ];
+    
+    /**
+     * @var array searchParamLicenseThumbSizes
+     */
+    protected static $_search_params_license_thumb_sizes = [
+        110 => 110,
+        160 => 160,
+        220 => 220,
+        240 => 240,
+        500 => 500,
+        1000 => 1000,
+    ];
 
     /**
      * Getter for QueryParamProps.
@@ -491,5 +504,14 @@ class Constants
     public static function getAssetLicenseSize() : array
     {
         return static::$_asset_license_size;
+    }
+    
+    /**
+     * Getter for SearchParamsThumbSizes.
+     * @return array
+     */
+    public static function getSearchParamsLicenseThumbSizes() : array
+    {
+        return static::$_search_params_license_thumb_sizes;
     }
 }

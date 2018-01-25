@@ -27,7 +27,7 @@ class ConfigTest extends TestCase
     {
         $this->_config = new CoreConfig('APIKey', 'Product', 'PROD');
         $this->assertInstanceOf(CoreConfig::class, $this->_config);
-        $this->_config = new CoreConfig('APIKey', 'Product', '');
+        $this->_config = new CoreConfig('APIKey', 'Product', 'STAGE');
         $this->assertEquals('STAGE', $this->_config->getTargetEnv());
     }
 

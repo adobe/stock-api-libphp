@@ -48,9 +48,13 @@ In order to use the Stock APIs, one must initialize `AdobeStock` by passing conf
 
 ``` PHP
 
-    $client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'STAGE', new Http());
+    $client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'PROD', new Http());
 
 ```
+|Environment|Description|
+|---|---|
+|STAGE|Uses internal staging environment.Mainly used for testing purposes|
+|PROD|Used in development purposes.|
 ### Accessing SearchFiles
 #### SearchFiles
 `AdobeStock` class will allow you to access the Search/Files Stock Api. You can query Adobe Stock for assets that meet your specified search criteria. You can construct the `SearchFilesRequest` object to set filters, sort order, set search keywords etc. for the Search/Files api.
@@ -86,7 +90,7 @@ Sample code to initialize the SearchFiles Api -
         $request->setSearchParams($search_params);
         $request->setResultColumns($result_column_array);
         
-        $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'STAGE', $http_client);
+        $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'PROD', $http_client);
         $response = $this->_adobe_stock_client->searchFilesInitialize($request, '');
 
 ```
@@ -222,7 +226,7 @@ These are the complete examples showing how a search request is created and then
         $request->setSearchParams($search_params);
         $request->setResultColumns($result_column_array);
         
-        $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'STAGE', $http_client);
+        $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'PROD', $http_client);
         $search_files_response = $this->_adobe_stock_client->searchFilesInitialize($request, '')->getNextResponse();
 
 ```
@@ -244,7 +248,7 @@ These are the complete examples showing how a search request is created and then
         $request->setSearchParams($search_params);
         $request->setResultColumns($result_column_array);
         
-        $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'STAGE', $http_client);
+        $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'PROD', $http_client);
         $search_files_response = $this->_adobe_stock_client->searchFilesInitialize($request, '')->getPreviousResponse();
 ```
 * Example to skip to specific page of results by calling getResponsePage method:
@@ -265,7 +269,7 @@ These are the complete examples showing how a search request is created and then
         $request->setSearchParams($search_params);
         $request->setResultColumns($result_column_array);
         
-        $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'STAGE', $http_client);
+        $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'PROD', $http_client);
         $search_files_response = $this->_adobe_stock_client->searchFilesInitialize($request, '')->getResponsePage(10);
 ``` 
 ### Accessing SearchCategory
@@ -291,7 +295,7 @@ Sample code to instantiate the SearchCategory API -
 ``` PHP
 
         //Instantiating and Initializing AdobeStock
-        $client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'STAGE', new Http());
+        $client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'PROD', new Http());
         //Users ims token
         $access_token = 'ims_token';
 
@@ -460,7 +464,7 @@ Examples showing how all methods are called with `LicenseRequest` and return `Li
         $request->setLocale('En_US');
         $request->setContentId(84071201);
 
-        $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'STAGE', $http_client);
+        $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'PROD', $http_client);
         $license_response = $this->_adobe_stock_client->getContentInfo($request, '');
    ```
 #### getContentLicense Example
@@ -475,7 +479,7 @@ Examples showing how all methods are called with `LicenseRequest` and return `Li
         'value' => 'test',
         ]];
         $request->setLicenseReference($array);
-        $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'STAGE', $http_client);
+        $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'PROD', $http_client);
         $license_response = $this->_adobe_stock_client->getContentLicense($request, '');
   ```
 #### getMemberProfile Example
@@ -485,7 +489,7 @@ Examples showing how all methods are called with `LicenseRequest` and return `Li
         $request->setLocale('En_US');
         $request->setContentId(84071201);
     
-        $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'STAGE', $http_client);
+        $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'PROD', $http_client);
         $license_response = $this->_adobe_stock_client->getMemberProfile($request, '');
 ```
 
@@ -496,7 +500,7 @@ Examples showing how all methods are called with `LicenseRequest` and return `Li
         $request->setLocale('En_US');
         $request->setContentId(84071201);
     
-        $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'STAGE', $http_client);
+        $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'PROD', $http_client);
         $license_response = $this->_adobe_stock_client->abandonLicense($request, '');
 ```
 #### downloadAssetRequest Example
@@ -506,7 +510,7 @@ Examples showing how all methods are called with `LicenseRequest` and return `Li
         $request->setLicenseState('STANDARD');
         $request->setContentId(84071201);
    
-        $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'STAGE', $http_client);
+        $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'PROD', $http_client);
         $guzzle_request = $this->_adobe_stock_client->downloadAssetRequest($request, '');
  
 ```
@@ -518,7 +522,7 @@ Examples showing how all methods are called with `LicenseRequest` and return `Li
         $request->setLicenseState('STANDARD');
         $request->setContentId(84071201);
    
-        $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'STAGE', $http_client);
+        $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'PROD', $http_client);
         $url = $this->_adobe_stock_client->downloadAssetUrl($request, '');
  
 ```
@@ -529,7 +533,7 @@ Examples showing how all methods are called with `LicenseRequest` and return `Li
         $request->setLicenseState('STANDARD');
         $request->setContentId(84071201);
    
-        $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'STAGE', $http_client);
+        $this->_adobe_stock_client = new AdobeStock('AdobeStockClient1', 'Adobe Stock Lib/1.0.0', 'PROD', $http_client);
         $image_stream = $this->_adobe_stock_client->downloadAssetStream($request, '');
  
 ```
@@ -569,7 +573,7 @@ Sample code to initialize the LicenseHistory Api -
         $request->setSearchParams($params);
         $request->setResultColumns($result_column_array);
         
-        $this->_adobe_stock_client = new AdobeStock('LucaTest1', 'Spark Page', 'STAGE', $http_client);
+        $this->_adobe_stock_client = new AdobeStock('LucaTest1', 'Spark Page', 'PROD', $http_client);
         $response = $this->_adobe_stock_client->initializeLicenseHistory($request, '');
 
 ```
@@ -670,7 +674,7 @@ These are the complete examples showing how a request is created and then Licens
         $request->setSearchParams($params);
         $request->setResultColumns($result_column_array);
         
-        $this->_adobe_stock_client = new AdobeStock('LucaTest1', 'Spark Page', 'STAGE', $http_client);
+        $this->_adobe_stock_client = new AdobeStock('LucaTest1', 'Spark Page', 'PROD', $http_client);
         $response = $this->_adobe_stock_client->initializeLicenseHistory($request, '')->getNextLicenseHistory();
 
 ```
@@ -692,7 +696,7 @@ These are the complete examples showing how a request is created and then Licens
         $request->setSearchParams($params);
         $request->setResultColumns($result_column_array);
         
-        $this->_adobe_stock_client = new AdobeStock('LucaTest1', 'Spark Page', 'STAGE', $http_client);
+        $this->_adobe_stock_client = new AdobeStock('LucaTest1', 'Spark Page', 'PROD', $http_client);
         $response = $this->_adobe_stock_client->initializeLicenseHistory($request, '')->getPreviousLicenseHistory();
         
 ```
@@ -714,6 +718,6 @@ These are the complete examples showing how a request is created and then Licens
         $request->setSearchParams($params);
         $request->setResultColumns($result_column_array);
         
-        $this->_adobe_stock_client = new AdobeStock('LucaTest1', 'Spark Page', 'STAGE', $http_client);
+        $this->_adobe_stock_client = new AdobeStock('LucaTest1', 'Spark Page', 'PROD', $http_client);
         $response = $this->_adobe_stock_client->initializeLicenseHistory($request, '')->getLicenseHistoryPage();
 ``` 

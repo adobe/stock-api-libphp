@@ -46,6 +46,10 @@ class Config
     {
         $environment = Constants::getEnvironments();
         $end_points = Constants::getEndpoints() ;
+        
+        if ($env === null) {
+            $env = 'STAGE';
+        }
 
         if ($env == 'PROD') {
             $this->_target_env = $environment[$env];

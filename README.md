@@ -19,11 +19,6 @@ The above command will by default run the linting, test cases and the code cover
 * The coverage report can be found at `<project directory>/data/clover/index.html`
 Note - Since the test and coverage steps come later in the build process than linting, so if linting fails, you won't get the coverage reports.
 
-### Lint with PHP_CodeSniffer
-This project uses PHPCS for linting. 
-
-Linting checks are enforced with the build step itself. By default, the linting will run first and if there are any issues the build will fail. 
-
 ### Running Test Suites
 However, the `composer run check` will run the tests automatically but if you need to run the tests separately, please run the below command in console -
 ```

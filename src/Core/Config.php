@@ -48,7 +48,7 @@ class Config
         $end_points = Constants::getEndpoints() ;
         
         if ($env === null) {
-            $env = 'STAGE';
+            $env = 'PROD';
         }
 
         if ($env == 'PROD') {

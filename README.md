@@ -1,37 +1,64 @@
 # Stock API libphp
 
 ## Overview
-This is a PHP implementation of the various APIs provided by the Stock services.
+This is a PHP implementation of the various APIs provided by the Stock services. Adobe Stock APIs are available [here](https://www.adobe.io/apis/creativecloud/stock/docs/getting-started.html)
 
 
 ## Getting Started
-This is a composer project. Following steps are needed for getting started with this project:
+   1. Use Git to clone the entire repository in the root folder, or export a zip of the repository and extract locally.
+   2. Or, you can include this repository into your project using composer by adding the following configuration into your composer.json file:
 
-### Setup
-Run `composer install --no-dev` for installing the required libraries.
-If you plan to do some developement, then remove the `--no-dev` option
+        ```
+        {
+        "require-dev": {
+            "astock/stock-api-libphp": "dev-master"
+            },
+            "repositories": [
+            {
+                "type": "vcs",
+                "url": "git@github.com:adobe/stock-api-libphp.git"
+            }
+            ]
+        }
+        ```
+   3. Or, you can refer to [AdobeStock Sample For SDK](https://github.com/adobe/stock-api-samples/tree/master/php) to use this SDK in your project in a very handy way.
 
-### Tests
-Run `composer run check` for linting and testcases.
-Run `composer run test-coverage` for test coverage.
+### Prerequisites
+To use the SDK you need to check for the following prerequisites:
 
-The above command will by default run the linting, test cases and the code coverage along with building the project. The linting results will be shown within the console output itself and if there are any issues the build will stop and fail instantly. If there are no linting issues found, the build will continue to build the project. It will also generate the detailed coverage reports for you.
-* The coverage report can be found at `<project directory>/data/clover/index.html`
-Note - Since the test and coverage steps come later in the build process than linting, so if linting fails, you won't get the coverage reports.
+  1. The SDK requires PHP 7.1 or higher. If you do not have that version, install it now.
 
-### Lint with PHP_CodeSniffer
-This project uses PHPCS for linting. 
+  2. If Composer isn't already installed, install it from  [here](https://getcomposer.org/download/). This is required to download project dependencies for the SDK.
 
-Linting checks are enforced with the build step itself. By default, the linting will run first and if there are any issues the build will fail. 
+        * For Mac, recommend Homebrew for this:
+            * Run `brew tap homebrew/homebrew-php` and then `brew install composer`.
+            * If you get a message that the lock file is out of date, run `brew update composer`.
+  
+  3. The SDK requires [ImageMagick](https://www.imagemagick.org/script/index.php) be installed on your system, and you will need the ImageMagick PHP extension as well. Once installed, this command should print a "1," assuming you have added PHP to your global PATH:
+         `php -r "print(class_exists('imagick'));"`
+      * On a Mac, you can install this with homebrew using following commands:
+        * Use `brew search imagick` to get the list of available imagick extensions.
+        * From the above list, pick latest imagick version and run `brew install homebrew/php/<php-version>-imagick`
+            ex: `brew install homebrew/php/php71-imagick`.
 
-### Running Test Suites
-However, the `composer run check` will run the tests automatically but if you need to run the tests separately, please run the below command in console -
-```
-`composer run test`
-```
-### Coverage
-Just run the `composer run test-coverage` as mentioned above, it should generate the coverage reports along with the test results and building the project. As mentioned above coverage reports can be found at 
-`<project directory>/data/clover/index.html`
+      * On Windows, Refer to this [article](https://mlocati.github.io/articles/php-windows-imagick.html) or you can use [curl](http://www.queryadmin.com/1556/install-composer-curl/) for the same.
+
+      * If ImageMagick is not installed, then it will only affect the similarity (visual) search method of uploading an image. If you don't need this functionality, then you don't need to install it, but you will get warnings from Composer.
+
+### Build Steps
+  * Run `composer update` to update the composer.lock file to install new dependencies.
+  * Run `composer install --no-dev` for installing the required libraries.
+
+    If you plan to do some developement, then remove the `--no-dev` option If you choose to install those extra dependencies, you must also install [xdebug](https://xdebug.org/) separately or use following steps.
+    * On Mac use homebrew to install xdebug:
+        * Use `brew search xdebug` to get the list of available xdebug extensions.
+        * From the above list, pick latest xdebug version and run `brew install homebrew/php/<php-version>-xdebug`
+            ex: `brew install homebrew/php/php71-xdebug`.
+            
+    * On Windows, use following steps to install xdebug :
+        * Download xdebug.dll from [here](https://xdebug.org/download.php).
+        * Edit php.ini to use xdebug extension. Steps given [here](https://docs.joomla.org/Edit_PHP.INI_File_for_XDebug).
+           
 
 ## Integration Guide
 To start using PHP SDK, you need to add `PHPSDK-[version]` into your project build path. You can download the source code and compile locally with composer command as mentioned in the Getting Started section above to generate the latest `PHPSDK-[version]`. 
@@ -721,3 +748,27 @@ These are the complete examples showing how a request is created and then Licens
         $this->_adobe_stock_client = new AdobeStock('LucaTest1', 'Spark Page', 'PROD', $http_client);
         $response = $this->_adobe_stock_client->initializeLicenseHistory($request, '')->getLicenseHistoryPage();
 ``` 
+
+## Testing and Linting
+
+### Tests
+Run `composer run check` for linting and testcases.
+Run `composer run test-coverage` for test coverage.
+
+The above command will by default run the linting, test cases and the code coverage along with building the project. The linting results will be shown within the console output itself and if there are any issues the build will stop and fail instantly. If there are no linting issues found, the build will continue to build the project. It will also generate the detailed coverage reports for you.
+* The coverage report can be found at `<project directory>/data/clover/index.html`
+Note - Since the test and coverage steps come later in the build process than linting, so if linting fails, you won't get the coverage reports.
+
+### Lint with PHP_CodeSniffer
+This project uses PHPCS for linting.
+
+Linting checks are enforced with the build step itself. By default, the linting will run first and if there are any issues the build will fail.
+
+### Running Test Suites
+However, the `composer run check` will run the tests automatically but if you need to run the tests separately, please run the below command in console -
+```
+`composer run test`
+```
+### Coverage
+Just run the `composer run test-coverage` as mentioned above, it should generate the coverage reports along with the test results and building the project. As mentioned above coverage reports can be found at
+`<project directory>/data/clover/index.html`

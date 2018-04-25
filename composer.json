@@ -1,7 +1,7 @@
 {
     "name": "astock/stock-api-libphp",
     "description": "Adobe Stock API library",
-    "license": "proprietary",
+    "license": "Apache 2.0",
     "require": {
         "php": "~7.1",
         "guzzlehttp/guzzle": "~6.0",

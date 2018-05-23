@@ -36,6 +36,12 @@ class License
      * @var string
      */
     private $_url;
+
+    /**
+     * URI called before redirect
+     * @var string
+     */
+    private $_lastUrl;
     
     /**
      * Constructor.
@@ -222,6 +228,8 @@ class License
         $client_handler = $http_client->getHandlerStack();
         //adds middleware in the client which controls the redirection behaviour.
         $this->_addHandler($client_handler);
+        //store original url
+        $this->_lastUrl = $url;
         //guzzle get request by client to fetch s3 url
         $http_client->doGet($url, $headers);
         //guzzle request object is created which can be used to download asset
@@ -280,7 +288,9 @@ class License
         $stack->push(Middleware::mapResponse(function (ResponseInterface $response) {
             $http_status_code = $response->getStatusCode();
                 
-            if (intval($http_status_code / 100) == 3) {
+            if (intval($http_status_code) == 200) { // fix if there is no redirection
+                $this->_url = $this->_lastUrl;
+            } elseif (intval($http_status_code / 100) == 3) {
                 $this->_url = $response->getHeader('Location')[0];
             } else {
                 throw StockApiException::withMessage('No redirection done by server');

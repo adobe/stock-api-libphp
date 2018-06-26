@@ -716,3 +716,7 @@ These are the complete examples showing how a request is created and then Licens
         $this->_adobe_stock_client = new AdobeStock('LucaTest1', 'Spark Page', 'PROD', $http_client);
         $response = $this->_adobe_stock_client->initializeLicenseHistory($request, '')->getLicenseHistoryPage();
 ``` 
+
+## Contributing
+
+If you would like to contribute to this project, [check out our contribution guidelines](CONTRIBUTING.md).

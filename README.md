@@ -8,19 +8,19 @@ This is a PHP implementation of the various APIs provided by the Stock services.
    1. Use Git to clone the entire repository in the root folder, or export a zip of the repository and extract locally.
    2. Or, you can include this repository into your project using composer by adding the following configuration into your composer.json file:
 
-        ```
-        {
+```JSON
+    {
         "require-dev": {
             "astock/stock-api-libphp": "dev-master"
-            },
-            "repositories": [
+        },
+        "repositories": [
             {
                 "type": "vcs",
                 "url": "git@github.com:adobe/stock-api-libphp.git"
             }
-            ]
-        }
-        ```
+        ]
+    }
+```
    3. Or, you can refer to [AdobeStock Sample For SDK](https://github.com/adobe/stock-api-samples/tree/master/php) to use this SDK in your project in a very handy way.
 
 ### Prerequisites
@@ -31,15 +31,14 @@ To use the SDK you need to check for the following prerequisites:
   2. If Composer isn't already installed, install it from  [here](https://getcomposer.org/download/). This is required to download project dependencies for the SDK.
 
         * For Mac, recommend Homebrew for this:
-            * Run `brew tap homebrew/homebrew-php` and then `brew install composer`.
+            * Run `brew install composer`.
             * If you get a message that the lock file is out of date, run `brew update composer`.
   
   3. The SDK requires [ImageMagick](https://www.imagemagick.org/script/index.php) be installed on your system, and you will need the ImageMagick PHP extension as well. Once installed, this command should print a "1," assuming you have added PHP to your global PATH:
          `php -r "print(class_exists('imagick'));"`
       * On a Mac, you can install this with homebrew using following commands:
-        * Use `brew search imagick` to get the list of available imagick extensions.
-        * From the above list, pick latest imagick version and run `brew install homebrew/php/<php-version>-imagick`
-            ex: `brew install homebrew/php/php71-imagick`.
+        * Use `pecl install imagick` to get the list of available imagick extensions.
+        * If __pecl__ is not installed, you are probably using the embedded version of PHP supplied with Mac OS. Look at this [Stack Overflow response](https://stackoverflow.com/a/50529784) for a workaround to install ImageMagick and the latest version of PHP using Homebrew.
 
       * On Windows, Refer to this [article](https://mlocati.github.io/articles/php-windows-imagick.html) or you can use [curl](http://www.queryadmin.com/1556/install-composer-curl/) for the same.
 
@@ -59,15 +58,6 @@ To use the SDK you need to check for the following prerequisites:
         * Download xdebug.dll from [here](https://xdebug.org/download.php).
         * Edit php.ini to use xdebug extension. Steps given [here](https://docs.joomla.org/Edit_PHP.INI_File_for_XDebug).
            
-
-## Integration Guide
-To start using PHP SDK, you need to add `PHPSDK-[version]` into your project build path. You can download the source code and compile locally with composer command as mentioned in the Getting Started section above to generate the latest `PHPSDK-[version]`. 
-
-When you build the project, you will find the dependency  in the `vendor` folder. If these are not already in your environment, you'll need to add them to your build path. Below is the list of dependent jars -
-* `guzzlehttp-[version]`
-* `phpcbf-[version]`
-* `phpcs-[version]`
-* `phpunit-[version]`
 
 ## Usage
 ### AdobeStock
@@ -685,7 +675,7 @@ LicenseHistoryResponse allows you to -
 These are the complete examples showing how a request is created and then LicenseHistory api is called, which in turn returns results in the form of LicenseHistoryRequest.
 * Example to get results by calling getNextLicenseHistory method:
 
-``` PHP
+```PHP
         $results_columns = Constants::getResultColumns();
         $params = new SearchParamLicenseHistory();
         $params->setOffset(0)->setLimit(5);
@@ -707,7 +697,7 @@ These are the complete examples showing how a request is created and then Licens
 ```
 * Example to get previous results by calling getPreviousLicenseHistory method:
 
-``` PHP
+```PHP
         $results_columns = Constants::getResultColumns();
         $params = new SearchParamLicenseHistory();
         $params->setOffset(0)->setLimit(5);
@@ -729,7 +719,7 @@ These are the complete examples showing how a request is created and then Licens
 ```
 * Example to skip to specific page of results by calling getLicenseHistoryPage method:
 
-``` PHP
+```PHP
         $results_columns = Constants::getResultColumns();
         $params = new SearchParamLicenseHistory();
         $params->setOffset(0)->setLimit(5);
@@ -747,7 +737,7 @@ These are the complete examples showing how a request is created and then Licens
         
         $this->_adobe_stock_client = new AdobeStock('LucaTest1', 'Spark Page', 'PROD', $http_client);
         $response = $this->_adobe_stock_client->initializeLicenseHistory($request, '')->getLicenseHistoryPage();
-``` 
+```
 
 ## Testing and Linting
 
@@ -767,8 +757,13 @@ Linting checks are enforced with the build step itself. By default, the linting 
 ### Running Test Suites
 However, the `composer run check` will run the tests automatically but if you need to run the tests separately, please run the below command in console -
 ```
-`composer run test`
+composer run test
 ```
+
 ### Coverage
 Just run the `composer run test-coverage` as mentioned above, it should generate the coverage reports along with the test results and building the project. As mentioned above coverage reports can be found at
 `<project directory>/data/clover/index.html`
+
+## Contributing
+
+If you would like to contribute to this project, [check out our contribution guidelines](CONTRIBUTING.md).

@@ -34,16 +34,6 @@ To use the SDK you need to check for the following prerequisites:
             * Run `brew install composer`.
             * If you get a message that the lock file is out of date, run `brew update composer`.
   
-  3. The SDK requires [ImageMagick](https://www.imagemagick.org/script/index.php) be installed on your system, and you will need the ImageMagick PHP extension as well. Once installed, this command should print a "1," assuming you have added PHP to your global PATH:
-         `php -r "print(class_exists('imagick'));"`
-      * On a Mac, you can install this with homebrew using following commands:
-        * Use `pecl install imagick` to get the list of available imagick extensions.
-        * If __pecl__ is not installed, you are probably using the embedded version of PHP supplied with Mac OS. Look at this [Stack Overflow response](https://stackoverflow.com/a/50529784) for a workaround to install ImageMagick and the latest version of PHP using Homebrew.
-
-      * On Windows, Refer to this [article](https://mlocati.github.io/articles/php-windows-imagick.html) or you can use [curl](http://www.queryadmin.com/1556/install-composer-curl/) for the same.
-
-      * If ImageMagick is not installed, then it will only affect the similarity (visual) search method of uploading an image. If you don't need this functionality, then you don't need to install it, but you will get warnings from Composer.
-
 ### Build Steps
   * Run `composer update` to update the composer.lock file to install new dependencies.
   * Run `composer install --no-dev` for installing the required libraries.

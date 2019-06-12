@@ -11,61 +11,72 @@ namespace AdobeStock\Api\Test;
 use \PHPUnit\Framework\TestCase;
 use \AdobeStock\Api\Core\Config as CoreConfig;
 use \AdobeStock\Api\Utils\APIUtils;
+use \AdobeStock\Api\Exception\StockApi;
 
 class APIUtilsTest extends TestCase
 {
     /**
      * @test
      */
-    public function generateCommonAPIHeadersShouldGenerateHeadersArrayFromConfigAndAcessToken()
+    public function generateCommonAPIHeadersShouldGenerateHeadersArrayFromConfigAndAcessToken(): void
     {
         $config = new CoreConfig('APIKey', 'Product', 'STAGE');
         $headers = APIUtils::generateCommonAPIHeaders($config, '');
         $this->assertEquals('APIKey', $headers['headers']['x-api-key']);
     }
-    
+
     /**
-     * @test
+     * @param string $absolutePath
+     * @param StockApi|null $expectedException
+     * @dataProvider downSampleImageProvider
      */
-    public function downSampleImageShouldResizeImagetoExpectedDimensionsIfWidthisGreaterThanHeight()
+    public function testDownSampleImage(string $absolutePath, StockApi $expectedException = null): void
     {
-        $image = APIUtils::downSampleImage('test/resources/TestFileWidth.png');
+        if ($expectedException) {
+            $this->expectExceptionObject($expectedException);
+        }
+        list($width, $height) = getimagesize($absolutePath);
+        $imageString = APIUtils::downSampleImage($absolutePath);
+
+        $image = imagecreatefromstring($imageString);
+        $resultWidth = imagesx($image);
+        $resultHeight = imagesy($image);
+
+        $this->assertLessThanOrEqual(min($width, 1000), $resultWidth);
+        $this->assertLessThanOrEqual(min($height, 1000), $resultHeight);
+
         $this->assertNotNull($image);
     }
-    
-    /**
-     * @test
-     */
-    public function downSampleImageShouldResizeImagetoExpectedDimensionsIfHeightisGreaterThanWidth()
+
+    public function downSampleImageProvider(): array
     {
-        $image = APIUtils::downSampleImage('test/resources/TestFile.png');
-        $this->assertNotNull($image);
+        return [
+            'width_greater_than_height' => [
+                $this->getAbsolutePath('test/resources/TestFileWidth.png')
+            ],
+            'height_greater_than_width' => [
+                $this->getAbsolutePath('test/resources/TestFile.png')
+            ],
+            'small_image' => [
+                $this->getAbsolutePath('test/resources/SmallImage.jpg')
+            ],
+            'not_supported_image' => [
+                $this->getAbsolutePath('test/resources/UnsupportedBMP.bmp'),
+                new StockApi('Only jpg, png and gifs are supported image formats')
+            ],
+            'bigger_than_expected_image' => [
+                $this->getAbsolutePath('test/resources/BigImage.jpg'),
+                new StockApi('Image is too large for visual search!')
+            ]
+        ];
     }
-    
+
     /**
-     * @test
+     * @param string $pathInProject
+     * @return string
      */
-    public function downSampleImageShouldNotDownSampleSmallImage()
+    private function getAbsolutePath(string $pathInProject): string
     {
-        $image = APIUtils::downSampleImage('test/resources/SmallImage.jpg');
-        $this->assertNotNull($image);
-    }
-    
-    /**
-     * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
-     */
-    public function downSampleImageShouldThrowExceptionIfImageIsNotSupported()
-    {
-        $image = APIUtils::downSampleImage('test/resources/UnsupportedBMP.bmp');
-    }
-    
-    /**
-     * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
-     */
-    public function downSampleImageShouldThrowExceptionIfImageIsBiggerThanExpected()
-    {
-        $image = APIUtils::downSampleImage('test/resources/BigImage.jpg');
+        return dirname(dirname(dirname(dirname(__DIR__)))) . '/' . $pathInProject;
     }
 }

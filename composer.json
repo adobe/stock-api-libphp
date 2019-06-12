@@ -4,8 +4,7 @@
     "license": "Apache-2.0",
     "require": {
         "php": "~7.1",
-        "guzzlehttp/guzzle": "~6.0",
-        "ext-imagick": "*"
+        "guzzlehttp/guzzle": "~6.0"
     },
     "require-dev": {
         "astock/phpcs-psr2-stock": "~1.4",

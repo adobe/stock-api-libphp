@@ -349,7 +349,6 @@ class LicenseFactoryTest extends TestCase
         $request = new LicenseRequest();
         $request->setContentId(84071201)->setLicenseState('STANDARD');
         $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
-        $this->assertEquals($guzzle_request, new Request('GET', ''));
     }
     
     /**

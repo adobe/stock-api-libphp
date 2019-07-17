@@ -113,7 +113,7 @@ class APIUtils
 
         $new_dimension = static::_calculateResizeParameters($original_width, $original_height);
 
-        return static::resizeImage(
+        return static::_resizeImage(
             $file_path,
             $type,
             $original_width,
@@ -126,43 +126,43 @@ class APIUtils
     /**
      * Resize a JPEG, PNG or GIF image. Returns PNG resized image as string.
      *
-     * @param string $filePath
-     * @param int $type
-     * @param int $originalWidth
-     * @param int $originalHeight
-     * @param int $width
-     * @param int $height
+     * @param string $file_path
+     * @param int    $type
+     * @param int    $original_width
+     * @param int    $original_height
+     * @param int    $width
+     * @param int    $height
      * @return string
      * @throws StockApiException
      */
-    private static function resizeImage(
-        string $filePath,
+    private static function _resizeImage(
+        string $file_path,
         int $type,
-        int $originalWidth,
-        int $originalHeight,
+        int $original_width,
+        int $original_height,
         int $width,
         int $height
     ) {
         switch ($type) {
             case IMAGETYPE_JPEG:
-                $image = imagecreatefromjpeg($filePath);
+                $image = imagecreatefromjpeg($file_path);
                 break;
             case IMAGETYPE_PNG:
-                $image = imagecreatefrompng($filePath);
+                $image = imagecreatefrompng($file_path);
                 break;
             case IMAGETYPE_GIF:
-                $image = imagecreatefromgif($filePath);
+                $image = imagecreatefromgif($file_path);
                 break;
             default:
                 throw StockApiException::withMessage('Only jpg, png and gifs are supported image formats');
                 break;
         }
 
-        $sampleImage = imagecreatetruecolor($width, $height);
-        imagecopyresampled($sampleImage, $image, 0, 0, 0, 0, $width, $height, $originalWidth, $originalHeight);
+        $sample_image = imagecreatetruecolor($width, $height);
+        imagecopyresampled($sample_image, $image, 0, 0, 0, 0, $width, $height, $original_width, $original_height);
 
         ob_start();
-        imagepng($sampleImage);
+        imagepng($sample_image);
         $blob = ob_get_clean();
 
         return $blob;

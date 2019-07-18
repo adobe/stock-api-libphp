@@ -740,7 +740,7 @@ The above command will by default run the linting, test cases and the code cover
 Note - Since the test and coverage steps come later in the build process than linting, so if linting fails, you won't get the coverage reports.
 
 ### Lint with PHP_CodeSniffer
-This project uses PHPCS for linting.
+This project uses [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) for linting. In addition, Adobe Stock has a custom set of rules for PHPCS that are included in this repository in the `libs` directory. This module will be installed when running `composer install`. It includes a bundled version of PHPCS which may be different from the one you have installed globally; the Composer script will run the correct version.
 
 Linting checks are enforced with the build step itself. By default, the linting will run first and if there are any issues the build will fail.
 

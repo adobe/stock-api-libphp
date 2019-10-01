@@ -509,14 +509,9 @@ class SearchParameters
      * Sets keywords in search Params for searching files.
      * @param string $words keywords that you want to search
      * @return SearchParameters object
-     * @throws StockApiException if words is null or blank
      */
     public function setWords(string $words) : SearchParameters
     {
-        if (empty($words)) {
-            throw StockApiException::WithMessage('Should not be blank or null values in kewywords field');
-        }
-        
         $this->words = $words;
         return $this;
     }

@@ -16,7 +16,7 @@ class SearchFilesRequestTest extends TestCase
 {
     /**
      * Request object for search Files.
-     * @var SearchFiles
+     * @var SearchFilesRequest
      */
     private $_request;
     
@@ -50,7 +50,7 @@ class SearchFilesRequestTest extends TestCase
         $this->assertInstanceOf(SearchParametersModels::class, $this->_request->getSearchParams());
         $this->_request->setResultColumns($result_column_array);
         $this->assertEquals($result_column_array, $this->_request->getResultColumns());
-        $this->_request->setSimilarImage('test/resources/TestFile.png');
+        $this->_request->setSimilarImage($this->getAbsolutePath('test/resources/TestFile.png'));
     }
     
     /**
@@ -69,7 +69,7 @@ class SearchFilesRequestTest extends TestCase
      */
     public function setLocaleThrowException()
     {
-        $this->_request->setLocale(null);
+        $this->_request->setLocale('');
     }
     
     /**
@@ -88,5 +88,14 @@ class SearchFilesRequestTest extends TestCase
     public function setSimilarImageThrowExceptionIfFileDoesntExist()
     {
         $this->_request->setSimilarImage('');
+    }
+
+    /**
+     * @param string $path
+     * @return string
+     */
+    private function getAbsolutePath(string $path): string
+    {
+        return dirname(dirname(dirname(dirname(__DIR__)))) . '/' . $path;
     }
 }

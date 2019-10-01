@@ -140,6 +140,9 @@ class LicenseHistory
     private function _getFiles(LicenseHistoryRequest $license_file_request, string $access_token = null) : LicenseHistoryResponse
     {
         $headers = APIUtils::generateCommonAPIHeaders($this->_config, $access_token);
+        if (!empty($license_file_request->getRequestId())) {
+            $headers['headers']['x-request-id'] = $license_file_request->getRequestId();
+        }
         $end_point = $this->_config->getEndPoints()['license_history'];
         $request_url = $end_point . '?' . http_build_query($license_file_request);
         $offset_value = $this->_offset;

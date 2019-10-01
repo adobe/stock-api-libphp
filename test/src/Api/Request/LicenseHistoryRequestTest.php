@@ -67,7 +67,7 @@ class LicenseHistoryRequestTest extends TestCase
      */
     public function setLocaleThrowException()
     {
-        $this->_request->setLocale(null);
+        $this->_request->setLocale('');
     }
     
     /**

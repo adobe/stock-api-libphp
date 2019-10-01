@@ -52,6 +52,9 @@ class SearchCategory
         $end_point = $this->_config->getEndPoints()['category'];
         $request_url = $end_point . '?' . http_build_query($request);
         $headers = APIUtils::generateCommonAPIHeaders($this->_config, $access_token);
+        if (!empty($request->getRequestId())) {
+            $headers['headers']['x-request-id'] = $request->getRequestId();
+        }
         $raw_response = $http_client->doGet($request_url, $headers);
         $search_category_response = new SearchCategoryResponse(json_decode($raw_response, true));
         return $search_category_response;
@@ -75,6 +78,9 @@ class SearchCategory
         $end_point = $this->_config->getEndPoints()['category_tree'];
         $request_url = $end_point . '?' . http_build_query($request);
         $headers = APIUtils::generateCommonAPIHeaders($this->_config, $access_token);
+        if (!empty($request->getRequestId())) {
+            $headers['headers']['x-request-id'] = $request->getRequestId();
+        }
         $raw_response = $http_client->doGet($request_url, $headers);
         return $this->_createSearchCategoryResponseArray(json_decode($raw_response, true));
     }

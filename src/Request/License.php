@@ -13,14 +13,8 @@ use \AdobeStock\Api\Exception\StockApi as StockApiException;
 use \AdobeStock\Api\Models\LicenseReference;
 use \AdobeStock\Api\Core\Constants as CoreConstants;
 
-class License
+class License extends AbstractRequest
 {
-    /**
-     * Language location code
-     * @var string
-     */
-    public $locale;
-    
     /**
      * Asset's unique identifer
      * @var int
@@ -52,32 +46,6 @@ class License
      * @var array|null of LicenseReference
      */
     public $license_reference;
-
-    /**
-     * Getter for Locale.
-     * @return string Language location code.
-     */
-    public function getLocale(): string
-    {
-        return $this->locale;
-    }
-
-    /**
-     * Setter for Locale.
-     * @param string $locale Language location code.
-     * @return License
-     * @throws StockApiException if locale is empty.
-     */
-    public function setLocale(string $locale): License
-    {
-        if (!empty($locale)) {
-            $this->locale = $locale;
-        } else {
-            throw StockApiException::withMessage('Locale cannot be empty string');
-        }
-        
-        return $this;
-    }
 
     /**
      * Getter for ContentId.

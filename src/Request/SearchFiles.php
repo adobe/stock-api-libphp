@@ -12,13 +12,8 @@ use \AdobeStock\Api\Exception\StockApi as StockApiException;
 use \AdobeStock\Api\Core\Constants as Constants;
 use \AdobeStock\Api\Models\SearchParameters as SearchParametersModel;
 
-class SearchFiles
+class SearchFiles extends AbstractRequest
 {
-    /**
-     * @var string Language location code
-     */
-    public $locale;
-    
     /**
      * @var SearchParametersModel search params.
      */
@@ -33,31 +28,7 @@ class SearchFiles
      * @var string Similar Image Path
      */
     public $similar_image;
-    
-    /**
-     * Getter for Locale.
-     * @return string|null Language location code.
-     */
-    public function getLocale() : ?string
-    {
-        return $this->locale;
-    }
-    
-    /**
-     * Setter for Locale.
-     * @param string $locale Language location code.
-     * @return SearchFiles
-     */
-    public function setLocale(string $locale = null) : SearchFiles
-    {
-        if ($locale == null) {
-            throw StockApiException::withMessage('Locale cannot be null');
-        }
-        
-        $this->locale = $locale;
-        return $this;
-    }
-    
+
     /**
      * Get SearchParameters array that consists of various search params
      * @return SearchParametersModel|null

@@ -10,45 +10,13 @@ namespace AdobeStock\Api\Request;
 
 use \AdobeStock\Api\Exception\StockApi as StockApiException;
 
-class SearchCategory
+class SearchCategory extends AbstractRequest
 {
-    /**
-     * Language location code
-     * @var string
-     */
-    public $locale;
-
     /**
      * Unique identifier for an existing category.
      * @var integer
      */
     public $category_id;
-
-    /**
-     * Getter for Locale.
-     * @return string Language location code.
-     */
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
-    /**
-     * Setter for Locale.
-     * @param string $locale Language location code.
-     * @return SearchCategory
-     * @throws StockApiException if locale is empty.
-     */
-    public function setLocale(string $locale) : SearchCategory
-    {
-        if (!empty($locale)) {
-            $this->locale = $locale;
-        } else {
-            throw StockApiException::withMessage('Locale cannot be empty string');
-        }
-
-        return $this;
-    }
 
     /**
      * Getter for CategoryId.

@@ -82,7 +82,7 @@ class SearchFiles
     
     /**
      * Custom http client object
-     * @var HttpInterface
+     * @var HttpClientInterface
      */
     private $_http_client;
     
@@ -134,6 +134,9 @@ class SearchFiles
     {
         $this->_http_method = $this->_getHttpMethod($search_file_request);
         $headers = APIUtils::generateCommonAPIHeaders($this->_config, null);
+        if (!empty($search_file_request->getRequestId())) {
+            $headers['headers']['x-request-id'] = $search_file_request->getRequestId();
+        }
         $end_point = $this->_config->getEndPoints()['search'];
         $request_url = $end_point . '?' . http_build_query($search_file_request);
         
@@ -180,7 +183,7 @@ class SearchFiles
     {
         $this->_current_response = $response;
         $this->_api_in_progress = false;
-        
+
         if ($this->_initial_invalid_state) {
             $this->_initial_invalid_state = false;
         }

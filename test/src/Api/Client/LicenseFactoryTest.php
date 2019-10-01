@@ -316,6 +316,7 @@ class LicenseFactoryTest extends TestCase
      */
     public function downloadAssetRequestShouldReturnValidRequestObject()
     {
+        $url = 'https://primary.staging.adobestock.com/Rest/Libraries/Download/84071201/1';
         $response = [
             'member' =>
             [
@@ -335,11 +336,10 @@ class LicenseFactoryTest extends TestCase
                         'state' => 'purchased',
                         'license' => 'Standard',
                         'date' => '2017-06-21 10:38:52',
-                        'url' => 'https://primary.staging.adobestock.com/Rest/Libraries/Download/84071201/1',
+                        'url' => $url,
                         'content_type' => 'image/jpeg',
                         'width' => 4000,
                         'height' => 3928,
-                            
                     ],
                 ],
             ],
@@ -349,7 +349,7 @@ class LicenseFactoryTest extends TestCase
         $request = new LicenseRequest();
         $request->setContentId(84071201)->setLicenseState('STANDARD');
         $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
-        $this->assertEquals($guzzle_request, new Request('GET', ''));
+        $this->assertEquals($guzzle_request, new Request('GET', $url . '?token=access_token'));
     }
     
     /**

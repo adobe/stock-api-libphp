@@ -50,7 +50,7 @@ class License
      * Method to return URL to asset
      * @return string $_url
      */
-    protected function getDownloadUrl(): string
+    protected function _getDownloadUrl(): string
     {
         return $this->_url;
     }
@@ -60,11 +60,12 @@ class License
      * @param string $url
      * @param string $access_token
      */
-    protected function setDownloadUrl(string $url, string $access_token = null)
+    protected function _setDownloadUrl(string $url, string $access_token = null)
     {
         if ($access_token) {
             $url .= '?token=' . $access_token;
         }
+
         $this->_url = $url;
     }
 
@@ -260,11 +261,11 @@ class License
         //adds middleware in the client which controls the redirection behaviour.
         $this->_addHandler($client_handler);
         //store original url
-        $this->setDownloadUrl($url, $access_token);
+        $this->_setDownloadUrl($url, $access_token);
         //guzzle get request by client to fetch s3 url
         $http_client->doGet($url, $headers);
         //guzzle request object is created which can be used to download asset
-        $guzzle_request = new Request('GET', $this->getDownloadUrl());
+        $guzzle_request = new Request('GET', $this->_getDownloadUrl());
         $client_handler->remove('Redirection check');
         return $guzzle_request;
     }
@@ -322,10 +323,10 @@ class License
             if (intval($http_status_code) == 200) {
                 // append content-disposition header to url
                 $header = $response->getHeader('Content-Disposition');
-                $this->setDownloadUrl($this->getDownloadUrl() . '&' . $header[0]);
-            } elseif (intval($http_status_code / 100) == 3) {
+                $this->_setDownloadUrl($this->_getDownloadUrl() . '&' . $header[0]);
+            } else if (intval($http_status_code / 100) == 3) {
                 // override url with redirect link
-                $this->setDownloadUrl($response->getHeader('Location')[0]);
+                $this->_setDownloadUrl($response->getHeader('Location')[0]);
             } else {
                 throw StockApiException::withMessage('No redirection done by server');
             }

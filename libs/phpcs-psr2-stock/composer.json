@@ -1,0 +1,21 @@
+{
+    "name": "astock/phpcs-psr2-stock",
+    "description": "Adobe Stock PHP coding style validator",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Olivier Sirven",
+            "email": "sirven@adobe.com"
+        }
+    ],
+    "require": {
+        "squizlabs/php_codesniffer": "~3.1"
+    },
+    "config": {
+        "bin-dir": "vendor/bin/"
+    },
+    "bin": [
+        "bin/phpcs-psr2-stock",
+        "bin/phpcbf-psr2-stock"
+    ]
+}

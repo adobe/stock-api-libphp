@@ -14,7 +14,6 @@
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "~2.8",
-        "astock/phpcs-psr2-stock": "~1.4",
         "phpunit/phpunit": "~6.0",
         "mockery/mockery": "^0.9.9"
     },
@@ -36,7 +35,7 @@
             "@test",
             "@lint"
         ],
-        "lint": "vendor/bin/phpcs --standard='vendor/astock/phpcs-psr2-stock/PSR2Stock' src test",
+        "lint": "vendor/bin/phpcs --standard='libs/phpcs-psr2-stock/PSR2Stock' src test",
         "test": "vendor/bin/phpunit",
         "test-coverage": "vendor/bin/phpunit --coverage-html data/clover"
     }

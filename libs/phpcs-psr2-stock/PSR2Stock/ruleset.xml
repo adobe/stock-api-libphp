@@ -1,0 +1,165 @@
+<?xml version="1.0"?>
+<ruleset name="PSR2-Stock">
+ <description>The PSR-2 Stock version coding standard.</description>
+ <arg name="tab-width" value="4"/>
+
+ <!-- 1 Really basic checks -->
+
+ <!-- check syntax -->
+ <rule ref="PSR2Stock.PHP.Syntax" />
+
+ <!-- no short tags and no characters before opening tags -->
+ <rule ref="Generic.PHP.DisallowShortOpenTag" />
+ <rule ref="Generic.PHP.CharacterBeforePHPOpeningTag" />
+
+ <!-- no deprecated functions -->
+ <rule ref="Generic.PHP.DeprecatedFunctions" />
+
+ <!-- 2. General -->
+
+ <!-- 2.1 Basic Coding Standard -->
+
+ <!-- Include the whole PSR-1 standard -->
+ <rule ref="PSR1">
+   <exclude name="PSR1.Classes.ClassDeclaration" />
+   <exclude name="Squiz.Classes.ValidClassName" />
+   <exclude name="Squiz.ControlStructures.ControlSignature" />
+   <exclude name="Squiz.WhiteSpace.ControlStructureSpacing" />
+ </rule>
+
+ <!-- Include the whole PSR-2 standard -->
+ <rule ref="PSR2">
+   <exclude name="PSR2.Classes.PropertyDeclaration"/>
+   <exclude name="PSR2.Methods.MethodDeclaration"/>
+   <exclude name="PSR2.ControlStructures.ElseIfDeclaration"/>
+   <exclude name="PSR2.ControlStructures.ControlStructureSpacing"/>
+   <exclude name="PSR2.Methods.FunctionCallSignature"/>
+ </rule>
+
+ <!-- 2.2 Lines -->
+
+ <!-- The soft limit on line length MUST be 600 characters; automated style checkers MUST warn but MUST NOT error at the soft limit. -->
+ <rule ref="Generic.Files.LineLength">
+  <properties>
+   <property name="lineLimit" value="600"/>
+   <property name="absoluteLineLimit" value="0"/>
+  </properties>
+  <severity>0</severity>
+ </rule>
+
+
+ <!-- 2.3 Whitespaces -->
+
+ <!-- space required after cast operator -->
+ <rule ref="Generic.Formatting.SpaceAfterCast" />
+
+ <!-- one space around concatenation operator -->
+ <rule ref="Squiz.Strings.ConcatenationSpacing">
+   <properties>
+     <property name="spacing" value="1"/>
+     <property name="ignoreNewlines" value="true"/>
+   </properties>
+ </rule>
+
+ <!-- Make sure there's an empty line after a control structure -->
+ <rule ref="PSR2Stock.Whitespace.ControlStructureSpacing" />
+
+ <!-- Make sure there's an empty line before a control structure -->
+ <rule ref="PSR2Stock.ControlStructures.ControlStructureBlankLine" />
+
+ <rule ref="Squiz.WhiteSpace.CastSpacing" />
+ <rule ref="Squiz.WhiteSpace.OperatorSpacing">
+   <properties>
+     <property name="ignoreNewlines" value="true"/>
+   </properties>
+ </rule>
+
+ <!-- 2.4 Comments -->
+ <rule ref="PSR2Stock.Commenting.SetAllowedTypes"/>
+ <rule ref="Squiz.Commenting.DocCommentAlignment"/>
+ <rule ref="Squiz.Commenting.EmptyCatchComment"/>
+ <rule ref="Squiz.Commenting.VariableComment"/>
+
+ <!--
+     Configure FunctionComment sniff:
+
+     1. type hinting on scalar for php7 is deactivated
+     2. don't enforce comments on parameters or throws tags
+     3. don't enforce first capital letter or full stop character in comments
+ -->
+ <rule ref="PSR2Stock.Commenting.FunctionComment.ScalarTypeHintMissing">
+   <severity>0</severity>
+ </rule>
+ <rule ref="PSR2Stock.Commenting.FunctionComment.MissingParamComment">
+   <severity>0</severity>
+ </rule>
+ <rule ref="PSR2Stock.Commenting.FunctionComment.ParamCommentNotCapital">
+   <severity>0</severity>
+ </rule>
+ <rule ref="PSR2Stock.Commenting.FunctionComment.ParamCommentFullStop">
+   <severity>0</severity>
+ </rule>
+ <rule ref="PSR2Stock.Commenting.FunctionComment.EmptyThrows">
+   <severity>0</severity>
+ </rule>
+ <rule ref="PSR2Stock.Commenting.FunctionComment.ThrowsNoFullStop">
+   <severity>0</severity>
+ </rule>
+ <rule ref="PSR2Stock.Commenting.FunctionComment.ThrowsNotCapital">
+   <severity>0</severity>
+ </rule>
+
+ <!-- 2.5 PHP -->
+ <rule ref="Squiz.PHP.DisallowSizeFunctionsInLoops"/>
+ <rule ref="Squiz.PHP.GlobalKeyword"/>
+ <rule ref="Squiz.PHP.Heredoc"/>
+ <rule ref="Squiz.PHP.ForbiddenFunctions">
+   <properties>
+     <property name="forbiddenFunctions" type="array" value="sizeof=>count,delete=>unset,print=>echo,is_null=>null,create_function=>null,strtotime=>null" />
+   </properties>
+ </rule>
+
+ <!-- 2.5 Strings -->
+ <rule ref="PSR2Stock.Strings.DoubleQuoteUsage"/>
+
+ <!-- 3. Classes, Properties, and Methods -->
+
+ <rule ref="Squiz.Scope.MemberVarScope" />
+ <rule ref="Squiz.Scope.StaticThisUsage" />
+
+ <!-- Enforce PSR1.Classes.ClassDeclaration but namespaces for controllers -->
+ <rule ref="PSR2Stock.Classes.PSR1ClassDeclaration"/>
+
+ <!-- Enforce Squizz.Classes.ValidClassName add add compatibility for ZF controllers -->
+ <rule ref="PSR2Stock.Classes.ValidClassName"/>
+
+ <!-- Array declaration rule -->
+ <rule ref="PSR2Stock.Arrays.ArrayDeclaration"/>
+
+ <!-- Variable declaration rule but not the snake case for now -->
+ <rule ref="PSR2Stock.Variables.ValidVariableName.NotLowerCase"/>
+
+ <!-- Method declaration rule -->
+ <rule ref="PSR2Stock.Methods.ValidFunctionName"/>
+ <rule ref="PSR2Stock.Methods.MethodDeclaration"/>
+
+ <!-- Property declaration rule -->
+ <rule ref="PSR2Stock.Classes.PropertyDeclaration"/>
+
+ <!-- Method arguments with default values MUST go at the end of the argument list. -->
+ <rule ref="PSR2Stock.Functions.ValidDefaultValue"/>
+
+ <!-- avoid elseif and use else if -->
+ <rule ref="PSR2Stock.ControlStructures.ElseIfDeclaration"/>
+
+ <!-- 0 spaces or a newline after an opening bracket -->
+ <rule ref="PSR2Stock.ControlStructures.ControlStructureSpacing"/>
+
+ <!-- between 1 and 2 new lines after opening braces -->
+ <rule ref="PSR2Stock.ControlStructures.ControlSignature"/>
+
+ <rule ref="PSR2Stock.Methods.FunctionCallSignature.SpaceAfterCloseBracket">
+   <severity>0</severity>
+ </rule>
+
+</ruleset>

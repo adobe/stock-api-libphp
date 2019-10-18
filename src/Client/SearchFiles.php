@@ -133,7 +133,7 @@ class SearchFiles
     public function getFiles(SearchFilesRequest $search_file_request, string $access_token = null) : SearchFilesResponse
     {
         $this->_http_method = $this->_getHttpMethod($search_file_request);
-        $headers = APIUtils::generateCommonAPIHeaders($this->_config, null);
+        $headers = APIUtils::generateCommonAPIHeaders($this->_config, $access_token);
         if (!empty($search_file_request->getRequestId())) {
             $headers['headers']['x-request-id'] = $search_file_request->getRequestId();
         }
@@ -374,7 +374,7 @@ class SearchFiles
             array_push($this->_current_request->result_columns, 'nb_results');
         }
         
-        $this->access_token = $access_token;
+        $this->_access_token = $access_token;
         $this->_api_in_progress = false;
         $this->_http_client = $http_client;
         

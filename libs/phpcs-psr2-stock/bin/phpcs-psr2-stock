@@ -1,0 +1,15 @@
+#!/bin/sh
+
+if [ $(basename $0) = "phpcbf-psr2-stock" ]; then
+    CMD=phpcbf
+else
+    CMD=phpcs
+fi
+
+if [ -d $(dirname $0)/../PSR2Stock ]; then
+    # standard usage
+    $(dirname $0)/../vendor/bin/${CMD} --standard=$(dirname $0)/../PSR2Stock $@
+else
+    # vendor/bin usage
+    $(dirname $0)/${CMD} --standard=$(dirname $0)/../astock/phpcs-psr2-stock/PSR2Stock $@
+fi

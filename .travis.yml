@@ -1,0 +1,5 @@
+language: php
+php:
+ - 7.2
+install: composer install
+script: composer run test

@@ -117,13 +117,13 @@ class SearchParametersTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
+     * @expectedException \TypeError
      */
     public function testWords()
     {
         $this->search_params->setWords('Tree');
         $this->assertEquals('Tree', $this->search_params->getWords());
-        $this->search_params->setWords('');
+        $this->search_params->setWords(null);
     }
     
     /**

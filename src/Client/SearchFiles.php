@@ -133,7 +133,7 @@ class SearchFiles
     public function getFiles(SearchFilesRequest $search_file_request, string $access_token = null) : SearchFilesResponse
     {
         $this->_http_method = $this->_getHttpMethod($search_file_request);
-        $headers = APIUtils::generateCommonAPIHeaders($this->_config, null);
+        $headers = APIUtils::generateCommonAPIHeaders($this->_config, $access_token);
         $end_point = $this->_config->getEndPoints()['search'];
         $request_url = $end_point . '?' . http_build_query($search_file_request);
         

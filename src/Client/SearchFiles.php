@@ -371,7 +371,7 @@ class SearchFiles
             array_push($this->_current_request->result_columns, 'nb_results');
         }
         
-        $this->access_token = $access_token;
+        $this->_access_token = $access_token;
         $this->_api_in_progress = false;
         $this->_http_client = $http_client;
         

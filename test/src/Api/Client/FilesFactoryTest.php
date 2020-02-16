@@ -10,7 +10,7 @@ namespace AdobeStock\Api\Test;
 
 use \AdobeStock\Api\Client\Files as FilesFactory;
 use \AdobeStock\Api\Core\Config as CoreConfig;
-use PHPUnit\Framework\MockObject\MockObject;
+use \PHPUnit\Framework\MockObject\MockObject;
 use \PHPUnit\Framework\TestCase;
 use \AdobeStock\Api\Request\Files as FilesRequest;
 use \AdobeStock\Api\Client\Http\HttpClient;

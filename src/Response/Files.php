@@ -8,7 +8,7 @@
 
 namespace AdobeStock\Api\Response;
 
-use AdobeStock\Api\Models\StockFile;
+use \AdobeStock\Api\Models\StockFile;
 
 class Files
 {

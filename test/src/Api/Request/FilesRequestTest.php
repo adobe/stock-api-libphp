@@ -8,7 +8,7 @@
 
 namespace AdobeStock\Api\Test;
 
-use AdobeStock\Api\Core\Constants;
+use \AdobeStock\Api\Core\Constants;
 use \PHPUnit\Framework\TestCase;
 use \AdobeStock\Api\Request\Files as FilesRequest;
 

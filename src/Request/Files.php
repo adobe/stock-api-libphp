@@ -8,7 +8,7 @@
 
 namespace AdobeStock\Api\Request;
 
-use AdobeStock\Api\Core\Constants;
+use \AdobeStock\Api\Core\Constants;
 use \AdobeStock\Api\Exception\StockApi as StockApiException;
 
 class Files

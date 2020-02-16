@@ -10,11 +10,14 @@ namespace AdobeStock\Api\Client;
 
 use \AdobeStock\Api\Client\SearchCategory as SearchCategoryFactory;
 use \AdobeStock\Api\Core\Config as CoreConfig;
+use AdobeStock\Api\Exception\StockApi as StockApiException;
 use \AdobeStock\Api\Request\SearchCategory as SearchCategoryRequest;
 use \AdobeStock\Api\Response\SearchCategory as SearchCategoryResponse;
 use \AdobeStock\Api\Client\Http\HttpInterface;
 use \AdobeStock\Api\Request\SearchFiles as SearchFilesRequest;
 use \AdobeStock\Api\Response\SearchFiles as SearchFilesResponse;
+use \AdobeStock\Api\Request\Files as FilesRequest;
+use \AdobeStock\Api\Response\Files as FilesResponse;
 use \AdobeStock\Api\Client\Http\HttpClient;
 use \AdobeStock\Api\Request\License as LicenseRequest;
 use \AdobeStock\Api\Client\License as LicenseFactory;
@@ -25,7 +28,6 @@ use \AdobeStock\Api\Response\LicenseHistory as LicenseHistoryResponse;
 
 class AdobeStock
 {
-
     /**
      * Configuration that needs to be initialized.
      * @var CoreConfig
@@ -43,13 +45,19 @@ class AdobeStock
      * @var SearchFiles
      */
     private $_search_files_factory;
-    
+
     /**
      * Factory object of all license apis.
      * @var LicenseFactory;
      */
     private $_license_factory;
-    
+
+    /**
+     * Factory object of all files apis.
+     * @var Files;
+     */
+    private $_files_factory;
+
     /**
      * Factory object of all license History apis.
      * @var LicenseHistory
@@ -77,6 +85,7 @@ class AdobeStock
         $this->_search_files_factory = new SearchFiles($this->_config);
         $this->_license_factory = new LicenseFactory($this->_config);
         $this->_license_history_factory = new LicenseHistory($this->_config);
+        $this->_files_factory = new Files($this->_config);
 
         if ($http_client === null) {
             $this->_http_client = new HttpClient();
@@ -123,6 +132,19 @@ class AdobeStock
     {
         $response = $this->_search_category_factory->getCategoryTree($request, $access_token, $this->_http_client);
         return $response;
+    }
+
+    /**
+     * Method to get files using API.
+     *
+     * @param FilesRequest $request
+     * @param string $access_token
+     * @return FilesResponse
+     * @throws StockApiException
+     */
+    public function getFiles(FilesRequest $request, string $access_token = null) : FilesResponse
+    {
+        return $this->_files_factory->getFiles($request, $this->_http_client, $access_token);
     }
 
     /**
@@ -207,7 +229,7 @@ class AdobeStock
         $current_page = $this->_search_files_factory->currentSearchPageIndex();
         return $current_page;
     }
-    
+
     /**
      * Requests licensing information about a specific asset for a specific user
      * @param LicenseRequest $request      object containing
@@ -220,7 +242,7 @@ class AdobeStock
         $response = $this->_license_factory->getContentInfo($request, $access_token, $this->_http_client);
         return $response;
     }
-    
+
     /**
      * Requests a license for an asset for a specific user.
      * @param LicenseRequest $request
@@ -232,7 +254,7 @@ class AdobeStock
         $response = $this->_license_factory->getContentLicense($request, $access_token, $this->_http_client);
         return $response;
     }
-    
+
     /**
      * It can be used to get the licensing capabilities for a specific user.
      * This API returns the user's available purchase quota, the member
@@ -251,7 +273,7 @@ class AdobeStock
         $response = $this->_license_factory->getMemberProfile($request, $access_token, $this->_http_client);
         return $response;
     }
-    
+
     /**
      * Notifies the system when a user cancels a licensing operation.
      * It can be used if the user refuses the opportunity to purchase
@@ -265,7 +287,7 @@ class AdobeStock
         $response_code = $this->_license_factory->abandonLicense($request, $access_token, $this->_http_client);
         return $response_code;
     }
-    
+
     /**
      * Provide the guzzle request object that contains url of the asset that can be downloaded by hitting request with guzzle client send method if it is already licensed
      * @param LicenseRequest $request
@@ -277,7 +299,7 @@ class AdobeStock
         $guzzle_request = $this->_license_factory->downloadAssetRequest($request, $access_token, $this->_http_client);
         return $guzzle_request;
     }
-    
+
     /**
      * Provide the url of the asset if it is already licensed.
      * @param LicenseRequest $request
@@ -289,7 +311,7 @@ class AdobeStock
         $url = $this->_license_factory->downloadAssetUrl($request, $access_token, $this->_http_client);
         return $url;
     }
-    
+
     /**
      * Provide the Image Buffer if it is already licensed.
      * @param LicenseRequest $request
@@ -313,7 +335,7 @@ class AdobeStock
         $this->_license_history_factory->initializeLicenseHistory($request, $access_token, $this->_http_client);
         return $this;
     }
-    
+
     /**
      * Method to get next license history files response page.
      * @return LicenseHistoryResponse
@@ -323,7 +345,7 @@ class AdobeStock
         $response = $this->_license_history_factory->getNextLicenseHistory();
         return $response;
     }
-    
+
     /**
      * Method to get previous license history files response page.
      * @return LicenseHistoryResponse
@@ -333,7 +355,7 @@ class AdobeStock
         $response = $this->_license_history_factory->getPreviousLicenseHistory();
         return $response;
     }
-    
+
     /**
      * Method to get response from last api call.
      * @return LicenseHistoryResponse
@@ -343,7 +365,7 @@ class AdobeStock
         $response = $this->_license_history_factory->getLastLicenseHistory();
         return $response;
     }
-    
+
     /**
      * Method to skip to a specific license files response page.
      * @param int $page_index
@@ -354,7 +376,7 @@ class AdobeStock
         $response = $this->_license_history_factory->getLicenseHistoryPage($page_index);
         return $response;
     }
-    
+
     /**
      * Method to get total license files available.
      * @return int
@@ -364,7 +386,7 @@ class AdobeStock
         $total_files = $this->_license_history_factory->getTotalLicenseHistoryFiles();
         return $total_files;
     }
-    
+
     /**
      * Method to get total license results pages.
      * @return int
@@ -374,7 +396,7 @@ class AdobeStock
         $total_pages = $this->_license_history_factory->getTotalLicenseHistoryPages();
         return $total_pages;
     }
-    
+
     /**
      * Method to get response from last api call.
      * @return int
@@ -384,4 +406,6 @@ class AdobeStock
         $current_page = $this->_license_history_factory->currentLicenseHistoryPageIndex();
         return $current_page;
     }
+
+
 }

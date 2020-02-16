@@ -14,13 +14,14 @@ class Constants
      * @var array Query params
      */
     protected static $_queryParamsProps = [
+        'IDS' => 'ids',
         'LOCALE' => 'locale',
         'SEARCH_PARAMETERS' => 'search_parameters',
         'RESULT_COLUMNS' => 'result_columns',
         'SIMILAR_IMAGE' => 'similar_image',
         'CATEGORY' => 'category_id',
     ];
-    
+
     /**
      * @var array end points.
      */
@@ -33,6 +34,7 @@ class Constants
         'user_profile' => 'https://stock.adobe.io/Rest/Libraries/1/Member/Profile',
         'abandon' => 'https://stock.adobe.io/Rest/Libraries/1/Member/Abandon',
         'license_history' => 'https://stock.adobe.io/Rest/Libraries/1/Member/LicenseHistory',
+        'files' => 'https://stock.adobe.io/Rest/Media/1/Files'
     ];
 
     /**
@@ -42,7 +44,7 @@ class Constants
         'GET' => 'GET',
         'POST' => 'POST',
     ];
-    
+
     /**
      * @var array Environment
      */
@@ -50,7 +52,7 @@ class Constants
         'PROD' => 'PROD',
         'STAGE' => 'STAGE',
     ];
-    
+
     /**
      * @var array searchParamsOrders
      */
@@ -61,7 +63,7 @@ class Constants
         'NB_DOWNLOADS' => 'nb_downloads',
         'UNDISCOVERED' => 'undiscovered',
     ];
-    
+
     /**
      * @var array searchParamsOrientation
      */
@@ -71,7 +73,7 @@ class Constants
         'SQUARE' => 'square',
         'ALL' => 'all',
     ];
-    
+
     /**
      * @var array searchParamsOrientation
      */
@@ -80,7 +82,7 @@ class Constants
         'FALSE' => 'false',
         'ALL' => 'all',
     ];
-    
+
     /**
      * @var array searchParams3DTypes
      */
@@ -89,7 +91,7 @@ class Constants
         'LIGHTS' => 2,
         'MATERIALS' => 3,
     ];
-    
+
     /**
      * @var array Query searchParamsTemplateCategories
      */
@@ -101,7 +103,7 @@ class Constants
         'FILM' => 5,
         'ART' => 6,
     ];
-    
+
     /**
      * @var array searchParamsTemplateCategories
      */
@@ -109,7 +111,7 @@ class Constants
         'PSDT' => 1,
         'AIT' => 2,
     ];
-    
+
     /**
      * @var array searchParamsThumbSizes
      */
@@ -119,7 +121,7 @@ class Constants
         'XL' => 500,
         'XXL' => 1000,
     ];
-    
+
     /**
      * @var array Query searchParamsAge
      */
@@ -131,7 +133,7 @@ class Constants
         'TWO_YEAR' => '2y',
         'ALL' => 'all',
     ];
-    
+
     /**
      * @var array Query searchParamsVideoDuration
      */
@@ -142,7 +144,7 @@ class Constants
         'ABOVE_THIRTY' => '30-',
         'ALL' => 'all',
     ];
-    
+
     /**
      * @var array Query searchParamsType
      */
@@ -152,7 +154,7 @@ class Constants
         'RANGE' => 2,
         'ARRAY' => 3,
     ];
-    
+
     /**
      * @var array Query searchParamsPremium
      */
@@ -161,7 +163,7 @@ class Constants
         'FALSE' => 'false',
         'ALL' => 'all',
     ];
-    
+
     /**
      * @var array Query resultColumns
      */
@@ -235,7 +237,7 @@ class Constants
         'VIDEO_SMALL_PREVIEW_CONTENT_TYPE' => 'video_small_preview_content_type',
         'IS_EDITORIAL' => 'is_editorial',
     ];
-    
+
     /**
      * @var array Query licenseStateParams
      */
@@ -247,7 +249,7 @@ class Constants
         'STANDARD_M' => 'Standard_M',
         'EMPTY' => '',
     ];
-    
+
     /**
      * @var array Asset type id
      */
@@ -260,7 +262,7 @@ class Constants
         'THREE_DIMENSIONAL' => 6,
         'TEMPLATES' => 7,
     ];
-    
+
     /**
      * @var array Assest premium level id
      */
@@ -271,7 +273,7 @@ class Constants
         'PREMIUM2' => 3,
         'PREMIUM3' => 4,
     ];
-    
+
     /**
      * @var array Query purchaseStateParams
      */
@@ -283,7 +285,7 @@ class Constants
         'JUST_PURCHASED' => 'just_purchased',
         'OVERAGE' => 'overage',
     ];
-    
+
     /**
      * The size of the asset, indicating whether it is the free
      * complementary size or the original full-sized asset.
@@ -293,7 +295,7 @@ class Constants
         'Comp' => 'Comp',
         'Original' => 'Original',
     ];
-    
+
     /**
      * @var array searchParamLicenseThumbSizes
      */
@@ -314,7 +316,7 @@ class Constants
     {
         return static::$_queryParamsProps;
     }
-    
+
     /**
      * Getter for HttpMethod.
      * @return array
@@ -323,7 +325,7 @@ class Constants
     {
         return static::$_http_method;
     }
-    
+
     /**
      * Getter for Environment.
      * @return array
@@ -332,7 +334,7 @@ class Constants
     {
         return static::$_environments;
     }
-    
+
     /**
      * Getter for EndPoints.
      * @return array
@@ -341,7 +343,7 @@ class Constants
     {
         return static::$_end_points;
     }
-    
+
     /**
      * Getter for Asset Premium level.
      * @return array
@@ -350,7 +352,7 @@ class Constants
     {
         return static::$_assetPremiumLevel;
     }
-    
+
     /**
      * Getter for Asset Type.
      * @return array
@@ -368,7 +370,7 @@ class Constants
     {
         return static::$_searchParamsOrders;
     }
-    
+
     /**
      * Getter for SearchParamsOrientation.
      * @return array
@@ -377,7 +379,7 @@ class Constants
     {
         return static::$_searchParamsOrientation;
     }
-    
+
     /**
      * Getter for SearchParamsHasReleases.
      * @return array
@@ -386,7 +388,7 @@ class Constants
     {
         return static::$_SearchParamsHasReleases;
     }
-    
+
     /**
      * Getter for SearchParams3DTypes.
      * @return string
@@ -395,7 +397,7 @@ class Constants
     {
         return static::$_searchParams3DTypes;
     }
-    
+
     /**
      * Getter for SearchParamsTemplateCategories.
      * @return array
@@ -404,7 +406,7 @@ class Constants
     {
         return static::$_searchParamsTemplateCategories;
     }
-    
+
     /**
      * Getter for Query Param Props.
      * @return array
@@ -413,7 +415,7 @@ class Constants
     {
         return static::$_searchParamsTemplateTypes;
     }
-    
+
     /**
      * Getter for SearchParamsThumbSizes.
      * @return array
@@ -422,7 +424,7 @@ class Constants
     {
         return static::$_searchParamsThumbSizes;
     }
-    
+
     /**
      * Getter for SearchParamsAge.
      * @return array
@@ -431,7 +433,7 @@ class Constants
     {
         return static::$_searchParamsAge;
     }
-    
+
     /**
      * Getter for SearchParamsVideoDuration.
      * @return array
@@ -440,7 +442,7 @@ class Constants
     {
         return static::$_searchParamsVideoDuration;
     }
-    
+
     /**
      * Getter for SearchParamsType.
      * @return array
@@ -449,7 +451,7 @@ class Constants
     {
         return static::$_searchParamsType;
     }
-    
+
     /**
      * Getter for SearchParamsPremium.
      * @return array
@@ -467,7 +469,7 @@ class Constants
     {
         return static::$_resultColumns;
     }
-    
+
     /**
      * Getter for LicenseStateParams.
      * @return array
@@ -476,7 +478,7 @@ class Constants
     {
         return static::$_licenseStateParams;
     }
-    
+
     /**
      * Getter for PurchaseStateParams.
      * @return array
@@ -485,7 +487,7 @@ class Constants
     {
         return static::$_purchaseStateParams;
     }
-    
+
     /**
      * Getter for assest license size.
      * @return array of asset License Size
@@ -494,7 +496,7 @@ class Constants
     {
         return static::$_asset_license_size;
     }
-    
+
     /**
      * Getter for SearchParamsThumbSizes.
      * @return array

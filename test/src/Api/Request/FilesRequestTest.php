@@ -41,8 +41,8 @@ class FilesRequestTest extends TestCase
             'country_name',
             'id',
         ];
-        $this->_request->setIds('1,2,3');
-        $this->assertEquals('1,2,3', $this->_request->getIds());
+        $this->_request->setIds([1, 2, 3]);
+        $this->assertEquals([1, 2, 3], $this->_request->getIds());
         $this->_request->setLocale('En-US');
         $this->assertEquals('En-US', $this->_request->getLocale());
         $this->_request->setResultColumns($result_column_array);
@@ -59,7 +59,7 @@ class FilesRequestTest extends TestCase
             'country_name',
             'id',
         ];
-        $this->_request->setIds('1,2,3');
+        $this->_request->setIds([1, 2, 3]);
         $this->_request->setLocale('En-US');
         $this->_request->setResultColumns($result_column_array);
         $this->assertEquals([
@@ -73,7 +73,7 @@ class FilesRequestTest extends TestCase
 
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
+     * @expectedException \TypeError
      */
     public function setIdsThrowException()
     {
@@ -82,7 +82,7 @@ class FilesRequestTest extends TestCase
 
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
+     * @expectedException \TypeError
      */
     public function setLocaleThrowException()
     {
@@ -91,10 +91,10 @@ class FilesRequestTest extends TestCase
 
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
+     * @expectedException \TypeError
      */
     public function setResultColumnsThrowException()
     {
-        $this->_request->setResultColumns([]);
+        $this->_request->setResultColumns(null);
     }
 }

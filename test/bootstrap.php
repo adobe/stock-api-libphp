@@ -6,5 +6,5 @@
  * of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 error_reporting(-1); // Show them all
-$root_directory = realpath(dirname(__FILE__) . '/../') . '/';
-require($root_directory . 'vendor/autoload.php');
+
+require_once __DIR__ . '/../vendor/autoload.php';

@@ -41,7 +41,6 @@ class Files
     /**
      * @param array $ids
      * @return Files
-     * @throws StockApiException
      */
     public function setIds(array $ids) : Files
     {
@@ -62,7 +61,6 @@ class Files
      * Setter for Locale.
      * @param string $locale Language location code.
      * @return Files
-     * @throws StockApiException
      */
     public function setLocale(string $locale) : Files
     {
@@ -83,7 +81,6 @@ class Files
      * Set ResultColumns array consisting of result column constants
      * @param array $result_columns
      * @return Files
-     * @throws StockApiException
      */
     public function setResultColumns(array $result_columns) : Files
     {

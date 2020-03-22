@@ -343,7 +343,7 @@ It represents the search result returned from Stock Search/Category API. The `Ad
 #### Files
 `AdobeStock` class allows you to access the Files Stock APIs. The Files API is used to retrieve metadata from Adobe Stock, either one asset at a time, or in bulk.
 
- You can construct the `FilesRequest` object to set identifiers, locale information and desired result columns. Then you can call `getFiles` method to get metadata about the requested file ids in the form of `FilesResponse` object.
+ You can construct the `\AdobeStock\Api\Request\Files` object to set identifiers, locale information and desired result columns. Then you can call `getFiles` method to get metadata about the requested file ids in the form of `\AdobeStock\Api\Response\Files` object.
 
 ##### Instantiation
 You can construct the object of this class with below arguments -
@@ -352,7 +352,7 @@ You can construct the object of this class with below arguments -
     `config` - the stock configuration object of `Config` type.
    
 * Returns:
-    `FilesResponse` - The response object containing the files API results matching the request object, returned by `getFiles` method.
+    `\AdobeStock\Api\Response\Files` - The response object containing the files API results matching the request object, returned by `getFiles` method.
 
 ##### Example
 Sample code to instantiate the Files API -
@@ -365,10 +365,10 @@ Sample code to instantiate the Files API -
         $access_token = 'ims_token';
 
         //Constructing SearchCategoryRequest
-        $request = new FilesRequest();
+        $request = new \AdobeStock\Api\Request\Files();
         $request->setIds([105988, 105989, 105990])
                 ->setLocale('En-US');
-                ->setsetResultColumns([
+                ->setResultColumns([
                     'id',
                     'title',
                     'creator_name',
@@ -381,10 +381,10 @@ Sample code to instantiate the Files API -
 ```
 ##### Methods
 * `AdobeStock` class methods can throw StockApiException if request is not valid or API returns with an error. It allows you to -
-   * `getFiles` - Method to get metadata information about Stock Files. You need to pass `FilesRequest` object containing files identifiers, locale(optional) and result_columns(optional) parameters. If the request object is not valid or API returns with error, the method will throw the `StockApiException`.
+   * `getFiles` - Method to get metadata information about Stock Files. You need to pass `\AdobeStock\Api\Request\Files` object containing files identifiers, locale(optional) and result_columns(optional) parameters. If the request object is not valid or API returns with error, the method will throw the `StockApiException`.
 
 #### FilesRequest
-In order to make GetFiles API call, you need to create a `FilesRequest` object to define the ids of the files that you are looking for metadata. You can set files identifiers, location language code and result columns supported by Bulk metadata Files API.
+In order to make GetFiles API call, you need to create a `\AdobeStock\Api\Request\Files` object to define the ids of the files that you are looking for metadata. You can set files identifiers, location language code and result columns supported by Bulk metadata Files API.
 
 Here is the mapping of Files API query parameters with the setters methods that you can use to set the corresponding parameters in PHP Stock SDK -
 
@@ -400,8 +400,8 @@ If you are not setting result columns, it will set following columns in result_c
     * `ID`
 
 #### FilesResponse
-It represents the result returned from Files API. The `AdobeStock` class methods for e.g. `getFiles` returns the object of `FilesResponse` initialized with the results returned from the Files API.
-`FilesResponse` allows you to -
+It represents the result returned from Files API. The `AdobeStock` class methods for e.g. `getFiles` returns the object of `\AdobeStock\Api\Response\Files` initialized with the results returned from the Files API.
+`\AdobeStock\Api\Response\Files` allows you to -
 * `getNbResults` - Get the value of 'nb_results' column from the Files response
 * `getFiles` - Get the list of `StockFile` returned by Files api
 

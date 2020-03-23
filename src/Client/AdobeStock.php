@@ -10,11 +10,14 @@ namespace AdobeStock\Api\Client;
 
 use \AdobeStock\Api\Client\SearchCategory as SearchCategoryFactory;
 use \AdobeStock\Api\Core\Config as CoreConfig;
+use \AdobeStock\Api\Exception\StockApi as StockApiException;
 use \AdobeStock\Api\Request\SearchCategory as SearchCategoryRequest;
 use \AdobeStock\Api\Response\SearchCategory as SearchCategoryResponse;
 use \AdobeStock\Api\Client\Http\HttpInterface;
 use \AdobeStock\Api\Request\SearchFiles as SearchFilesRequest;
 use \AdobeStock\Api\Response\SearchFiles as SearchFilesResponse;
+use \AdobeStock\Api\Request\Files as FilesRequest;
+use \AdobeStock\Api\Response\Files as FilesResponse;
 use \AdobeStock\Api\Client\Http\HttpClient;
 use \AdobeStock\Api\Request\License as LicenseRequest;
 use \AdobeStock\Api\Client\License as LicenseFactory;
@@ -51,6 +54,12 @@ class AdobeStock
     private $_license_factory;
     
     /**
+     * Factory object of all files apis.
+     * @var Files;
+     */
+    private $_files_factory;
+    
+    /**
      * Factory object of all license History apis.
      * @var LicenseHistory
      */
@@ -77,6 +86,7 @@ class AdobeStock
         $this->_search_files_factory = new SearchFiles($this->_config);
         $this->_license_factory = new LicenseFactory($this->_config);
         $this->_license_history_factory = new LicenseHistory($this->_config);
+        $this->_files_factory = new Files($this->_config);
 
         if ($http_client === null) {
             $this->_http_client = new HttpClient();
@@ -123,6 +133,19 @@ class AdobeStock
     {
         $response = $this->_search_category_factory->getCategoryTree($request, $access_token, $this->_http_client);
         return $response;
+    }
+
+    /**
+     * Method to get files using API.
+     *
+     * @param FilesRequest $request
+     * @param string $access_token
+     * @return FilesResponse
+     * @throws StockApiException
+     */
+    public function getFiles(FilesRequest $request, string $access_token = null) : FilesResponse
+    {
+        return $this->_files_factory->getFiles($request, $this->_http_client, $access_token);
     }
 
     /**

@@ -10,9 +10,11 @@ namespace AdobeStock\Api\Test;
 
 use \AdobeStock\Api\Client\AdobeStock;
 use \AdobeStock\Api\Request\SearchCategory as SearchCategoryRequest;
+use \AdobeStock\Api\Request\Files as FilesRequest;
 use \PHPUnit\Framework\TestCase;
 use \AdobeStock\Api\Client\Http\HttpClient;
 use \AdobeStock\Api\Response\SearchCategory as SearchCategoryResponse;
+use \AdobeStock\Api\Response\Files as FilesResponse;
 use \AdobeStock\Api\Response\SearchFiles as SearchFilesResponse;
 use \AdobeStock\Api\Core\Constants as CoreConstants;
 use \AdobeStock\Api\Request\SearchFiles as SearchFilesRequest;
@@ -60,6 +62,26 @@ class AdobeStockTest extends TestCase
         $adobe_client = new \AdobeStock\Api\Client\AdobeStock('APIKey', 'Product', 'STAGE', $this->createMock(HttpClient::class));
         $adobe_client->searchCategory($request, '');
         $this->assertEquals($response, $adobe_client->searchCategory($request, ''));
+    }
+
+    /**
+     * @test
+     */
+    public function getFilesShouldReturnFilesResponse() : void
+    {
+        $requestMock = $this->createMock(FilesRequest::class);
+        $responseMock = $this->createMock(FilesResponse::class);
+
+        $external_mock = \Mockery::mock('overload:AdobeStock\Api\Client\Files');
+        $external_mock->shouldReceive('getFiles')->once()->andReturn($responseMock);
+
+        $adobe_client = new \AdobeStock\Api\Client\AdobeStock(
+            'APIKey',
+            'Product',
+            'STAGE',
+            null
+        );
+        $this->assertEquals($responseMock, $adobe_client->getFiles($requestMock, ''));
     }
 
     /**

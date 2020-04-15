@@ -267,7 +267,7 @@ class LicenseHistoryFactoryTest extends TestCase
         $this->_request->setSearchParams($search_params);
         $this->_license_history_factory->initializeLicenseHistory($this->_request, 'test', $this->_mocked_http_client);
         $response = $this->_license_history_factory->getLastLicenseHistory();
-        $this->assertNull(null, $response);
+        $this->assertNull($response->getNbResults());
     }
     
     /**

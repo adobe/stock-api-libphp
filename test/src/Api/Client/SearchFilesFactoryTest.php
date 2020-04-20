@@ -287,7 +287,7 @@ class SearchFilesFactoryTest extends TestCase
             ->willReturn(Psr7\stream_for(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
         $this->_search_files_factory->searchFilesInitialize($this->_request, '', $this->_mocked_http_client, true);
         $response = $this->_search_files_factory->getLastResponse();
-        $this->assertNull(null, $response);
+        $this->assertNull($response->getNbResults());
     }
     
     /**
@@ -307,8 +307,8 @@ class SearchFilesFactoryTest extends TestCase
         $this->_mocked_http_client->method('doGet')
             ->willReturn(Psr7\stream_for(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
         $this->_search_files_factory->searchFilesInitialize($this->_request, '', $this->_mocked_http_client, true);
-        $response = $this->_search_files_factory->getNextResponse();
-        $this->assertNull(null, $this->_search_files_factory->getLastResponse());
+        $response = $this->_search_files_factory->getLastResponse();
+        $this->assertNull($response->getNbResults());
     }
     
     /**

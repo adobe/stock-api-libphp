@@ -104,6 +104,9 @@ class License
         $end_point = $this->_config->getEndPoints()['license_info'];
         $request_url = $end_point . '?' . http_build_query($request);
         $headers = APIUtils::generateCommonAPIHeaders($this->_config, $access_token);
+        if (!empty($request->getRequestId())) {
+            $headers['headers']['x-request-id'] = $request->getRequestId();
+        }
         $raw_response = $http_client->doGet($request_url, $headers);
         $license_response = new LicenseResponse(json_decode($raw_response, true));
         return $license_response;
@@ -127,7 +130,10 @@ class License
         $end_point = $this->_config->getEndPoints()['license'];
         $request_url = $end_point . '?' . http_build_query($request);
         $headers = APIUtils::generateCommonAPIHeaders($this->_config, $access_token);
-        
+        if (!empty($request->getRequestId())) {
+            $headers['headers']['x-request-id'] = $request->getRequestId();
+        }
+
         if ($request->getLicenseReference() != null) {
             $raw_response = $http_client->doPost($request_url, $headers, $request->getLicenseReference());
         } else {
@@ -157,6 +163,9 @@ class License
         $end_point = $this->_config->getEndPoints()['user_profile'];
         $request_url = $end_point . '?' . http_build_query($request);
         $headers = APIUtils::generateCommonAPIHeaders($this->_config, $access_token);
+        if (!empty($request->getRequestId())) {
+            $headers['headers']['x-request-id'] = $request->getRequestId();
+        }
         $raw_response = $http_client->doGet($request_url, $headers);
         $license_response = new LicenseResponse(json_decode($raw_response, true));
         return $license_response;
@@ -177,6 +186,9 @@ class License
         $end_point = $this->_config->getEndPoints()['abandon'];
         $request_url = $end_point . '?' . http_build_query($request);
         $headers = APIUtils::generateCommonAPIHeaders($this->_config, $access_token);
+        if (!empty($request->getRequestId())) {
+            $headers['headers']['x-request-id'] = $request->getRequestId();
+        }
         $response = $http_client->doGet($request_url, $headers);
         $code = (int) $response->getContents();
         
@@ -241,6 +253,9 @@ class License
         
         $url = $purchase_details->getUrl();
         $headers = APIUtils::generateCommonAPIHeaders($this->_config, $access_token);
+        if (!empty($request->getRequestId())) {
+            $headers['headers']['x-request-id'] = $request->getRequestId();
+        }
         $headers['allow_redirects'] = false;
         $client_handler = $http_client->getHandlerStack();
         //adds middleware in the client which controls the redirection behaviour.

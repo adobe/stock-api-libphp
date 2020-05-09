@@ -11,13 +11,8 @@ namespace AdobeStock\Api\Request;
 use \AdobeStock\Api\Exception\StockApi as StockApiException;
 use \AdobeStock\Api\Models\SearchParamLicenseHistory as SearchParamLicenseHistoryModel;
 
-class LicenseHistory
+class LicenseHistory extends AbstractRequest
 {
-    /**
-     * @var string Language location code
-     */
-    public $locale;
-    
     /**
      * @var SearchParamLicenseHistoryModel search params.
      */
@@ -27,32 +22,7 @@ class LicenseHistory
      * @var array result column constants
      */
     public $result_columns;
-    
-    /**
-     * Getter for Locale.
-     * @return string|null Language location code.
-     */
-    public function getLocale() : ?string
-    {
-        return $this->locale;
-    }
-    
-    /**
-     * Setter for Locale.
-     * @param string $locale Language location code.
-     * @throws StockApiException if locale is null
-     * @return LicenseHistory
-     */
-    public function setLocale(string $locale = null) : LicenseHistory
-    {
-        if ($locale === null) {
-            throw StockApiException::withMessage('Locale cannot be null');
-        }
-        
-        $this->locale = $locale;
-        return $this;
-    }
-    
+
     /**
      * Get SearchParameters array that consists of various search params
      * @return SearchParamLicenseHistoryModel|null

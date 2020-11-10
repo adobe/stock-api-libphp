@@ -81,41 +81,41 @@ class LicenseFactoryTest extends TestCase
         $final_response = $this->_license_factory->getContentInfo($this->_request, 'test', $this->_mocked_http_client);
         $this->assertEquals(1393839, $final_response->getMemberInfo()->getStockId());
     }
-    
-    
+
+
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function getContentInfoContentIdNullShouldThrowException()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request = new LicenseRequest();
         $final_response = $this->_license_factory->getContentInfo($this->_request, 'test', $this->_mocked_http_client);
     }
-    
+
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function getContentInfoLicenseStateNullShouldThrowException()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request = new LicenseRequest();
         $this->_request->setContentId(59741022);
         $final_response = $this->_license_factory->getContentInfo($this->_request, 'test', $this->_mocked_http_client);
     }
-    
+
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function getContentInfoAccessTokenEmptyShouldThrowException()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request = new LicenseRequest();
         $this->_request->setContentId(59741022);
         $this->_request->setLicenseState('STANDARD');
         $final_response = $this->_license_factory->getContentInfo($this->_request, '', $this->_mocked_http_client);
     }
-    
+
     /**
      * @test
      */
@@ -144,7 +144,7 @@ class LicenseFactoryTest extends TestCase
         $final_response = $this->_license_factory->getContentLicense($this->_request, 'test', $this->_mocked_http_client);
         $this->assertEquals(1393839, $final_response->getMemberInfo()->getStockId());
     }
-    
+
     /**
      * @test
      */
@@ -180,40 +180,40 @@ class LicenseFactoryTest extends TestCase
         $final_response = $this->_license_factory->getContentLicense($this->_request, 'test', $this->_mocked_http_client);
         $this->assertEquals(1393839, $final_response->getMemberInfo()->getStockId());
     }
-    
+
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function getContentLicenseContentIdNullShouldThrowException()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request = new LicenseRequest();
         $final_response = $this->_license_factory->getContentLicense($this->_request, 'test', $this->_mocked_http_client);
     }
-    
+
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function getContentLicenseLicenseStateNullShouldThrowException()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request = new LicenseRequest();
         $this->_request->setContentId(59741022);
         $final_response = $this->_license_factory->getContentLicense($this->_request, 'test', $this->_mocked_http_client);
     }
-    
+
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function getContentLicenseAccessTokenEmptyShouldThrowException()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request = new LicenseRequest();
         $this->_request->setContentId(59741022);
         $this->_request->setLicenseState('STANDARD');
         $final_response = $this->_license_factory->getContentLicense($this->_request, '', $this->_mocked_http_client);
     }
-    
+
     /**
      * @test
      */
@@ -241,29 +241,29 @@ class LicenseFactoryTest extends TestCase
         $final_response = $this->_license_factory->getMemberProfile($this->_request, 'test', $this->_mocked_http_client);
         $this->assertEquals(1393839, $final_response->getMemberInfo()->getStockId());
     }
-    
+
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function getMemberProfileContentIdNullShouldThrowException()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request = new LicenseRequest();
         $final_response = $this->_license_factory->getMemberProfile($this->_request, 'test', $this->_mocked_http_client);
     }
-    
+
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function getMemberProfileAccessTokenEmptyShouldThrowException()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request = new LicenseRequest();
         $this->_request->setContentId(59741022);
         $this->_request->setLicenseState('STANDARD');
         $final_response = $this->_license_factory->getMemberProfile($this->_request, '', $this->_mocked_http_client);
     }
-    
+
     /**
      * @test
      */
@@ -275,42 +275,42 @@ class LicenseFactoryTest extends TestCase
         $final_response = $this->_license_factory->abandonLicense($this->_request, 'test', $this->_mocked_http_client);
         $this->assertEquals(204, $final_response);
     }
-    
+
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function getAbandonLicenseContentIdNullShouldThrowException()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request = new LicenseRequest();
         $final_response = $this->_license_factory->abandonLicense($this->_request, 'test', $this->_mocked_http_client);
     }
-    
+
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function getAbandonLicenseAccessTokenEmptyShouldThrowException()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request = new LicenseRequest();
         $this->_request->setContentId(59741022);
         $this->_request->setLicenseState('STANDARD');
         $final_response = $this->_license_factory->abandonLicense($this->_request, '', $this->_mocked_http_client);
     }
-    
+
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function getAbandonLicenseShouldThrowExceptionIfResponseCodeIsNot204()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request = new LicenseRequest();
         $this->_request->setContentId(59741022);
         $this->_request->setLicenseState('STANDARD');
         $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for('205'));
         $final_response = $this->_license_factory->abandonLicense($this->_request, 'test', $this->_mocked_http_client);
     }
-    
+
     /**
      * @test
      */
@@ -339,39 +339,39 @@ class LicenseFactoryTest extends TestCase
                         'content_type' => 'image/jpeg',
                         'width' => 4000,
                         'height' => 3928,
-                            
+
                     ],
                 ],
             ],
         ];
-                                
+
         $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for(json_encode($response)));
         $request = new LicenseRequest();
         $request->setContentId(84071201)->setLicenseState('STANDARD');
         $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
     }
-    
+
     /**
      * @test
-     * @expectedException AdobeStock\Api\Exception\StockApi
-     * @expectedExceptionMessage Could not find the licensing information for the asset
      */
     public function downloadAssetRequestShouldThrowExceptionSinceLicenseInfoNull()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
+        $this->expectExceptionMessage('Could not find the licensing information for the asset');
         $response = [];
         $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for(json_encode($response)));
         $request = new LicenseRequest();
         $request->setContentId(84071201)->setLicenseState('STANDARD');
         $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
     }
-    
+
     /**
      * @test
-     * @expectedException AdobeStock\Api\Exception\StockApi
-     * @expectedExceptionMessage Could not find the purchase details for the asset
      */
     public function downloadAssetRequestShouldThrowExceptionSincePurchaseDetailsNull()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
+        $this->expectExceptionMessage('Could not find the purchase details for the asset');
         $response = [
             'member' =>
             [
@@ -398,14 +398,16 @@ class LicenseFactoryTest extends TestCase
         $request->setContentId(84071201)->setLicenseState('STANDARD');
         $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
     }
-    
+
     /**
      * @test
-     * @expectedException AdobeStock\Api\Exception\StockApi
-     * @expectedExceptionMessage Content not licensed but have enough quota or overage plan, so first buy the license
      */
     public function downloadAssetRequestShouldThrowExceptionSinceAssetNotPurchasedButCanBeLicensed()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
+        $this->expectExceptionMessage(
+            'Content not licensed but have enough quota or overage plan, so first buy the license'
+        );
         $response = [
             'member' =>
             [
@@ -439,14 +441,14 @@ class LicenseFactoryTest extends TestCase
         $request->setContentId(84071201)->setLicenseState('STANDARD');
         $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
     }
-    
+
     /**
      * @test
-     * @expectedException AdobeStock\Api\Exception\StockApi
-     * @expectedExceptionMessage Content not licensed and also you do not have enough quota or overage plan
      */
     public function downloadAssetRequestShouldThrowExceptionSinceAssetNotPurchasedAndCannotBeLicensed()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
+        $this->expectExceptionMessage('Content not licensed and also you do not have enough quota or overage plan');
         $response = [
             'member' =>
             [
@@ -480,14 +482,16 @@ class LicenseFactoryTest extends TestCase
         $request->setContentId(84071201)->setLicenseState('STANDARD');
         $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
     }
-    
+
     /**
      * @test
-     * @expectedException AdobeStock\Api\Exception\StockApi
-     * @expectedExceptionMessage Content not licensed but have enough quota or overage plan, so first buy the license
      */
     public function downloadAssetRequestShouldThrowExceptionSinceAssetNotPurchasedButOveragePlanPresent()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
+        $this->expectExceptionMessage(
+            'Content not licensed but have enough quota or overage plan, so first buy the license'
+        );
         $response = [
             'member' =>
             [
@@ -521,14 +525,14 @@ class LicenseFactoryTest extends TestCase
         $request->setContentId(84071201)->setLicenseState('STANDARD');
         $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
     }
-    
+
     /**
      * @test
-     * @expectedException AdobeStock\Api\Exception\StockApi
-     * @expectedExceptionMessage Could not find the purchase details for the asset
      */
     public function downloadAssetRequestShouldThrowExceptionSinceAssetUrlNotPresent()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
+        $this->expectExceptionMessage('Could not find the purchase details for the asset');
         $response = [
             'member' =>
             [
@@ -551,7 +555,7 @@ class LicenseFactoryTest extends TestCase
                         'content_type' => 'image/jpeg',
                         'width' => 4000,
                         'height' => 3928,
-                            
+
                     ],
                 ],
             ],
@@ -561,14 +565,14 @@ class LicenseFactoryTest extends TestCase
         $request->setContentId(84071201)->setLicenseState('STANDARD');
         $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
     }
-    
+
     /**
      * @test
-     * @expectedException AdobeStock\Api\Exception\StockApi
-     * @expectedExceptionMessage Could not find the available licenses for the user
      */
     public function downloadAssetRequestShouldThrowExceptionSinceEntitlementIsNotPresent()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
+        $this->expectExceptionMessage('Could not find the available licenses for the user');
         $response = [
             'member' =>
             [
@@ -598,14 +602,14 @@ class LicenseFactoryTest extends TestCase
         $request->setContentId(84071201)->setLicenseState('STANDARD');
         $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
     }
-    
+
     /**
      * @test
-     * @expectedException AdobeStock\Api\Exception\StockApi
-     * @expectedExceptionMessage Could not find the user purchasing options for the asset
      */
     public function downloadAssetRequestShouldThrowExceptionSincePurchasingOptionsIsNotPresent()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
+        $this->expectExceptionMessage('Could not find the user purchasing options for the asset');
         $response = [
             'member' =>
             [
@@ -633,14 +637,14 @@ class LicenseFactoryTest extends TestCase
         $request->setContentId(84071201)->setLicenseState('STANDARD');
         $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
     }
-    
+
     /**
      * @test
-     * @expectedException AdobeStock\Api\Exception\StockApi
-     * @expectedExceptionMessage Could not find the purchase details for the asset
      */
     public function downloadAssetRequestShouldThrowExceptionSincePurchasingStateIsNotPresent()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
+        $this->expectExceptionMessage('Could not find the purchase details for the asset');
         $response = [
             'member' =>
             [
@@ -663,7 +667,7 @@ class LicenseFactoryTest extends TestCase
         $request->setContentId(84071201)->setLicenseState('STANDARD');
         $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
     }
-    
+
     /**
      * @test
      */
@@ -682,7 +686,7 @@ class LicenseFactoryTest extends TestCase
         $url = $mock->downloadAssetUrl($request, '', $this->_mocked_http_client);
         $this->assertEquals('TEST', $url);
     }
-    
+
     /**
      * @test
      */

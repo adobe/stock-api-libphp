@@ -18,7 +18,7 @@ class LicenseReferenceTest extends TestCase
      * @var LicenseReference
      */
     private $_license_reference;
-    
+
     /**
      * @var array
      */
@@ -26,7 +26,7 @@ class LicenseReferenceTest extends TestCase
         'id' => 1,
         'value' => 'test',
     ];
-    
+
     /**
      * @test
      * @before
@@ -36,24 +36,24 @@ class LicenseReferenceTest extends TestCase
         $this->_license_reference = new LicenseReference($this->_data);
         $this->assertInstanceOf(LicenseReference::class, $this->_license_reference);
     }
-    
+
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function setterGetterShouldSetGetLicenseReferenceId()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_license_reference->setLicenseReferenceId(1234);
         $this->assertEquals(1234, $this->_license_reference->getLicenseReferenceId());
         $this->_license_reference->setLicenseReferenceId(-1);
     }
-    
+
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function setterGetterShouldSetGetLicenseReferenceValue()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_license_reference->setLicenseReferenceValue('test2');
         $this->assertEquals('test2', $this->_license_reference->getLicenseReferenceValue());
         $this->_license_reference->setLicenseReferenceValue('');

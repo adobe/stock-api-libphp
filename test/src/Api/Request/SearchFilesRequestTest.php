@@ -19,7 +19,7 @@ class SearchFilesRequestTest extends TestCase
      * @var SearchFiles
      */
     private $_request;
-    
+
     /**
      * @test
      * @before
@@ -29,7 +29,7 @@ class SearchFilesRequestTest extends TestCase
         $this->_request = new SearchFilesRequest();
         $this->assertInstanceOf(SearchFilesRequest::class, $this->_request);
     }
-    
+
     /**
      * @test
      */
@@ -37,13 +37,13 @@ class SearchFilesRequestTest extends TestCase
     {
         $search_params = new SearchParametersModels();
         $search_params->setWords('tree')->setLimit(3)->setOffset(0);
-        
+
         $result_column_array = [
             'nb_results',
             'country_name',
             'id',
         ];
-        
+
         $this->_request->setLocale('En-US');
         $this->assertEquals('En-US', $this->_request->getLocale());
         $this->_request->setSearchParams($search_params);
@@ -52,41 +52,40 @@ class SearchFilesRequestTest extends TestCase
         $this->assertEquals($result_column_array, $this->_request->getResultColumns());
         $this->_request->setSimilarImage('test/resources/TestFile.png');
     }
-    
+
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function setSearchParamsThrowException()
     {
-        $search_params = new SearchParametersModels();
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request->setSearchParams(null);
     }
-    
+
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function setLocaleThrowException()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request->setLocale(null);
     }
-    
+
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function setResultColumnsThrowException()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request->setResultColumns([]);
     }
-    
+
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function setSimilarImageThrowExceptionIfFileDoesntExist()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request->setSimilarImage('');
     }
 }

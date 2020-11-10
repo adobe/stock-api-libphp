@@ -19,7 +19,7 @@ class LicenseRequestTest extends TestCase
      * @var LicenseRequest
      */
     private $_request;
-    
+
     /**
      * @test
      * @before
@@ -29,7 +29,7 @@ class LicenseRequestTest extends TestCase
         $this->_request = new LicenseRequest();
         $this->assertInstanceOf(LicenseRequest::class, $this->_request);
     }
-    
+
     /**
      * @test
      */
@@ -38,49 +38,49 @@ class LicenseRequestTest extends TestCase
         $this->_request->setContentId(10431);
         $this->assertEquals(10431, $this->_request->getContentId());
     }
-    
+
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function setterGetterShouldSetGetLocale()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request->setLocale('En-US');
         $this->assertEquals('En-US', $this->_request->getLocale());
         $this->_request->setLocale('');
     }
-    
+
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function setContentIdShouldThrowExceptionIfNegativeValueIsPassed()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request->setContentId(-1);
     }
-    
+
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function setterGetterShouldSetGetLicenseState()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request->setLicenseState('STANDARD');
         $this->assertEquals('Standard', $this->_request->getLicenseState());
         $this->_request->setLicenseState('');
     }
-    
+
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function setterGetterShouldSetGetPurchaseState()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request->setPurchaseState('NOT_PURCHASED');
         $this->assertEquals('not_purchased', $this->_request->getPurchaseState());
         $this->_request->setPurchaseState('');
     }
-    
+
     /**
      * @test
      */
@@ -90,13 +90,13 @@ class LicenseRequestTest extends TestCase
         $this->_request->setFormat(true);
         $this->assertEquals(true, $this->_request->getFormat());
     }
-    
+
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function setterGetterShouldSetGetLicenseReference()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $data = [
                 ['id' => 1,
                     'value' => 'test',

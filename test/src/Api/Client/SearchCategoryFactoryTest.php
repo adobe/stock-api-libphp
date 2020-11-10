@@ -71,10 +71,10 @@ class SearchCategoryFactoryTest extends TestCase
 
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function getCategoryShouldThrowExceptionIfCategoryIdIsNull()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request = new SearchCategoryRequest();
         $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for('{
             "id": 1043,
@@ -86,10 +86,10 @@ class SearchCategoryFactoryTest extends TestCase
 
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function getCategoryTreeShouldThrowExceptionIfCategoryIdIsNull()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request = new SearchCategoryRequest();
         $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for('{
             "id": 1043,

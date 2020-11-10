@@ -66,10 +66,10 @@ class FilesFactoryTest extends TestCase
 
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function getFilesShouldThrowExceptionWhenAccessTokenIsNullWithIsLicensedColumn() : void
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $requestMock = $this->createMock(FilesRequest::class);
         $requestMock->method('getResultColumns')->willReturn(['is_licensed']);
         $this->_files_factory->getFiles($requestMock, $this->_mocked_http_client);

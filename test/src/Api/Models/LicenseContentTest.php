@@ -21,7 +21,7 @@ class LicenseContentTest extends TestCase
      * @var LicenseContent
      */
     private $_license_content;
-    
+
     /**
      * @var array
      */
@@ -32,7 +32,7 @@ class LicenseContentTest extends TestCase
         'comp' => [],
         'thumbnail' => [],
     ];
-    
+
     /**
      * @test
      * @before
@@ -42,7 +42,7 @@ class LicenseContentTest extends TestCase
         $this->_license_content = new LicenseContent($this->_data);
         $this->assertInstanceOf(LicenseContent::class, $this->_license_content);
     }
-    
+
     /**
      * @test
      */
@@ -51,20 +51,20 @@ class LicenseContentTest extends TestCase
         $this->_license_content->setContentId(123);
         $this->assertEquals(123, $this->_license_content->getContentId());
     }
-    
+
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function setterGetterShouldSetGetSize()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_license_content->setSize('Comp');
         $this->assertEquals('Comp', $this->_license_content->getSize());
         $this->_license_content->setSize('Original');
         $this->assertEquals('Original', $this->_license_content->getSize());
         $this->_license_content->setSize('Compsss');
     }
-    
+
     /**
      * @test
      */
@@ -75,7 +75,7 @@ class LicenseContentTest extends TestCase
         $this->_license_content->setThumbnail($thumbnail);
         $this->assertEquals('test', $this->_license_content->getThumbnail()->getUrl());
     }
-    
+
     /**
      * @test
      */
@@ -86,7 +86,7 @@ class LicenseContentTest extends TestCase
         $this->_license_content->setComp($thumbnail);
         $this->assertEquals('test', $this->_license_content->getComp()->getUrl());
     }
-    
+
     /**
      * @test
      */

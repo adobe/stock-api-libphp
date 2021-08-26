@@ -19,7 +19,7 @@ class LicenseRequestTest extends TestCase
      * @var LicenseRequest
      */
     private $_request;
-
+    
     /**
      * @test
      * @before
@@ -29,7 +29,7 @@ class LicenseRequestTest extends TestCase
         $this->_request = new LicenseRequest();
         $this->assertInstanceOf(LicenseRequest::class, $this->_request);
     }
-
+    
     /**
      * @test
      */
@@ -38,7 +38,7 @@ class LicenseRequestTest extends TestCase
         $this->_request->setContentId(10431);
         $this->assertEquals(10431, $this->_request->getContentId());
     }
-
+    
     /**
      * @test
      */
@@ -49,7 +49,7 @@ class LicenseRequestTest extends TestCase
         $this->assertEquals('En-US', $this->_request->getLocale());
         $this->_request->setLocale('');
     }
-
+    
     /**
      * @test
      */
@@ -58,7 +58,7 @@ class LicenseRequestTest extends TestCase
         $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request->setContentId(-1);
     }
-
+    
     /**
      * @test
      */
@@ -69,7 +69,7 @@ class LicenseRequestTest extends TestCase
         $this->assertEquals('Standard', $this->_request->getLicenseState());
         $this->_request->setLicenseState('');
     }
-
+    
     /**
      * @test
      */
@@ -80,7 +80,7 @@ class LicenseRequestTest extends TestCase
         $this->assertEquals('not_purchased', $this->_request->getPurchaseState());
         $this->_request->setPurchaseState('');
     }
-
+    
     /**
      * @test
      */
@@ -90,7 +90,7 @@ class LicenseRequestTest extends TestCase
         $this->_request->setFormat(true);
         $this->assertEquals(true, $this->_request->getFormat());
     }
-
+    
     /**
      * @test
      */

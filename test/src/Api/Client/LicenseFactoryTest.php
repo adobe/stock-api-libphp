@@ -63,7 +63,7 @@ class LicenseFactoryTest extends TestCase
         $this->_request = new LicenseRequest();
         $this->_request->setContentId(59741022);
         $this->_request->setLicenseState('STANDARD');
-        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for('{
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\Utils::streamFor('{
              "member": {
                 "stock_id": 1393839
                        },
@@ -81,8 +81,8 @@ class LicenseFactoryTest extends TestCase
         $final_response = $this->_license_factory->getContentInfo($this->_request, 'test', $this->_mocked_http_client);
         $this->assertEquals(1393839, $final_response->getMemberInfo()->getStockId());
     }
-
-
+    
+    
     /**
      * @test
      */
@@ -92,7 +92,7 @@ class LicenseFactoryTest extends TestCase
         $this->_request = new LicenseRequest();
         $final_response = $this->_license_factory->getContentInfo($this->_request, 'test', $this->_mocked_http_client);
     }
-
+    
     /**
      * @test
      */
@@ -103,7 +103,7 @@ class LicenseFactoryTest extends TestCase
         $this->_request->setContentId(59741022);
         $final_response = $this->_license_factory->getContentInfo($this->_request, 'test', $this->_mocked_http_client);
     }
-
+    
     /**
      * @test
      */
@@ -115,7 +115,7 @@ class LicenseFactoryTest extends TestCase
         $this->_request->setLicenseState('STANDARD');
         $final_response = $this->_license_factory->getContentInfo($this->_request, '', $this->_mocked_http_client);
     }
-
+    
     /**
      * @test
      */
@@ -124,7 +124,7 @@ class LicenseFactoryTest extends TestCase
         $this->_request = new LicenseRequest();
         $this->_request->setContentId(59741022);
         $this->_request->setLicenseState('STANDARD');
-        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for('{
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\Utils::streamFor('{
              "member": {
                 "stock_id": 1393839
                 },
@@ -144,7 +144,7 @@ class LicenseFactoryTest extends TestCase
         $final_response = $this->_license_factory->getContentLicense($this->_request, 'test', $this->_mocked_http_client);
         $this->assertEquals(1393839, $final_response->getMemberInfo()->getStockId());
     }
-
+    
     /**
      * @test
      */
@@ -160,7 +160,7 @@ class LicenseFactoryTest extends TestCase
                 ],
         ];
         $this->_request->setLicenseReference($data);
-        $this->_mocked_http_client->method('doPost')->willReturn(Psr7\stream_for('{
+        $this->_mocked_http_client->method('doPost')->willReturn(Psr7\Utils::streamFor('{
              "member": {
                 "stock_id": 1393839
                 },
@@ -180,7 +180,7 @@ class LicenseFactoryTest extends TestCase
         $final_response = $this->_license_factory->getContentLicense($this->_request, 'test', $this->_mocked_http_client);
         $this->assertEquals(1393839, $final_response->getMemberInfo()->getStockId());
     }
-
+    
     /**
      * @test
      */
@@ -190,7 +190,7 @@ class LicenseFactoryTest extends TestCase
         $this->_request = new LicenseRequest();
         $final_response = $this->_license_factory->getContentLicense($this->_request, 'test', $this->_mocked_http_client);
     }
-
+    
     /**
      * @test
      */
@@ -201,7 +201,7 @@ class LicenseFactoryTest extends TestCase
         $this->_request->setContentId(59741022);
         $final_response = $this->_license_factory->getContentLicense($this->_request, 'test', $this->_mocked_http_client);
     }
-
+    
     /**
      * @test
      */
@@ -213,7 +213,7 @@ class LicenseFactoryTest extends TestCase
         $this->_request->setLicenseState('STANDARD');
         $final_response = $this->_license_factory->getContentLicense($this->_request, '', $this->_mocked_http_client);
     }
-
+    
     /**
      * @test
      */
@@ -222,7 +222,7 @@ class LicenseFactoryTest extends TestCase
         $this->_request = new LicenseRequest();
         $this->_request->setContentId(84071201);
         $this->_request->setLicenseState('STANDARD');
-        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for('{
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\Utils::streamFor('{
              "available_entitlement": {
                 "quota": 0,
                 "full_entitlement_quota": []
@@ -241,7 +241,7 @@ class LicenseFactoryTest extends TestCase
         $final_response = $this->_license_factory->getMemberProfile($this->_request, 'test', $this->_mocked_http_client);
         $this->assertEquals(1393839, $final_response->getMemberInfo()->getStockId());
     }
-
+    
     /**
      * @test
      */
@@ -251,7 +251,7 @@ class LicenseFactoryTest extends TestCase
         $this->_request = new LicenseRequest();
         $final_response = $this->_license_factory->getMemberProfile($this->_request, 'test', $this->_mocked_http_client);
     }
-
+    
     /**
      * @test
      */
@@ -263,7 +263,7 @@ class LicenseFactoryTest extends TestCase
         $this->_request->setLicenseState('STANDARD');
         $final_response = $this->_license_factory->getMemberProfile($this->_request, '', $this->_mocked_http_client);
     }
-
+    
     /**
      * @test
      */
@@ -271,11 +271,11 @@ class LicenseFactoryTest extends TestCase
     {
         $this->_request = new LicenseRequest();
         $this->_request->setContentId(84071201);
-        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for('204'));
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\Utils::streamFor('204'));
         $final_response = $this->_license_factory->abandonLicense($this->_request, 'test', $this->_mocked_http_client);
         $this->assertEquals(204, $final_response);
     }
-
+    
     /**
      * @test
      */
@@ -285,7 +285,7 @@ class LicenseFactoryTest extends TestCase
         $this->_request = new LicenseRequest();
         $final_response = $this->_license_factory->abandonLicense($this->_request, 'test', $this->_mocked_http_client);
     }
-
+    
     /**
      * @test
      */
@@ -297,7 +297,7 @@ class LicenseFactoryTest extends TestCase
         $this->_request->setLicenseState('STANDARD');
         $final_response = $this->_license_factory->abandonLicense($this->_request, '', $this->_mocked_http_client);
     }
-
+    
     /**
      * @test
      */
@@ -307,10 +307,10 @@ class LicenseFactoryTest extends TestCase
         $this->_request = new LicenseRequest();
         $this->_request->setContentId(59741022);
         $this->_request->setLicenseState('STANDARD');
-        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for('205'));
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\Utils::streamFor('205'));
         $final_response = $this->_license_factory->abandonLicense($this->_request, 'test', $this->_mocked_http_client);
     }
-
+    
     /**
      * @test
      */
@@ -339,18 +339,18 @@ class LicenseFactoryTest extends TestCase
                         'content_type' => 'image/jpeg',
                         'width' => 4000,
                         'height' => 3928,
-
+                            
                     ],
                 ],
             ],
         ];
-
-        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for(json_encode($response)));
+                                
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\Utils::streamFor(json_encode($response)));
         $request = new LicenseRequest();
         $request->setContentId(84071201)->setLicenseState('STANDARD');
         $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
     }
-
+    
     /**
      * @test
      */
@@ -359,12 +359,12 @@ class LicenseFactoryTest extends TestCase
         $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->expectExceptionMessage('Could not find the licensing information for the asset');
         $response = [];
-        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for(json_encode($response)));
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\Utils::streamFor(json_encode($response)));
         $request = new LicenseRequest();
         $request->setContentId(84071201)->setLicenseState('STANDARD');
         $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
     }
-
+    
     /**
      * @test
      */
@@ -393,12 +393,12 @@ class LicenseFactoryTest extends TestCase
                 ],
             ],
         ];
-        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for(json_encode($response)));
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\Utils::streamFor(json_encode($response)));
         $request = new LicenseRequest();
         $request->setContentId(84071201)->setLicenseState('STANDARD');
         $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
     }
-
+    
     /**
      * @test
      */
@@ -436,12 +436,12 @@ class LicenseFactoryTest extends TestCase
                 'message' => 'This will use 1 of your 6 licenses.',
             ],
         ];
-        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for(json_encode($response)));
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\Utils::streamFor(json_encode($response)));
         $request = new LicenseRequest();
         $request->setContentId(84071201)->setLicenseState('STANDARD');
         $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
     }
-
+    
     /**
      * @test
      */
@@ -477,12 +477,12 @@ class LicenseFactoryTest extends TestCase
                 'message' => 'This will use 1 of your 6 licenses.',
             ],
         ];
-        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for(json_encode($response)));
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\Utils::streamFor(json_encode($response)));
         $request = new LicenseRequest();
         $request->setContentId(84071201)->setLicenseState('STANDARD');
         $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
     }
-
+    
     /**
      * @test
      */
@@ -520,12 +520,12 @@ class LicenseFactoryTest extends TestCase
                 'message' => 'This will use 1 of your 6 licenses.',
             ],
         ];
-        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for(json_encode($response)));
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\Utils::streamFor(json_encode($response)));
         $request = new LicenseRequest();
         $request->setContentId(84071201)->setLicenseState('STANDARD');
         $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
     }
-
+    
     /**
      * @test
      */
@@ -555,17 +555,17 @@ class LicenseFactoryTest extends TestCase
                         'content_type' => 'image/jpeg',
                         'width' => 4000,
                         'height' => 3928,
-
+                            
                     ],
                 ],
             ],
         ];
-        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for(json_encode($response)));
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\Utils::streamFor(json_encode($response)));
         $request = new LicenseRequest();
         $request->setContentId(84071201)->setLicenseState('STANDARD');
         $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
     }
-
+    
     /**
      * @test
      */
@@ -597,12 +597,12 @@ class LicenseFactoryTest extends TestCase
                 'message' => 'This will use 1 of your 6 licenses.',
             ],
         ];
-        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for(json_encode($response)));
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\Utils::streamFor(json_encode($response)));
         $request = new LicenseRequest();
         $request->setContentId(84071201)->setLicenseState('STANDARD');
         $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
     }
-
+    
     /**
      * @test
      */
@@ -632,12 +632,12 @@ class LicenseFactoryTest extends TestCase
                 ],
             ],
         ];
-        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for(json_encode($response)));
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\Utils::streamFor(json_encode($response)));
         $request = new LicenseRequest();
         $request->setContentId(84071201)->setLicenseState('STANDARD');
         $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
     }
-
+    
     /**
      * @test
      */
@@ -662,12 +662,12 @@ class LicenseFactoryTest extends TestCase
                 ],
             ],
         ];
-        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for(json_encode($response)));
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\Utils::streamFor(json_encode($response)));
         $request = new LicenseRequest();
         $request->setContentId(84071201)->setLicenseState('STANDARD');
         $guzzle_request = $this->_license_factory->downloadAssetRequest($request, 'access_token', $this->_mocked_http_client);
     }
-
+    
     /**
      * @test
      */
@@ -686,7 +686,7 @@ class LicenseFactoryTest extends TestCase
         $url = $mock->downloadAssetUrl($request, '', $this->_mocked_http_client);
         $this->assertEquals('TEST', $url);
     }
-
+    
     /**
      * @test
      */

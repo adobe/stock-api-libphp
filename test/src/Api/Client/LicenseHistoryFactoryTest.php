@@ -23,55 +23,55 @@ class LicenseHistoryFactoryTest extends TestCase
      * @var LicenseHistoryFactory
      */
     private $_license_history_factory;
-
+    
     /**
      * Config to be initialized.
      * @var CoreConfig
      */
     private $_config;
-
+    
     /**
      * Request object for License History.
      * @var LicenseHistoryRequest
      */
     private $_request;
-
+    
     /**
      * Mocked HttpClient.
      * @var Mocked HttpClient.
      */
     private $_mocked_http_client;
-
+    
     /**
      * Default Limit.
      * @var int
      */
     const TEST_DEFAULT_LIMIT = 100;
-
+    
     /**
      * Test NB Results.
      * @var int
      */
     const TEST_NB_RESULTS = 2;
-
+    
     /**
      * Test File Id.
      * @var int
      */
     const TEST_FILE_ID = 133927025;
-
+    
     /**
      * Total Pages.
      * @var int
      */
     const TEST_TOTAL_PAGES = 2476490;
-
+    
     /**
      * Test Title
      * @var string
      */
     const TEST_FILE_TITLE = 'A floating lantern being set free amongst many others at night.';
-
+    
     /**
      * Expected Response
      * @var array
@@ -85,7 +85,7 @@ class LicenseHistoryFactoryTest extends TestCase
                 ],
         ],
     ];
-
+    
     /**
      * Helper function to verify the response.
      * @param LicenseHistoryResponse $response
@@ -97,7 +97,7 @@ class LicenseHistoryFactoryTest extends TestCase
         $this->assertEquals(LicenseHistoryFactoryTest::TEST_FILE_ID, $response->getFiles()[0]->getId());
         $this->assertEquals(LicenseHistoryFactoryTest::TEST_FILE_TITLE, $response->getFiles()[0]->getTitle());
     }
-
+    
     /**
      * @test
      * @before
@@ -109,14 +109,14 @@ class LicenseHistoryFactoryTest extends TestCase
         $this->_license_history_factory = new LicenseHistoryFactory($this->_config);
         $this->assertInstanceOf(LicenseHistoryFactory::class, $this->_license_history_factory);
     }
-
+    
     /**
      * @test
      */
     public function getNextLicenseHistoryShouldReturnValidResponse()
     {
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
         $this->_request = new LicenseHistoryRequest();
         $search_params = new SearchParamLicenseHistoryModels();
         $search_params->setLimit(1);
@@ -126,7 +126,7 @@ class LicenseHistoryFactoryTest extends TestCase
         $this->_checkTestResponse($response);
         $this->assertEquals(0, $this->_license_history_factory->currentLicenseHistoryPageIndex());
     }
-
+    
     /**
      * @test
      */
@@ -135,7 +135,7 @@ class LicenseHistoryFactoryTest extends TestCase
         $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->expectExceptionMessage('No more search results available!');
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
         $this->_request = new LicenseHistoryRequest();
         $search_params = new SearchParamLicenseHistoryModels();
         $search_params->setLimit(1)->setOffset(3);
@@ -144,7 +144,7 @@ class LicenseHistoryFactoryTest extends TestCase
         $response = $this->_license_history_factory->getNextLicenseHistory();
         $response = $this->_license_history_factory->getNextLicenseHistory();
     }
-
+    
     /**
      * @test
      */
@@ -158,7 +158,7 @@ class LicenseHistoryFactoryTest extends TestCase
                 ],
         ];
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode($_zero_response)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode($_zero_response)));
         $this->_request = new LicenseHistoryRequest();
         $search_params = new SearchParamLicenseHistoryModels();
         $search_params->setLimit(1);
@@ -167,7 +167,7 @@ class LicenseHistoryFactoryTest extends TestCase
         $response = $this->_license_history_factory->getNextLicenseHistory();
         $response = $this->_license_history_factory->getNextLicenseHistory();
     }
-
+    
     /**
      * @test
      */
@@ -177,7 +177,7 @@ class LicenseHistoryFactoryTest extends TestCase
         $this->expectExceptionMessage('No more license file results available!');
         $_zero_response = [];
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode($_zero_response)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode($_zero_response)));
         $this->_request = new LicenseHistoryRequest();
         $search_params = new SearchParamLicenseHistoryModels();
         $search_params->setLimit(1);
@@ -185,14 +185,14 @@ class LicenseHistoryFactoryTest extends TestCase
         $this->_license_history_factory->initializeLicenseHistory($this->_request, 'test', $this->_mocked_http_client);
         $response = $this->_license_history_factory->getNextLicenseHistory();
     }
-
+    
     /**
      * @test
      */
     public function getPreviousLicenseHistoryShouldReturnValidResponse()
     {
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
         $this->_request = new LicenseHistoryRequest();
         $search_params = new SearchParamLicenseHistoryModels();
         $search_params->setLimit(1)->setOffset(1);
@@ -202,7 +202,7 @@ class LicenseHistoryFactoryTest extends TestCase
         $this->_checkTestResponse($response);
         $this->assertEquals(0, $this->_license_history_factory->currentLicenseHistoryPageIndex());
     }
-
+    
     /**
      * @test
      */
@@ -211,7 +211,7 @@ class LicenseHistoryFactoryTest extends TestCase
         $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->expectExceptionMessage('No more search results available!');
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
         $this->_request = new LicenseHistoryRequest();
         $search_params = new SearchParamLicenseHistoryModels();
         $search_params->setLimit(1)->setOffset(0);
@@ -219,7 +219,7 @@ class LicenseHistoryFactoryTest extends TestCase
         $this->_license_history_factory->initializeLicenseHistory($this->_request, 'test', $this->_mocked_http_client);
         $response = $this->_license_history_factory->getPreviousLicenseHistory();
     }
-
+    
     /**
      * @test
      */
@@ -228,7 +228,7 @@ class LicenseHistoryFactoryTest extends TestCase
         $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->expectExceptionMessage('Page index out of bounds');
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
         $this->_request = new LicenseHistoryRequest();
         $search_params = new SearchParamLicenseHistoryModels();
         $search_params->setLimit(1);
@@ -236,14 +236,14 @@ class LicenseHistoryFactoryTest extends TestCase
         $this->_license_history_factory->initializeLicenseHistory($this->_request, 'test', $this->_mocked_http_client);
         $this->_license_history_factory->getLicenseHistoryPage(-1);
     }
-
+    
     /**
      * @test
      */
     public function getLicenseHistoryPageShouldReturnValidResponse()
     {
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
         $this->_request = new LicenseHistoryRequest();
         $search_params = new SearchParamLicenseHistoryModels();
         $search_params->setLimit(1);
@@ -253,14 +253,14 @@ class LicenseHistoryFactoryTest extends TestCase
         $this->_checkTestResponse($response);
         $this->_checkTestResponse($this->_license_history_factory->getLastLicenseHistory());
     }
-
+    
     /**
      * @test
      */
     public function getLastLicenseHistoryShouldReturnNullResponseWithoutApicall()
     {
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
         $this->_request = new LicenseHistoryRequest();
         $search_params = new SearchParamLicenseHistoryModels();
         $search_params->setLimit(1);
@@ -269,14 +269,14 @@ class LicenseHistoryFactoryTest extends TestCase
         $response = $this->_license_history_factory->getLastLicenseHistory();
         $this->assertNull($response->getNbResults());
     }
-
+    
     /**
      * @test
      */
     public function currentLicenseHistoryPageIndexShouldReturnErrorwhenCalledWithoutApiCall()
     {
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
         $this->_request = new LicenseHistoryRequest();
         $search_params = new SearchParamLicenseHistoryModels();
         $search_params->setLimit(1);
@@ -285,14 +285,14 @@ class LicenseHistoryFactoryTest extends TestCase
         $response = $this->_license_history_factory->currentLicenseHistoryPageIndex();
         $this->assertEquals(-1, $response);
     }
-
+    
     /**
      * @test
      */
     public function getTotalLicenseHistoryFilesShouldReturnErrorWhenCalledWithoutApiCall()
     {
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
         $this->_request = new LicenseHistoryRequest();
         $search_params = new SearchParamLicenseHistoryModels();
         $search_params->setLimit(1);
@@ -301,14 +301,14 @@ class LicenseHistoryFactoryTest extends TestCase
         $response = $this->_license_history_factory->getTotalLicenseHistoryFiles();
         $this->assertEquals(-1, $response);
     }
-
+    
     /**
      * @test
      */
     public function getTotalLicenseHistoryFilesShouldReturnTotalFiles()
     {
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
         $this->_request = new LicenseHistoryRequest();
         $search_params = new SearchParamLicenseHistoryModels();
         $search_params->setLimit(1);
@@ -318,14 +318,14 @@ class LicenseHistoryFactoryTest extends TestCase
         $count = $this->_license_history_factory->getTotalLicenseHistoryFiles();
         $this->assertEquals(LicenseHistoryFactoryTest::TEST_NB_RESULTS, $count);
     }
-
+    
     /**
      * @test
      */
     public function getTotalLicenseHistoryPagesShouldReturnTotalPages()
     {
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
         $this->_request = new LicenseHistoryRequest();
         $search_params = new SearchParamLicenseHistoryModels();
         $search_params->setLimit(1);
@@ -335,7 +335,7 @@ class LicenseHistoryFactoryTest extends TestCase
         $count = $this->_license_history_factory->getTotalLicenseHistoryPages();
         $this->assertEquals(2, $count);
     }
-
+    
     /**
      * @test
      */
@@ -348,7 +348,7 @@ class LicenseHistoryFactoryTest extends TestCase
         $response = $this->_license_history_factory->initializeLicenseHistory($this->_request, 'test', $this->_mocked_http_client);
         $this->assertInstanceOf(LicenseHistoryFactory::class, $response);
     }
-
+    
     /**
      * @test
      */
@@ -362,7 +362,7 @@ class LicenseHistoryFactoryTest extends TestCase
         $this->_request->setSearchParams($search_params);
         $this->_license_history_factory->initializeLicenseHistory($this->_request, '', $this->_mocked_http_client);
     }
-
+    
     /**
      * @test
      */
@@ -373,7 +373,7 @@ class LicenseHistoryFactoryTest extends TestCase
         $this->_request = null;
         $this->_license_history_factory->initializeLicenseHistory($this->_request, '', $this->_mocked_http_client);
     }
-
+    
     /**
      * @test
      */

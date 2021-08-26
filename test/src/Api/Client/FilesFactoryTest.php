@@ -55,7 +55,7 @@ class FilesFactoryTest extends TestCase
     {
         $requestMock = $this->createMock(FilesRequest::class);
         $requestMock->method('toArray')->willReturn([]);
-        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for('{
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\Utils::streamFor('{
             "nb_results":3,
             "files":[{"id":281266321},{"id":285285249},{"id":264874647}]
         }'));

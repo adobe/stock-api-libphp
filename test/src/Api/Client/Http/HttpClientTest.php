@@ -61,7 +61,7 @@ class HttpClientTest extends TestCase
         $this->_mocked_http_client->method('request')->will($this->throwException($exception));
         $this->_client->doGet('some uri', []);
     }
-
+    
     /**
      * @test
      */
@@ -71,7 +71,7 @@ class HttpClientTest extends TestCase
         $this->_mocked_http_client->method('request')->willReturn($response);
         $this->assertEquals($response->getBody(), $this->_client->doPost('some uri', [], []));
     }
-
+    
     /**
      * @test
      */
@@ -82,7 +82,7 @@ class HttpClientTest extends TestCase
         $this->_mocked_http_client->method('request')->will($this->throwException($exception));
         $this->_client->doPost('some uri', [], []);
     }
-
+    
     /**
      * @test
      */
@@ -92,7 +92,7 @@ class HttpClientTest extends TestCase
         $this->_mocked_http_client->method('request')->willReturn($response);
         $this->assertEquals($response->getBody(), $this->_client->doMultiPart('some uri', [], 'test/resources/SmallImage.jpg'));
     }
-
+    
     /**
      * @test
      */
@@ -103,7 +103,7 @@ class HttpClientTest extends TestCase
         $this->_mocked_http_client->method('request')->will($this->throwException($exception));
         $this->_client->doMultiPart('some uri', [], 'test/resources/SmallImage.jpg');
     }
-
+    
     /**
      * @test
      */
@@ -114,7 +114,7 @@ class HttpClientTest extends TestCase
         $this->_mocked_http_client->method('request')->will($this->throwException($exception));
         $this->_client->doMultiPart('some uri', [], '');
     }
-
+    
     /**
      * @test
      */
@@ -124,7 +124,7 @@ class HttpClientTest extends TestCase
         $this->_mocked_http_client->method('getConfig')->willReturn($stack);
         $this->assertEquals($stack, $this->_client->getHandlerStack());
     }
-
+    
     /**
      * @test
      */

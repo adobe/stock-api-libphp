@@ -60,7 +60,7 @@ class SearchCategoryFactoryTest extends TestCase
     {
         $this->_request = new SearchCategoryRequest();
         $this->_request->setCategoryId(1043);
-        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for('{
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\Utils::streamFor('{
             "id": 1043,
             "link": "/Category/travel/1043",
             "name": "Travel"
@@ -76,7 +76,7 @@ class SearchCategoryFactoryTest extends TestCase
     {
         $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request = new SearchCategoryRequest();
-        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for('{
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\Utils::streamFor('{
             "id": 1043,
             "link": "/Category/travel/1043",
             "name": "Travel"
@@ -91,7 +91,7 @@ class SearchCategoryFactoryTest extends TestCase
     {
         $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request = new SearchCategoryRequest();
-        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for('{
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\Utils::streamFor('{
             "id": 1043,
             "link": "/Category/travel/1043",
             "name": "Travel"
@@ -106,7 +106,7 @@ class SearchCategoryFactoryTest extends TestCase
     {
         $this->_request = new SearchCategoryRequest();
         $this->_request->setCategoryId(1043);
-        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\stream_for('[{
+        $this->_mocked_http_client->method('doGet')->willReturn(Psr7\Utils::streamFor('[{
             "id": 1043,
             "link": "/Category/travel/1043",
             "name": "Travel"

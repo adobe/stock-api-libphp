@@ -18,7 +18,7 @@ class LicensePurchaseOptionsTest extends TestCase
      * @var LicensePurchaseOptions
      */
     private $_license_purchase_options;
-
+    
     /**
      * @var array
      */
@@ -28,7 +28,7 @@ class LicensePurchaseOptionsTest extends TestCase
         'message' => 'test',
         'url' => 'http://adobetest.com',
     ];
-
+    
     /**
      * @test
      * @before
@@ -38,7 +38,7 @@ class LicensePurchaseOptionsTest extends TestCase
         $this->_license_purchase_options = new LicensePurchaseOptions($this->_data);
         $this->assertInstanceOf(LicensePurchaseOptions::class, $this->_license_purchase_options);
     }
-
+    
     /**
      * @test
      */
@@ -49,7 +49,7 @@ class LicensePurchaseOptionsTest extends TestCase
         $this->assertEquals('not_purchased', $this->_license_purchase_options->getPurchaseState());
         $this->_license_purchase_options->setPurchaseState('TEST');
     }
-
+    
     /**
      * @test
      */
@@ -58,7 +58,7 @@ class LicensePurchaseOptionsTest extends TestCase
         $this->_license_purchase_options->setRequiresCheckout(true);
         $this->assertEquals(true, $this->_license_purchase_options->getRequiresCheckout());
     }
-
+    
     /**
      * @test
      */
@@ -67,7 +67,7 @@ class LicensePurchaseOptionsTest extends TestCase
         $this->_license_purchase_options->setMessage('Stock');
         $this->assertEquals('Stock', $this->_license_purchase_options->getMessage());
     }
-
+    
     /**
      * @test
      */

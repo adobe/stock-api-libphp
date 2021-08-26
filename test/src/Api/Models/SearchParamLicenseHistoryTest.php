@@ -16,7 +16,7 @@ class SearchParamLicenseHistoryTest extends TestCase
      * @var SearchParamLicenseHistoryModel
      */
     public $search_params_license_history;
-
+    
     /**
      * @test
      * @before
@@ -26,7 +26,7 @@ class SearchParamLicenseHistoryTest extends TestCase
         $this->search_params_license_history = new SearchParamLicenseHistoryModel();
         $this->assertInstanceOf(SearchParamLicenseHistoryModel::class, $this->search_params_license_history);
     }
-
+    
     /**
      * @test
      */
@@ -38,7 +38,7 @@ class SearchParamLicenseHistoryTest extends TestCase
         $this->assertEquals(50, $this->search_params_license_history->getLimit());
         $this->search_params_license_history->setLimit(-1);
     }
-
+    
     /**
      * @test
      */
@@ -50,7 +50,7 @@ class SearchParamLicenseHistoryTest extends TestCase
         $this->assertEquals(100, $this->search_params_license_history->getOffset());
         $this->search_params_license_history->setOffset(-1);
     }
-
+    
     /**
      * @test
      */

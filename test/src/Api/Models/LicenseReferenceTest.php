@@ -39,10 +39,10 @@ class LicenseReferenceTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function setterGetterShouldSetGetLicenseReferenceId()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_license_reference->setLicenseReferenceId(1234);
         $this->assertEquals(1234, $this->_license_reference->getLicenseReferenceId());
         $this->_license_reference->setLicenseReferenceId(-1);
@@ -50,10 +50,10 @@ class LicenseReferenceTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function setterGetterShouldSetGetLicenseReferenceValue()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_license_reference->setLicenseReferenceValue('test2');
         $this->assertEquals('test2', $this->_license_reference->getLicenseReferenceValue());
         $this->_license_reference->setLicenseReferenceValue('');

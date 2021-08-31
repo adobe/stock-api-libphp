@@ -41,10 +41,10 @@ class LicensePurchaseOptionsTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function setterGetterShouldSetGetState()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_license_purchase_options->setPurchaseState('NOT_PURCHASED');
         $this->assertEquals('not_purchased', $this->_license_purchase_options->getPurchaseState());
         $this->_license_purchase_options->setPurchaseState('TEST');

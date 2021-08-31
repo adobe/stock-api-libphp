@@ -73,28 +73,28 @@ class FilesRequestTest extends TestCase
 
     /**
      * @test
-     * @expectedException \TypeError
      */
     public function setIdsThrowException()
     {
+        $this->expectException(\TypeError::class);
         $this->_request->setIds(null);
     }
 
     /**
      * @test
-     * @expectedException \TypeError
      */
     public function setLocaleThrowException()
     {
+        $this->expectException(\TypeError::class);
         $this->_request->setLocale(null);
     }
 
     /**
      * @test
-     * @expectedException \TypeError
      */
     public function setResultColumnsThrowException()
     {
+        $this->expectException(\TypeError::class);
         $this->_request->setResultColumns(null);
     }
 }

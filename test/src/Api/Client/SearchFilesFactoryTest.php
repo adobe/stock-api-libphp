@@ -118,7 +118,7 @@ class SearchFilesFactoryTest extends TestCase
     public function getNextResponseShouldReturnValidResponse()
     {
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
         $this->_request = new SearchFilesRequest();
         $search_params = new SearchParametersModels();
         $search_params->setWords('tree');
@@ -131,13 +131,13 @@ class SearchFilesFactoryTest extends TestCase
     
     /**
      * @test
-     * @expectedException AdobeStock\Api\Exception\StockApi
-     * @expectedExceptionMessage No more search results available!
      */
     public function getNextResponseShouldThrowExceptionSinceOffsetExceedResultCount()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
+        $this->expectExceptionMessage('No more search results available!');
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
         $this->_request = new SearchFilesRequest();
         $search_params = new SearchParametersModels();
         $offset_value  = SearchFilesFactoryTest::TEST_NB_RESULTS - SearchFilesFactoryTest::TEST_DEFAULT_LIMIT;
@@ -150,18 +150,18 @@ class SearchFilesFactoryTest extends TestCase
     
     /**
      * @test
-     * @expectedException AdobeStock\Api\Exception\StockApi
-     * @expectedExceptionMessage No more search results available!
      */
     public function getNextResponseShouldThrowExceptionWhenResultCountZero()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
+        $this->expectExceptionMessage('No more search results available!');
         $_zero_response = [
             'nb_results' => 0,
             'files' => [
                 ],
         ];
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode($_zero_response)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode($_zero_response)));
         $this->_request = new SearchFilesRequest();
         $search_params = new SearchParametersModels();
         $search_params->setWords('tree');
@@ -173,14 +173,14 @@ class SearchFilesFactoryTest extends TestCase
     
     /**
      * @test
-     * @expectedException AdobeStock\Api\Exception\StockApi
-     * @expectedExceptionMessage No more search results available!
      */
     public function getNextResponseShouldThrowExceptionWhenResultsCountNotPresentResponse()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
+        $this->expectExceptionMessage('No more search results available!');
         $_zero_response = [];
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode($_zero_response)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode($_zero_response)));
         $this->_request = new SearchFilesRequest();
         $search_params = new SearchParametersModels();
         $search_params->setWords('tree');
@@ -195,7 +195,7 @@ class SearchFilesFactoryTest extends TestCase
     public function getPreviousResponseShouldReturnValidResponse()
     {
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
         $this->_request = new SearchFilesRequest();
         $search_params = new SearchParametersModels();
         $offset_value  = SearchFilesFactoryTest::TEST_DEFAULT_LIMIT;
@@ -209,13 +209,13 @@ class SearchFilesFactoryTest extends TestCase
     
     /**
      * @test
-     * @expectedException AdobeStock\Api\Exception\StockApi
-     * @expectedExceptionMessage Offset should be between 0 and MaxResults
      */
     public function getPreviousResponseShouldThrowExceptionWhenOffsetIsNegative()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
+        $this->expectExceptionMessage('Offset should be between 0 and MaxResults');
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
         $this->_request = new SearchFilesRequest();
         $search_params = new SearchParametersModels();
         $search_params->setWords('tree')->setOffset(0);
@@ -226,13 +226,13 @@ class SearchFilesFactoryTest extends TestCase
     
     /**
      * @test
-     * @expectedException AdobeStock\Api\Exception\StockApi
-     * @expectedExceptionMessage Page index out of bounds
      */
     public function getResponsePageShouldThrowExceptionWhenInvalidPageindex()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
+        $this->expectExceptionMessage('Page index out of bounds');
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
         $this->_request = new SearchFilesRequest();
         $search_params = new SearchParametersModels();
         $search_params->setWords('tree');
@@ -255,7 +255,7 @@ class SearchFilesFactoryTest extends TestCase
     public function getResponsePageShouldReturnValidResponse()
     {
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
         $this->_request = new SearchFilesRequest();
         $search_params = new SearchParametersModels();
         $search_params->setWords('tree');
@@ -284,7 +284,7 @@ class SearchFilesFactoryTest extends TestCase
         $this->_request->setSearchParams($search_params);
         $this->_request->setResultColumns($result_column_array);
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
         $this->_search_files_factory->searchFilesInitialize($this->_request, '', $this->_mocked_http_client, true);
         $response = $this->_search_files_factory->getLastResponse();
         $this->assertNull($response->getNbResults());
@@ -305,7 +305,7 @@ class SearchFilesFactoryTest extends TestCase
         $this->_request->setSearchParams($search_params);
         $this->_request->setResultColumns($result_column_array);
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
         $this->_search_files_factory->searchFilesInitialize($this->_request, '', $this->_mocked_http_client, true);
         $response = $this->_search_files_factory->getLastResponse();
         $this->assertNull($response->getNbResults());
@@ -322,7 +322,7 @@ class SearchFilesFactoryTest extends TestCase
         $search_params->setWords('tree');
         $this->_request->setSearchParams($search_params);
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
         $this->_search_files_factory->searchFilesInitialize($this->_request, '', $this->_mocked_http_client, true);
         $response = $this->_search_files_factory->currentSearchPageIndex();
         $this->assertEquals(-1, $response);
@@ -339,7 +339,7 @@ class SearchFilesFactoryTest extends TestCase
         $search_params->setWords('tree');
         $this->_request->setSearchParams($search_params);
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
         $this->_search_files_factory->searchFilesInitialize($this->_request, '', $this->_mocked_http_client, true);
         $response = $this->_search_files_factory->totalSearchFiles();
         $this->assertEquals(-1, $response);
@@ -356,7 +356,7 @@ class SearchFilesFactoryTest extends TestCase
         $search_params->setWords('tree');
         $this->_request->setSearchParams($search_params);
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
         $this->_search_files_factory->searchFilesInitialize($this->_request, '', $this->_mocked_http_client, true);
         $response = $this->_search_files_factory->getNextResponse();
         $count = $this->_search_files_factory->totalSearchFiles();
@@ -381,11 +381,11 @@ class SearchFilesFactoryTest extends TestCase
     
     /**
      * @test
-     * @expectedException AdobeStock\Api\Exception\StockApi
-     * @expectedExceptionMessage request cannot be null
      */
     public function searchFilesInitializeShouldThrowStockExceptionSinceSearchRequestParameterIsNull()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
+        $this->expectExceptionMessage('request cannot be null');
         $this->_request = null;
         
         try {
@@ -416,11 +416,11 @@ class SearchFilesFactoryTest extends TestCase
     
     /**
      * @test
-     * @expectedException AdobeStock\Api\Exception\StockApi
-     * @expectedExceptionMessage Search parameter must be present in the request object
      */
     public function searchFilesShouldThrowStockexceptionSinceSearchParamsAreNull()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
+        $this->expectExceptionMessage('Search parameter must be present in the request object');
         $this->_request = new SearchFilesRequest();
         $result_column_array[] = 'is_licensed';
         $this->_request->setResultColumns($result_column_array);
@@ -429,11 +429,11 @@ class SearchFilesFactoryTest extends TestCase
     
     /**
      * @test
-     * @expectedException AdobeStock\Api\Exception\StockApi
-     * @expectedExceptionMessage Access Token missing! Result Column is_licensed requires authentication
      */
     public function searchFilesShouldThrowStockexceptionSinceIsLicensedRequestedInResultsAndAccessTokenIsNull()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
+        $this->expectExceptionMessage('Access Token missing! Result Column is_licensed requires authentication');
         $this->_request = new SearchFilesRequest();
         $search_params = new SearchParametersModels();
         $search_params->setWords('tree');
@@ -455,7 +455,7 @@ class SearchFilesFactoryTest extends TestCase
     public function testVisualSearch()
     {
         $this->_mocked_http_client->method('doMultiPart')
-            ->willReturn(Psr7\stream_for(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
         $this->_request = new SearchFilesRequest();
         $search_params = new SearchParametersModels();
         $search_params->setSimilarImage(true);
@@ -466,13 +466,15 @@ class SearchFilesFactoryTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
-     * @exceptedExceptionMessage Image Data missing! Search parameter similar_image requires similar_image in query parameters
      */
     public function testVisualSearchThrowExceptionIfSimilarImageISNotSet()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
+        $this->expectExceptionMessage(
+            'Image Data missing! Search parameter similar_image requires similar_image in query parameters'
+        );
         $this->_mocked_http_client->method('doMultiPart')
-            ->willReturn(Psr7\stream_for(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(SearchFilesFactoryTest::TEST_RESPONSE)));
         $this->_request = new SearchFilesRequest();
         $search_params = new SearchParametersModels();
         $search_params->setSimilarImage(true);

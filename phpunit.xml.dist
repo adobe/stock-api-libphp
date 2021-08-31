@@ -7,7 +7,6 @@
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          forceCoversAnnotation="false"
-         mapTestClassNameToCoveredClassName="false"
          processIsolation="false"
          stopOnError="false"
          stopOnFailure="false"
@@ -15,7 +14,7 @@
          stopOnSkipped="false">
 
     <testsuites>
-        <testsuite>
+        <testsuite name="Stock_Api_Unit_Tests_Src">
             <directory suffix=".php">./test/src/</directory>
         </testsuite>
     </testsuites>
@@ -23,15 +22,13 @@
     <php>
         <ini name="memory_limit" value="-1"/>
     </php>
-
-    <filter>
-        <blacklist>
+    <coverage>
+        <include>
+            <directory suffix=".php">./src</directory>
+        </include>
+        <exclude>
             <directory>./vendor</directory>
             <directory>./test</directory>
-        </blacklist>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./src</directory>
-        </whitelist>
-    </filter>
-
+        </exclude>
+    </coverage>
 </phpunit>

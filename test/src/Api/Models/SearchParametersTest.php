@@ -29,10 +29,10 @@ class SearchParametersTest extends TestCase
     }
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function testCreatorId()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->search_params->setCreatorId(100);
         $this->assertEquals(100, $this->search_params->getCreatorId());
         $this->search_params->setCreatorId(-1);
@@ -40,10 +40,10 @@ class SearchParametersTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function testMediaId()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->search_params->setMediaId(100);
         $this->assertEquals(100, $this->search_params->getMediaId());
         $this->search_params->setMediaId(-1);
@@ -51,10 +51,10 @@ class SearchParametersTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function testModelId()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->search_params->setModelId(100);
         $this->assertEquals(100, $this->search_params->getModelId());
         $this->search_params->setModelId(-1);
@@ -62,10 +62,10 @@ class SearchParametersTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function testSerieId()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->search_params->setSerieId(100);
         $this->assertEquals(100, $this->search_params->getSerieId());
         $this->search_params->setSerieId(-1);
@@ -73,10 +73,10 @@ class SearchParametersTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function testSimilar()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->search_params->setSimilar(100);
         $this->assertEquals(100, $this->search_params->getSimilar());
         $this->search_params->setSimilar(-1);
@@ -84,10 +84,10 @@ class SearchParametersTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function testCategory()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->search_params->setCategory(100);
         $this->assertEquals(100, $this->search_params->getCategory());
         $this->search_params->setCategory(-1);
@@ -95,10 +95,10 @@ class SearchParametersTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function testLimit()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->search_params->setLimit(50);
         $this->assertEquals(50, $this->search_params->getLimit());
         $this->search_params->setLimit(-1);
@@ -106,10 +106,10 @@ class SearchParametersTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function testOffset()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->search_params->setOffset(100);
         $this->assertEquals(100, $this->search_params->getOffset());
         $this->search_params->setOffset(-1);
@@ -117,10 +117,10 @@ class SearchParametersTest extends TestCase
     
     /**
      * @test
-     * @expectedException \TypeError
      */
     public function testWords()
     {
+        $this->expectException(\TypeError::class);
         $this->search_params->setWords('Tree');
         $this->assertEquals('Tree', $this->search_params->getWords());
         $this->search_params->setWords(null);
@@ -128,10 +128,10 @@ class SearchParametersTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function testSimilarURL()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->search_params->setSimilarURL('xyz.com');
         $this->assertEquals('xyz.com', $this->search_params->getSimilarURL());
         $this->search_params->setSimilarURL('');
@@ -139,10 +139,10 @@ class SearchParametersTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function testFilterColors()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->search_params->setFilterColors('Blue');
         $this->assertEquals('Blue', $this->search_params->getFilterColors());
         $this->search_params->setFilterColors('');
@@ -150,10 +150,10 @@ class SearchParametersTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function testGalleryId()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->search_params->setGalleryId('Id');
         $this->assertEquals('Id', $this->search_params->getGalleryId());
         $this->search_params->setGalleryId('');
@@ -161,10 +161,10 @@ class SearchParametersTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function testFilterAreaPixels()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->search_params->setFilterAreaPixels(1000);
         $this->assertEquals(1000, $this->search_params->getFilterAreaPixels());
         $this->search_params->setFilterAreaPixels(-1);
@@ -327,10 +327,10 @@ class SearchParametersTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function testFilterTemplateTypes()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $type = [
             'PSDT',
         ];
@@ -341,10 +341,10 @@ class SearchParametersTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function testFilter3DTypeIds()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $type = [
             'Models',
         ];
@@ -355,10 +355,10 @@ class SearchParametersTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function testFilterTemplateCategoryIds()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $type = [
             'ALL',
         ];

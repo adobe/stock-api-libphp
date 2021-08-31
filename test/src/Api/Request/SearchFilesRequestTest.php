@@ -55,38 +55,37 @@ class SearchFilesRequestTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function setSearchParamsThrowException()
     {
-        $search_params = new SearchParametersModels();
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request->setSearchParams(null);
     }
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function setLocaleThrowException()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request->setLocale(null);
     }
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function setResultColumnsThrowException()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request->setResultColumns([]);
     }
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function setSimilarImageThrowExceptionIfFileDoesntExist()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request->setSimilarImage('');
     }
 }

@@ -116,7 +116,7 @@ class LicenseHistoryFactoryTest extends TestCase
     public function getNextLicenseHistoryShouldReturnValidResponse()
     {
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
         $this->_request = new LicenseHistoryRequest();
         $search_params = new SearchParamLicenseHistoryModels();
         $search_params->setLimit(1);
@@ -129,13 +129,13 @@ class LicenseHistoryFactoryTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
-     * @expectedExceptionMessage No more search results available!
      */
     public function getNextLicenseHistoryShouldThrowExceptionSinceOffsetExceedResultCount()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
+        $this->expectExceptionMessage('No more search results available!');
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
         $this->_request = new LicenseHistoryRequest();
         $search_params = new SearchParamLicenseHistoryModels();
         $search_params->setLimit(1)->setOffset(3);
@@ -147,18 +147,18 @@ class LicenseHistoryFactoryTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
-     * @expectedExceptionMessage No more search results available!
      */
     public function getNextLicenseHistoryShouldThrowExceptionWhenResultCountZero()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
+        $this->expectExceptionMessage('No more search results available!');
         $_zero_response = [
             'nb_results' => 0,
             'files' => [
                 ],
         ];
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode($_zero_response)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode($_zero_response)));
         $this->_request = new LicenseHistoryRequest();
         $search_params = new SearchParamLicenseHistoryModels();
         $search_params->setLimit(1);
@@ -170,14 +170,14 @@ class LicenseHistoryFactoryTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
-     * @expectedExceptionMessage No more license file results available!
      */
     public function getNextLicenseHistoryShouldThrowExceptionWhenResultsCountNotPresentResponse()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
+        $this->expectExceptionMessage('No more license file results available!');
         $_zero_response = [];
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode($_zero_response)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode($_zero_response)));
         $this->_request = new LicenseHistoryRequest();
         $search_params = new SearchParamLicenseHistoryModels();
         $search_params->setLimit(1);
@@ -192,7 +192,7 @@ class LicenseHistoryFactoryTest extends TestCase
     public function getPreviousLicenseHistoryShouldReturnValidResponse()
     {
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
         $this->_request = new LicenseHistoryRequest();
         $search_params = new SearchParamLicenseHistoryModels();
         $search_params->setLimit(1)->setOffset(1);
@@ -205,13 +205,13 @@ class LicenseHistoryFactoryTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
-     * @expectedExceptionMessage No more search results available!
      */
     public function getPreviousLicenseHistoryShouldThrowExceptionWhenOffsetIsNegative()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
+        $this->expectExceptionMessage('No more search results available!');
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
         $this->_request = new LicenseHistoryRequest();
         $search_params = new SearchParamLicenseHistoryModels();
         $search_params->setLimit(1)->setOffset(0);
@@ -222,13 +222,13 @@ class LicenseHistoryFactoryTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
-     * @expectedExceptionMessage Page index out of bounds
      */
     public function getLicenseHistoryPageShouldThrowExceptionWhenInvalidPageindex()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
+        $this->expectExceptionMessage('Page index out of bounds');
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
         $this->_request = new LicenseHistoryRequest();
         $search_params = new SearchParamLicenseHistoryModels();
         $search_params->setLimit(1);
@@ -243,7 +243,7 @@ class LicenseHistoryFactoryTest extends TestCase
     public function getLicenseHistoryPageShouldReturnValidResponse()
     {
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
         $this->_request = new LicenseHistoryRequest();
         $search_params = new SearchParamLicenseHistoryModels();
         $search_params->setLimit(1);
@@ -260,7 +260,7 @@ class LicenseHistoryFactoryTest extends TestCase
     public function getLastLicenseHistoryShouldReturnNullResponseWithoutApicall()
     {
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
         $this->_request = new LicenseHistoryRequest();
         $search_params = new SearchParamLicenseHistoryModels();
         $search_params->setLimit(1);
@@ -276,7 +276,7 @@ class LicenseHistoryFactoryTest extends TestCase
     public function currentLicenseHistoryPageIndexShouldReturnErrorwhenCalledWithoutApiCall()
     {
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
         $this->_request = new LicenseHistoryRequest();
         $search_params = new SearchParamLicenseHistoryModels();
         $search_params->setLimit(1);
@@ -292,7 +292,7 @@ class LicenseHistoryFactoryTest extends TestCase
     public function getTotalLicenseHistoryFilesShouldReturnErrorWhenCalledWithoutApiCall()
     {
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
         $this->_request = new LicenseHistoryRequest();
         $search_params = new SearchParamLicenseHistoryModels();
         $search_params->setLimit(1);
@@ -308,7 +308,7 @@ class LicenseHistoryFactoryTest extends TestCase
     public function getTotalLicenseHistoryFilesShouldReturnTotalFiles()
     {
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
         $this->_request = new LicenseHistoryRequest();
         $search_params = new SearchParamLicenseHistoryModels();
         $search_params->setLimit(1);
@@ -325,7 +325,7 @@ class LicenseHistoryFactoryTest extends TestCase
     public function getTotalLicenseHistoryPagesShouldReturnTotalPages()
     {
         $this->_mocked_http_client->method('doGet')
-            ->willReturn(Psr7\stream_for(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
+            ->willReturn(Psr7\Utils::streamFor(json_encode(LicenseHistoryFactoryTest::TEST_RESPONSE)));
         $this->_request = new LicenseHistoryRequest();
         $search_params = new SearchParamLicenseHistoryModels();
         $search_params->setLimit(1);
@@ -351,11 +351,11 @@ class LicenseHistoryFactoryTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
-     * @expectedException Access token cannot be null or empty
      */
     public function initializeLicenseHistoryShouldThrowExceptionSinceExcessTokenIsNull()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
+        $this->expectExceptionMessage('Access token cannot be null or empty');
         $this->_request = new LicenseHistoryRequest();
         $search_params = new SearchParamLicenseHistoryModels();
         $search_params->setLimit(1);
@@ -365,22 +365,22 @@ class LicenseHistoryFactoryTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
-     * @expectedExceptionMessage request cannot be null
      */
     public function initializeLicenseHistoryShouldThrowStockExceptionSinceRequestIsNull()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
+        $this->expectExceptionMessage('request cannot be null');
         $this->_request = null;
         $this->_license_history_factory->initializeLicenseHistory($this->_request, '', $this->_mocked_http_client);
     }
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
-     * @expectedExceptionMessage Search parameter must be present in the request object
      */
     public function licenseHistoryShouldThrowStockexceptionSinceSearchParamsAreNull()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
+        $this->expectExceptionMessage('Search parameter must be present in the request object');
         $this->_request = new LicenseHistoryRequest();
         $result_column_array[] = 'THUMBNAIL_110_URL';
         $this->_request->setResultColumns($result_column_array);

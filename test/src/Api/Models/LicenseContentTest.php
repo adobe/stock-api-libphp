@@ -54,10 +54,10 @@ class LicenseContentTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function setterGetterShouldSetGetSize()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_license_content->setSize('Comp');
         $this->assertEquals('Comp', $this->_license_content->getSize());
         $this->_license_content->setSize('Original');

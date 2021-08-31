@@ -43,10 +43,10 @@ class SearchCategoryRequestTest extends TestCase
 
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function setterGetterShouldSetGetLocale()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request->setLocale('En-US');
         $this->assertEquals('En-US', $this->_request->getLocale());
         $this->_request->setLocale('');
@@ -54,10 +54,10 @@ class SearchCategoryRequestTest extends TestCase
 
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function setCategoryIdShouldThrowExceptionIfNegativeValueIsPassed()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_request->setCategoryId(-1);
     }
 

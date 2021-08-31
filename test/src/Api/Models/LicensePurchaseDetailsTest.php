@@ -111,10 +111,10 @@ class LicensePurchaseDetailsTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function setterGetterShouldSetGetLicense()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_license_purchase_details->setLicense('STANDARD');
         $this->assertEquals('Standard', $this->_license_purchase_details->getLicense());
         $this->_license_purchase_details->setLicense('TEST');
@@ -122,10 +122,10 @@ class LicensePurchaseDetailsTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function setterGetterShouldSetGetState()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_license_purchase_details->setState('NOT_PURCHASED');
         $this->assertEquals('not_purchased', $this->_license_purchase_details->getState());
         $this->_license_purchase_details->setState('TEST');
@@ -133,10 +133,10 @@ class LicensePurchaseDetailsTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function setterGetterShouldSetGetDate()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_license_purchase_details->setDate('2017-06-18 05:57:21.246303');
         $this->assertEquals('2017-06-18 05:57:21.246303', $this->_license_purchase_details->getDate());
         $this->_license_purchase_details->setDate('2017-06-18 05:57:21');
@@ -146,10 +146,10 @@ class LicensePurchaseDetailsTest extends TestCase
     
     /**
      * @test
-     * @expectedException \AdobeStock\Api\Exception\StockApi
      */
     public function setterGetterShouldSetGetCancelled()
     {
+        $this->expectException(\AdobeStock\Api\Exception\StockApi::class);
         $this->_license_purchase_details->setCancelled('2017-06-18 05:57:21');
         $this->assertEquals('2017-06-18 05:57:21', $this->_license_purchase_details->getCancelled());
         $this->_license_purchase_details->setCancelled('2017-06-18 05:57:21.67');

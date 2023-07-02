@@ -165,6 +165,15 @@ class Constants
     ];
     
     /**
+     * @var array Query searchParamsGentech
+     */
+    protected static $_searchParamsGentech = [
+        'TRUE' => 'true',
+        'FALSE' => 'false',
+        'ALL' => 'all',
+    ];
+    
+    /**
      * @var array Query resultColumns
      */
     protected static $_resultColumns = [
@@ -460,6 +469,16 @@ class Constants
     {
         return static::$_searchParamsPremium;
     }
+
+    /**
+     * Getter for SearchParamsGentech.
+     * @return array
+     */
+    public static function getSearchParamsGentech() : array
+    {
+        return static::$_searchParamsGentech;
+    }
+
 
     /**
      * Getter for ResultColumns.

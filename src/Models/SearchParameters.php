@@ -255,6 +255,8 @@ class SearchParameters
     public $filters_premium;
     
     /**
+     * Filter AI generated (gentech) and non-gentech assets.
+     * @var string
      */
     public $filters_gentech;
     

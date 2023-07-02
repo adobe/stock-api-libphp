@@ -165,7 +165,7 @@ class Constants
     ];
     
     /**
-     * @var array Query searchParamsPremium
+     * @var array Query searchParamsGentech
      */
     protected static $_searchParamsGentech = [
         'TRUE' => 'true',

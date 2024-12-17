@@ -72,7 +72,7 @@ class LicenseHistory
      * @param int $nb_results passed value for no of assets
      * @return LicenseHistory
      */
-    public function setNbResults(int $nb_results = null) : LicenseHistory
+    public function setNbResults(?int $nb_results = null) : LicenseHistory
     {
         $this->nb_results = $nb_results;
         return $this;

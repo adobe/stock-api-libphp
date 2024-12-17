@@ -32,7 +32,7 @@ class APIUtils
      * @param string     $access_token Access token string to be used with api calls
      * @return array $headers map containing all the common API headers
      */
-    public static function generateCommonAPIHeaders(CoreConfig $config, string $access_token = null) : array
+    public static function generateCommonAPIHeaders(CoreConfig $config, ?string $access_token = null) : array
     {
         $request_id = static::getUUID();
 

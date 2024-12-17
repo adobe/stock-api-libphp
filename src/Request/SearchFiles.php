@@ -48,7 +48,7 @@ class SearchFiles
      * @param string $locale Language location code.
      * @return SearchFiles
      */
-    public function setLocale(string $locale = null) : SearchFiles
+    public function setLocale(?string $locale = null) : SearchFiles
     {
         if ($locale == null) {
             throw StockApiException::withMessage('Locale cannot be null');
@@ -72,7 +72,7 @@ class SearchFiles
      * @param SearchParametersModel $search_parameters
      * @return SearchFiles
      */
-    public function setSearchParams(SearchParametersModel $search_parameters = null) : SearchFiles
+    public function setSearchParams(?SearchParametersModel $search_parameters = null) : SearchFiles
     {
         if ($search_parameters == null) {
             throw StockApiException::withMessage('SearchParams array cannot be null');
@@ -96,7 +96,7 @@ class SearchFiles
      * @param array $result_columns
      * @return SearchFiles
      */
-    public function setResultColumns(array $result_columns = null) : SearchFiles
+    public function setResultColumns(?array $result_columns = null) : SearchFiles
     {
         if (empty($result_columns)) {
             throw StockApiException::withMessage('ResultColumns array cannot be empty');

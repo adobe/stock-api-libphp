@@ -55,7 +55,7 @@ class StockFileLicenseProp
      * @param int $Width Width
      * @return StockFileLicenseProp
      */
-    public function setWidth(int $Width = null) : StockFileLicenseProp
+    public function setWidth(?int $Width = null) : StockFileLicenseProp
     {
         $this->width = $Width;
         return $this;
@@ -75,7 +75,7 @@ class StockFileLicenseProp
      * @param int $height Height
      * @return StockFileLicenseProp
      */
-    public function setHeight(int $height = null) : StockFileLicenseProp
+    public function setHeight(?int $height = null) : StockFileLicenseProp
     {
         $this->height = $height;
         return $this;
@@ -95,7 +95,7 @@ class StockFileLicenseProp
      * @param string $url url of complementary image
      * @return StockFileLicenseProp
      */
-    public function setUrl(string $url = null) : StockFileLicenseProp
+    public function setUrl(?string $url = null) : StockFileLicenseProp
     {
         $this->url = $url;
         return $this;

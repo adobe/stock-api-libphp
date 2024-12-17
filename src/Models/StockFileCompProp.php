@@ -54,7 +54,7 @@ class StockFileCompProp
      * @param int $width
      * @return StockFileCompProp
      */
-    public function setWidth(int $width = null)
+    public function setWidth(?int $width = null)
     {
         $this->width = $width;
         return $this;
@@ -74,7 +74,7 @@ class StockFileCompProp
      * @param int $height
      * @return StockFileCompProp
      */
-    public function setHeight(int $height = null) : StockFileCompProp
+    public function setHeight(?int $height = null) : StockFileCompProp
     {
         $this->height = $height;
         return $this;
@@ -93,7 +93,7 @@ class StockFileCompProp
      * @param string $url url of complementary image.
      * @return StockFileCompProp
      */
-    public function setUrl(string $url = null) : StockFileCompProp
+    public function setUrl(?string $url = null) : StockFileCompProp
     {
         $this->url = $url;
         return $this;

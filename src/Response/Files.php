@@ -68,7 +68,7 @@ class Files
      * @param int $nb_results passed value for no of assets
      * @return Files
      */
-    public function setNbResults(int $nb_results = null) : Files
+    public function setNbResults(?int $nb_results = null) : Files
     {
         $this->nb_results = $nb_results;
         return $this;

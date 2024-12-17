@@ -27,7 +27,7 @@ class HttpClient implements HttpInterface
      * Constructor
      * @param Client $client GuzzleClient
      */
-    public function __construct(Client $client = null)
+    public function __construct(?Client $client = null)
     {
         if ($client === null) {
             $client = new Client();

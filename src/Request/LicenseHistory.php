@@ -43,7 +43,7 @@ class LicenseHistory
      * @throws StockApiException if locale is null
      * @return LicenseHistory
      */
-    public function setLocale(string $locale = null) : LicenseHistory
+    public function setLocale(?string $locale = null) : LicenseHistory
     {
         if ($locale === null) {
             throw StockApiException::withMessage('Locale cannot be null');
@@ -68,7 +68,7 @@ class LicenseHistory
      * @throws StockApiException
      * @return LicenseHistory
      */
-    public function setSearchParams(SearchParamLicenseHistoryModel $search_parameters = null) : LicenseHistory
+    public function setSearchParams(?SearchParamLicenseHistoryModel $search_parameters = null) : LicenseHistory
     {
         if ($search_parameters === null) {
             throw StockApiException::withMessage('SearchParams array cannot be null');
@@ -93,7 +93,7 @@ class LicenseHistory
      * @throws StockApiException
      * @return LicenseHistory
      */
-    public function setResultColumns(array $result_columns = null) : LicenseHistory
+    public function setResultColumns(?array $result_columns = null) : LicenseHistory
     {
         if (empty($result_columns)) {
             throw StockApiException::withMessage('ResultColumns array cannot be empty');

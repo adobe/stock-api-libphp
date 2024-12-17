@@ -16,7 +16,7 @@ final class StockApi extends \Exception
      * @param \Exception $exception full exception
      * @return StockApi
      */
-    public static function withMessage(string $message, \Exception $exception = null) : StockApi
+    public static function withMessage(string $message, ?\Exception $exception = null) : StockApi
     {
         $instance = static::withMessageAndErrorCode($message, 0, $exception);
         return $instance;
@@ -29,7 +29,7 @@ final class StockApi extends \Exception
      * @param \Exception $exception full exception
      * @return StockApi
      */
-    public static function withMessageAndErrorCode($message, int $code, \Exception $exception = null) : StockApi
+    public static function withMessageAndErrorCode($message, int $code, ?\Exception $exception = null) : StockApi
     {
         $instance = new static($message, $code, $exception);
         return $instance;

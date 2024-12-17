@@ -52,7 +52,7 @@ class LicenseEntitlement
      * Constructor for LicenseEntitlement
      * @param array $response
      */
-    public function __construct(array $response = null)
+    public function __construct(?array $response = null)
     {
         if ($response != null) {
             foreach ($response as $key => $val) {

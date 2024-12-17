@@ -72,7 +72,7 @@ class SearchFiles
      * @param int $nb_results passed value for no of assets
      * @return SearchFiles
      */
-    public function setNbResults(int $nb_results = null)
+    public function setNbResults(?int $nb_results = null)
     {
         $this->nb_results = $nb_results;
         return $this;

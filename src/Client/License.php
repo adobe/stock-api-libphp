@@ -60,7 +60,7 @@ class License
      * @param string $url
      * @param string $access_token
      */
-    protected function _setDownloadUrl(string $url, string $access_token = null)
+    protected function _setDownloadUrl(string $url, ?string $access_token = null)
     {
         if ($access_token) {
             $url .= '?token=' . $access_token;

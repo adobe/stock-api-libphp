@@ -107,7 +107,7 @@ class SearchFiles
      * @param string             $access_token
      * @throws StockApiException
      */
-    private function _validateSearchParams(SearchFilesRequest $request, string $access_token = null)
+    private function _validateSearchParams(SearchFilesRequest $request, ?string $access_token = null)
     {
         if ($request->getSearchParams() == null) {
             throw StockApiException::withMessage('Search parameter must be present in the request object');
@@ -130,7 +130,7 @@ class SearchFiles
      * @param string             $access_token        access token string to be used with api calls
      * @return SearchFilesResponse response object from the api call
      */
-    public function getFiles(SearchFilesRequest $search_file_request, string $access_token = null) : SearchFilesResponse
+    public function getFiles(SearchFilesRequest $search_file_request, ?string $access_token = null) : SearchFilesResponse
     {
         $this->_http_method = $this->_getHttpMethod($search_file_request);
         $headers = APIUtils::generateCommonAPIHeaders($this->_config, $access_token);
@@ -348,7 +348,7 @@ class SearchFiles
      * @throws StockApiException
      * @return SearchFiles
      */
-    public function searchFilesInitialize(SearchFilesRequest $request = null, string $access_token = null, HttpClientInterface $http_client) : SearchFiles
+    public function searchFilesInitialize(?SearchFilesRequest $request = null, ?string $access_token = null, HttpClientInterface $http_client) : SearchFiles
     {
         if ($request == null) {
             throw StockApiException::withMessage('request cannot be null');

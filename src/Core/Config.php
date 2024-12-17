@@ -42,7 +42,7 @@ class Config
      * @param string $product _product header for the api calls.
      * @param string $env     defines the environment for the client.
      */
-    public function __construct(string $api_key, string $product, string $env = null)
+    public function __construct(string $api_key, string $product, ?string $env = null)
     {
         $environment = Constants::getEnvironments();
         $end_points = Constants::getEndpoints() ;

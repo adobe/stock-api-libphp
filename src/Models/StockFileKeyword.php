@@ -43,7 +43,7 @@ class StockFileKeyword
      * @param string $name name of media keyword
      * @return StockFileKeyword
      */
-    public function setName(string $name = null) : StockFileKeyword
+    public function setName(?string $name = null) : StockFileKeyword
     {
         $this->name = $name;
         return $this;

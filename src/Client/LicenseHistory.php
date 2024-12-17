@@ -137,7 +137,7 @@ class LicenseHistory
      * @throws StockApiException
      * @return LicenseHistoryResponse response object from the api call
      */
-    private function _getFiles(LicenseHistoryRequest $license_file_request, string $access_token = null) : LicenseHistoryResponse
+    private function _getFiles(LicenseHistoryRequest $license_file_request, ?string $access_token = null) : LicenseHistoryResponse
     {
         $headers = APIUtils::generateCommonAPIHeaders($this->_config, $access_token);
         $end_point = $this->_config->getEndPoints()['license_history'];
@@ -170,7 +170,7 @@ class LicenseHistory
      * @throws StockApiException
      * @return LicenseHistory
      */
-    public function initializeLicenseHistory(LicenseHistoryRequest $request = null, string $access_token = null, HttpClientInterface $http_client) : LicenseHistory
+    public function initializeLicenseHistory(?LicenseHistoryRequest $request = null, ?string $access_token = null, HttpClientInterface $http_client) : LicenseHistory
     {
         if ($request === null) {
             throw StockApiException::withMessage('request cannot be null');

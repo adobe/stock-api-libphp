@@ -79,13 +79,13 @@ class SearchFiles
      * @var int
      */
     private $_offset;
-    
+
     /**
      * Custom http client object
      * @var HttpInterface
      */
     private $_http_client;
-    
+
     /**
      * Http Method to be used in Api hit.
      * @var string
@@ -112,18 +112,18 @@ class SearchFiles
         if ($request->getSearchParams() == null) {
             throw StockApiException::withMessage('Search parameter must be present in the request object');
         }
-        
+
         if (!empty($request->getResultColumns())) {
             if (in_array('is_licensed', $request->getResultColumns()) && $access_token === null) {
                 throw StockApiException::withMessage('Access Token missing! Result Column is_licensed requires authentication');
             }
         }
-        
+
         if ($request->getSearchParams()->getSimilarImage() == true && $request->getSimilarImage() == null) {
             throw StockApiException::withMessage('Image Data missing! Search parameter similar_image requires similar_image in query parameters');
         }
     }
-    
+
     /**
      * Method to create and send request to the apis and parse result to response object.
      * @param SearchFilesRequest $search_file_request object containing search request parameters
@@ -136,37 +136,37 @@ class SearchFiles
         $headers = APIUtils::generateCommonAPIHeaders($this->_config, $access_token);
         $end_point = $this->_config->getEndPoints()['search'];
         $request_url = $end_point . '?' . http_build_query($search_file_request);
-        
+
         $search_param_object = new SearchParametersModels();
         $json_map_array = [];
         $json_map_array = $search_param_object->getjsonMapper();
-        
+
         foreach ($json_map_array as $key => $val) {
             $find = '%5B' . $key . '%5D';
             $request_url = str_replace($find, $val, $request_url);
         }
-        
+
         $offset_value = $this->_offset;
         $previous_offset_value = $search_file_request->getSearchParams()->getOffset();
         $find = 'search_parameters%5Boffset%5D=' . $previous_offset_value;
         $replace = 'search_parameters%5Boffset%5D=' . $offset_value;
         $request_url = str_replace($find, $replace, $request_url);
-        
+
         if ($this->_http_method == 'GET') {
             $response_json = $this->_http_client->doGet($request_url, $headers);
         } else {
             $similar_image_data = APIUtils::downSampleImage($search_file_request->getSimilarImage());
             $response_json = $this->_http_client->doMultiPart($request_url, $headers, $similar_image_data);
         }
-        
+
         $response_array = json_decode($response_json, true);
-        
+
         if (empty($response_array)) {
             throw StockApiException::withMessage('No more search results available!');
         } else {
             $search_file_request->getSearchParams()->setOffset($this->_offset);
         }
-        
+
         $search_files_response = new SearchFilesResponse();
         $search_files_response->initializeResponse($response_array);
         return $search_files_response;
@@ -180,7 +180,7 @@ class SearchFiles
     {
         $this->_current_response = $response;
         $this->_api_in_progress = false;
-        
+
         if ($this->_initial_invalid_state) {
             $this->_initial_invalid_state = false;
         }
@@ -193,7 +193,7 @@ class SearchFiles
     {
         $this->_api_in_progress = false;
     }
-    
+
     /**
      * Method to do search files api call.
      * @param SearchFilesRequest $request
@@ -204,7 +204,7 @@ class SearchFiles
         if ($this->_api_in_progress) {
             throw StockApiException::withMessage('Some other search is already in progress!');
         }
-        
+
         try {
             $this->_api_in_progress = true;
             $response = $this->getFiles($request, $this->_access_token);
@@ -213,10 +213,10 @@ class SearchFiles
             $this->_doOnError();
             throw $e;
         }
-        
+
         return $this->_current_response;
     }
-    
+
     /**
      * Method to get next search files response page.
      * @return SearchFilesResponse
@@ -225,18 +225,17 @@ class SearchFiles
     {
         $request = $this->_current_request;
         $offset_value = $request->getSearchParams()->getOffset();
-        
+
         if (!$this->_initial_invalid_state) {
             $limit = $request->getSearchParams()->getOffset();
             $offset = $request->getSearchParams()->getLimit();
             $offset_value = $limit + $offset;
-            
+
             if (($this->_current_response->getNbResults() === null) || ($offset_value >= $this->_current_response->getNbResults())) {
                 throw StockApiException::withMessage('No more search results available!');
             }
-            
         }
-        
+
         $this->_offset = $offset_value;
         $response = $this->doApiCall($request);
         return $response;
@@ -250,11 +249,11 @@ class SearchFiles
     {
         $request = $this->_current_request;
         $offset_value = $request->getSearchParams()->getOffset() - $request->getSearchParams()->getLimit();
-        
+
         if ($offset_value < 0) {
             throw StockApiException::WithMessage('Offset should be between 0 and MaxResults');
         }
-        
+
         $this->_offset = $offset_value;
         $response = $this->doApiCall($request);
         return $response;
@@ -267,16 +266,15 @@ class SearchFiles
     public function getLastResponse() : SearchFilesResponse
     {
         $user_response = new SearchFilesResponse();
-        
+
         if (!$this->_initial_invalid_state) {
             $user_response = $this->_current_response;
-            
+
             if (!$this->_nb_results_present) {
                 $user_response->setNbResults(null);
-                
             }
         }
-        
+
         return $user_response;
     }
 
@@ -289,11 +287,11 @@ class SearchFiles
     {
         $request = $this->_current_request;
         $total_pages = $this->totalSearchPages();
-        
+
         if (($page_index < 0) || ($total_pages != SearchFiles::SEARCH_FILES_RETURN_ERROR && $page_index >= $total_pages)) {
             throw StockApiException::withMessage('Page index out of bounds');
         }
-        
+
         $offset_value = $page_index * $request->getSearchParams()->getLimit();
         $this->_offset = $offset_value;
         return $this->doApiCall($request);
@@ -308,10 +306,10 @@ class SearchFiles
         if (!$this->_initial_invalid_state && ($this->_current_response->getNbResults() != null)) {
             return (integer) ceil((double) $this->_current_response->getNbResults() / $this->_current_request->getSearchParams()->getLimit());
         }
-        
+
         return SearchFiles::SEARCH_FILES_RETURN_ERROR;
     }
-    
+
     /**
      * Method to get total search files available.
      * @return int
@@ -321,7 +319,7 @@ class SearchFiles
         if (!$this->_initial_invalid_state && ($this->_current_response->getNbResults() != null)) {
             return $this->_current_response->getNbResults();
         }
-        
+
         return SearchFiles::SEARCH_FILES_RETURN_ERROR;
     }
 
@@ -336,53 +334,57 @@ class SearchFiles
             $result = (integer) (ceil((double) $offset_value / $this->_current_request->getSearchParams()->getLimit()));
             return $result;
         }
-        
+
         return SearchFiles::SEARCH_FILES_RETURN_ERROR;
     }
-    
+
     /**
      * Initialize an api object
-     * @param SearchFilesRequest  $request
-     * @param string              $access_token
+     *
      * @param HttpClientInterface $http_client
-     * @throws StockApiException
+     * @param SearchFilesRequest|null $request
+     * @param string|null $access_token
      * @return SearchFiles
+     * @throws StockApiException
      */
-    public function searchFilesInitialize(?SearchFilesRequest $request = null, ?string $access_token = null, HttpClientInterface $http_client) : SearchFiles
-    {
+    public function searchFilesInitialize(
+        HttpClientInterface $http_client,
+        ?SearchFilesRequest $request = null,
+        ?string $access_token = null
+    ) : SearchFiles {
         if ($request == null) {
             throw StockApiException::withMessage('request cannot be null');
         }
-        
+
         $this->_validateSearchParams($request, $access_token);
         $this->_current_response = new SearchFilesResponse();
         $this->_current_request = $request;
-        
+
         //Including number of results in ResultColumns if user has not set ResultColumns in request object.
         if (empty($request->getResultColumns())) {
             $this->_nb_results_present = true;
         } else {
             $this->_nb_results_present = in_array('nb_results', $request->getResultColumns());
         }
-        
+
         //Including number of results in ResultColumns if user has not set it in ResultColumns.
         if (!$this->_nb_results_present) {
             $this->_current_request = $request;
             array_push($this->_current_request->result_columns, 'nb_results');
         }
-        
+
         $this->_access_token = $access_token;
         $this->_api_in_progress = false;
         $this->_http_client = $http_client;
-        
+
         if ($request->getSearchParams()->getLimit() == null) {
             $this->_current_request->getSearchParams()->setLimit(SearchFiles::DEFAULT_SEARCH_FILES_LIMIT);
         }
-        
+
         if ($request->getSearchParams()->getOffset() == null) {
             $this->_current_request->getSearchParams()->setOffset(0);
         }
-        
+
         $this->_offset = $this->_current_request->getSearchParams()->getOffset();
         return $this;
     }
@@ -395,11 +397,11 @@ class SearchFiles
     private function _getHttpMethod(SearchFilesRequest $request) : string
     {
         $http_method = 'GET';
-        
+
         if (($request->getSearchParams() != null) && ($request->getSimilarImage() != null) && $request->getSearchParams()->getSimilarImage() == true) {
             $http_method = 'POST';
         }
-        
+
         return $http_method;
     }
 }

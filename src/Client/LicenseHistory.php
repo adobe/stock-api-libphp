@@ -170,7 +170,7 @@ class LicenseHistory
      * @return LicenseHistory
      * @throws StockApiException
      */
-    public function initializeLicenseHistory( HttpClientInterface $http_client, ?LicenseHistoryRequest $request = null, ?string $access_token = null) : LicenseHistory
+    public function initializeLicenseHistory(?LicenseHistoryRequest $request, ?string $access_token, HttpClientInterface $http_client) : LicenseHistory
     {
         if ($request === null) {
             throw StockApiException::withMessage('request cannot be null');

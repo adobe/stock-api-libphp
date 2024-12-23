@@ -340,18 +340,14 @@ class SearchFiles
 
     /**
      * Initialize an api object
-     *
+     * @param SearchFilesRequest  $request
+     * @param string              $access_token
      * @param HttpClientInterface $http_client
-     * @param SearchFilesRequest|null $request
-     * @param string|null $access_token
-     * @return SearchFiles
      * @throws StockApiException
+     * @return SearchFiles
      */
-    public function searchFilesInitialize(
-        HttpClientInterface $http_client,
-        ?SearchFilesRequest $request = null,
-        ?string $access_token = null
-    ) : SearchFiles {
+    public function searchFilesInitialize(?SearchFilesRequest $request, ?string $access_token, HttpClientInterface $http_client) : SearchFiles
+    {
         if ($request == null) {
             throw StockApiException::withMessage('request cannot be null');
         }

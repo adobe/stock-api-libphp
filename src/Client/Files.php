@@ -45,7 +45,7 @@ class Files
     public function getFiles(
         FilesRequest $file_request,
         HttpClientInterface $http_client,
-        string $access_token = null
+        ?string $access_token = null
     ) : FilesResponse {
         $this->_validateRequest($file_request, $access_token);
         $response_json = $http_client->doGet(
@@ -64,7 +64,7 @@ class Files
      * @param string $access_token
      * @throws StockApiException
      */
-    private function _validateRequest(FilesRequest $request, string $access_token = null) : void
+    private function _validateRequest(FilesRequest $request, ?string $access_token = null) : void
     {
         if (!empty($request->getResultColumns())) {
             if (in_array('is_licensed', $request->getResultColumns()) && $access_token === null) {

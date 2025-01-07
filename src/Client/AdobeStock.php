@@ -79,7 +79,7 @@ class AdobeStock
      * @param string        $target_env  Target Environment Prod/Stage
      * @param HttpInterface $http_client Custom http client
      */
-    public function __construct(string $api_key, string $product, string $target_env, HttpInterface $http_client = null)
+    public function __construct(string $api_key, string $product, string $target_env, ?HttpInterface $http_client = null)
     {
         $this->_config = new CoreConfig($api_key, $product, $target_env);
         $this->_search_category_factory = new SearchCategoryFactory($this->_config);
@@ -143,7 +143,7 @@ class AdobeStock
      * @return FilesResponse
      * @throws StockApiException
      */
-    public function getFiles(FilesRequest $request, string $access_token = null) : FilesResponse
+    public function getFiles(FilesRequest $request, ?string $access_token = null) : FilesResponse
     {
         return $this->_files_factory->getFiles($request, $this->_http_client, $access_token);
     }
@@ -154,7 +154,7 @@ class AdobeStock
      * @param string             $access_token
      * @return AdobeStock
      */
-    public function searchFilesInitialize(SearchFilesRequest $request, string $access_token = null) : AdobeStock
+    public function searchFilesInitialize(SearchFilesRequest $request, ?string $access_token = null) : AdobeStock
     {
         $this->_search_files_factory->searchFilesInitialize($request, $access_token, $this->_http_client, true);
         return $this;
@@ -331,7 +331,7 @@ class AdobeStock
      * @param string                $access_token Access token
      * @return AdobeStock
      */
-    public function initializeLicenseHistory(LicenseHistoryRequest $request, string $access_token = null) : AdobeStock
+    public function initializeLicenseHistory(LicenseHistoryRequest $request, ?string $access_token = null) : AdobeStock
     {
         $this->_license_history_factory->initializeLicenseHistory($request, $access_token, $this->_http_client);
         return $this;

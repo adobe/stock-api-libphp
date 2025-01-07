@@ -1063,7 +1063,7 @@ class StockFile
      * @param int $id media unique ID
      * @return StockFile
      */
-    public function setId(int $id = null) : StockFile
+    public function setId(?int $id = null) : StockFile
     {
         $this->id = $id;
         return $this;
@@ -1074,7 +1074,7 @@ class StockFile
      * @param string $title media title
      * @return StockFile
      */
-    public function setTitle(string $title = null) : StockFile
+    public function setTitle(?string $title = null) : StockFile
     {
         $this->title = $title;
         return $this;
@@ -1085,7 +1085,7 @@ class StockFile
      * @param int $creator_id media creator unique id
      * @return StockFile
      */
-    public function setCreatorId(int $creator_id = null) : StockFile
+    public function setCreatorId(?int $creator_id = null) : StockFile
     {
         $this->creator_id = $creator_id;
         return $this;
@@ -1096,7 +1096,7 @@ class StockFile
      * @param string $creator_name media creator name
      * @return StockFile
      */
-    public function setCreatorName(string $creator_name = null) : StockFile
+    public function setCreatorName(?string $creator_name = null) : StockFile
     {
         $this->creator_name = $creator_name;
         return $this;
@@ -1107,7 +1107,7 @@ class StockFile
      * @param string $creation_date media creation date string
      * @return StockFile
      */
-    public function setCreationDate(string $creation_date = null) : StockFile
+    public function setCreationDate(?string $creation_date = null) : StockFile
     {
         $date = new \DateTime($creation_date);
         $without_ms_date = $date->format('Y-m-d H:i:s');
@@ -1120,7 +1120,7 @@ class StockFile
      * @param string $country_name media creator country name
      * @return StockFile
      */
-    public function setCountryName(string $country_name = null) : StockFile
+    public function setCountryName(?string $country_name = null) : StockFile
     {
         $this->country_name = $country_name;
         return $this;
@@ -1131,7 +1131,7 @@ class StockFile
      * @param string $thumbnail_url media thumbnail url
      * @return StockFile
      */
-    public function setThumbnailUrl(string $thumbnail_url = null) : StockFile
+    public function setThumbnailUrl(?string $thumbnail_url = null) : StockFile
     {
         $this->thumbnail_url = $thumbnail_url;
         return $this;
@@ -1143,7 +1143,7 @@ class StockFile
      * @param string $thumbnail_html_tag media thumbnail html tag
      * @return StockFile
      */
-    public function setThumbnailHtmlTag(string $thumbnail_html_tag = null) : StockFile
+    public function setThumbnailHtmlTag(?string $thumbnail_html_tag = null) : StockFile
     {
         $this->thumbnail_html_tag = $thumbnail_html_tag;
         return $this;
@@ -1154,7 +1154,7 @@ class StockFile
      * @param int $thumbnail_width media thumbnail width in pixels
      * @return StockFile
      */
-    public function setThumbnailWidth(int $thumbnail_width = null) : StockFile
+    public function setThumbnailWidth(?int $thumbnail_width = null) : StockFile
     {
         $this->thumbnail_width = $thumbnail_width;
         return $this;
@@ -1165,7 +1165,7 @@ class StockFile
      * @param int $thumbnail_height Height media thumbnail height in pixels
      * @return StockFile
      */
-    public function setThumbnailHeight(int $thumbnail_height = null) : StockFile
+    public function setThumbnailHeight(?int $thumbnail_height = null) : StockFile
     {
         $this->thumbnail_height = $thumbnail_height;
         return $this;
@@ -1176,7 +1176,7 @@ class StockFile
      * @param string $thumbnail_110_url url for 110px thumbnail
      * @return StockFile
      */
-    public function setThumbnail110Url(string $thumbnail_110_url = null) : StockFile
+    public function setThumbnail110Url(?string $thumbnail_110_url = null) : StockFile
     {
         $this->thumbnail_110_url = $thumbnail_110_url;
         return $this;
@@ -1187,7 +1187,7 @@ class StockFile
      * @param float $thumbnail_110_width width for 110px thumbnail
      * @return StockFile
      */
-    public function setThumbnail110Width(float $thumbnail_110_width = null) : StockFile
+    public function setThumbnail110Width(?float $thumbnail_110_width = null) : StockFile
     {
         $this->thumbnail_110_width = $thumbnail_110_width;
         return $this;
@@ -1198,7 +1198,7 @@ class StockFile
      * @param int $thumbnail_110_height height for 110px thumbnail
      * @return StockFile
      */
-    public function setThumbnail110Height(int $thumbnail_110_height = null) : StockFile
+    public function setThumbnail110Height(?int $thumbnail_110_height = null) : StockFile
     {
         $this->thumbnail_110_height = $thumbnail_110_height;
         return $this;
@@ -1209,7 +1209,7 @@ class StockFile
      * @param string $thumbnail_160_url url for 160px thumbnail
      * @return StockFile
      */
-    public function setThumbnail160Url(string $thumbnail_160_url = null) : StockFile
+    public function setThumbnail160Url(?string $thumbnail_160_url = null) : StockFile
     {
         $this->thumbnail_160_url = $thumbnail_160_url;
         return $this;
@@ -1220,7 +1220,7 @@ class StockFile
      * @param float $thumbnail_160_width width for 160px thumbnail
      * @return StockFile
      */
-    public function setThumbnail160Width(float $thumbnail_160_width = null) : StockFile
+    public function setThumbnail160Width(?float $thumbnail_160_width = null) : StockFile
     {
         $this->thumbnail_160_width = $thumbnail_160_width;
         return $this;
@@ -1231,7 +1231,7 @@ class StockFile
      * @param int $thumbnail_160_height height for 160px thumbnail
      * @return StockFile
      */
-    public function setThumbnail160Height(int $thumbnail_160_height = null) : StockFile
+    public function setThumbnail160Height(?int $thumbnail_160_height = null) : StockFile
     {
         $this->thumbnail_160_height = $thumbnail_160_height;
         return $this;
@@ -1242,7 +1242,7 @@ class StockFile
      * @param string $thumbnail_220_url url for 220px thumbnail
      * @return StockFile
      */
-    public function setThumbnail220Url(string $thumbnail_220_url = null) : StockFile
+    public function setThumbnail220Url(?string $thumbnail_220_url = null) : StockFile
     {
         $this->thumbnail_220_url = $thumbnail_220_url;
         return $this;
@@ -1253,7 +1253,7 @@ class StockFile
      * @param float $thumbnail_220_width width for 220px thumbnail
      * @return StockFile
      */
-    public function setThumbnail220Width(float $thumbnail_220_width = null) : StockFile
+    public function setThumbnail220Width(?float $thumbnail_220_width = null) : StockFile
     {
         $this->thumbnail_220_width = $thumbnail_220_width;
         return $this;
@@ -1264,7 +1264,7 @@ class StockFile
      * @param int $thumbnail_220_height height for 220px thumbnail
      * @return StockFile
      */
-    public function setThumbnail220Height(int $thumbnail_220_height = null) : StockFile
+    public function setThumbnail220Height(?int $thumbnail_220_height = null) : StockFile
     {
         $this->thumbnail_220_height = $thumbnail_220_height;
         return $this;
@@ -1275,7 +1275,7 @@ class StockFile
      * @param string $thumbnail_240_url url for 240px thumbnail
      * @return StockFile
      */
-    public function setThumbnail240Url(string $thumbnail_240_url = null) : StockFile
+    public function setThumbnail240Url(?string $thumbnail_240_url = null) : StockFile
     {
         $this->thumbnail_240_url = $thumbnail_240_url;
         return $this;
@@ -1286,7 +1286,7 @@ class StockFile
      * @param float $thumbnail_240_width width for 240px thumbnail
      * @return StockFile
      */
-    public function setThumbnail240Width(float $thumbnail_240_width = null) : StockFile
+    public function setThumbnail240Width(?float $thumbnail_240_width = null) : StockFile
     {
         $this->thumbnail_240_width = $thumbnail_240_width;
         return $this;
@@ -1297,7 +1297,7 @@ class StockFile
      * @param int $thumbnail_240_height height for 240px thumbnail
      * @return StockFile
      */
-    public function setThumbnail240Height(int $thumbnail_240_height = null) : StockFile
+    public function setThumbnail240Height(?int $thumbnail_240_height = null) : StockFile
     {
         $this->thumbnail_240_height = $thumbnail_240_height;
         return $this;
@@ -1308,7 +1308,7 @@ class StockFile
      * @param string $thumbnail_500_url url for 500px thumbnail
      * @return StockFile
      */
-    public function setThumbnail500Url(string $thumbnail_500_url = null) : StockFile
+    public function setThumbnail500Url(?string $thumbnail_500_url = null) : StockFile
     {
         $this->thumbnail_500_url = $thumbnail_500_url;
         return $this;
@@ -1319,7 +1319,7 @@ class StockFile
      * @param float $thumbnail_500_width width for 500px thumbnail
      * @return StockFile
      */
-    public function setThumbnail500Width(float $thumbnail_500_width = null) : StockFile
+    public function setThumbnail500Width(?float $thumbnail_500_width = null) : StockFile
     {
         $this->thumbnail_500_width = $thumbnail_500_width;
         return $this;
@@ -1330,7 +1330,7 @@ class StockFile
      * @param int $thumbnail_500_height height for 500px thumbnail
      * @return StockFile
      */
-    public function setThumbnail500Height(int $thumbnail_500_height = null) : StockFile
+    public function setThumbnail500Height(?int $thumbnail_500_height = null) : StockFile
     {
         $this->thumbnail_500_height = $thumbnail_500_height;
         return $this;
@@ -1341,7 +1341,7 @@ class StockFile
      * @param string $thumbnail_1000_url url for 1000px thumbnail
      * @return StockFile
      */
-    public function setThumbnail1000Url(string $thumbnail_1000_url = null) : StockFile
+    public function setThumbnail1000Url(?string $thumbnail_1000_url = null) : StockFile
     {
         $this->thumbnail_1000_url = $thumbnail_1000_url;
         return $this;
@@ -1352,7 +1352,7 @@ class StockFile
      * @param float $thumbnail_1000_width width for 1000px thumbnail
      * @return StockFile
      */
-    public function setThumbnail1000Width(float $thumbnail_1000_width = null) : StockFile
+    public function setThumbnail1000Width(?float $thumbnail_1000_width = null) : StockFile
     {
         $this->thumbnail_1000_width = $thumbnail_1000_width;
         return $this;
@@ -1363,7 +1363,7 @@ class StockFile
      * @param int $thumbnail_1000_height height for 1000px thumbnail
      * @return StockFile
      */
-    public function setThumbnail1000Height(int $thumbnail_1000_height = null) : StockFile
+    public function setThumbnail1000Height(?int $thumbnail_1000_height = null) : StockFile
     {
         $this->thumbnail_1000_height = $thumbnail_1000_height;
         return $this;
@@ -1374,7 +1374,7 @@ class StockFile
      * @param int $media_type_id Media Type Id
      * @return StockFile
      */
-    public function setMediaTypeId(int $media_type_id = null) : StockFile
+    public function setMediaTypeId(?int $media_type_id = null) : StockFile
     {
         $this->media_type_id = $media_type_id;
         return $this;
@@ -1385,7 +1385,7 @@ class StockFile
      * @param int $width original width of the file
      * @return StockFile
      */
-    public function setWidth(int $width = null) : StockFile
+    public function setWidth(?int $width = null) : StockFile
     {
         $this->width = $width;
         return $this;
@@ -1396,7 +1396,7 @@ class StockFile
      * @param int $height original height of the file
      * @return StockFile
      */
-    public function setHeight(int $height = null) : StockFile
+    public function setHeight(?int $height = null) : StockFile
     {
         $this->height = $height;
         return $this;
@@ -1407,7 +1407,7 @@ class StockFile
      * @param string $is_licensed licensing state for the asset
      * @return StockFile
      */
-    public function setIsLicensed(string $is_licensed = null) : StockFile
+    public function setIsLicensed(?string $is_licensed = null) : StockFile
     {
         $constants_response = new CoreConstants();
         $constant_array = $constants_response->getLicenseStateParams();
@@ -1421,7 +1421,7 @@ class StockFile
      * @param string $comp_url URL to the watermarked version of the asset
      * @return StockFile
      */
-    public function setCompUrl(string $comp_url = null) : StockFile
+    public function setCompUrl(?string $comp_url = null) : StockFile
     {
         $this->comp_url = $comp_url;
         return $this;
@@ -1432,7 +1432,7 @@ class StockFile
      * @param int $comp_width width in pixels
      * @return StockFile
      */
-    public function setCompWidth(int $comp_width = null) : StockFile
+    public function setCompWidth(?int $comp_width = null) : StockFile
     {
         $this->comp_width = $comp_width;
         return $this;
@@ -1443,7 +1443,7 @@ class StockFile
      * @param int $comp_height height in pixels
      * @return StockFile
      */
-    public function setCompHeight(int $comp_height = null) : StockFile
+    public function setCompHeight(?int $comp_height = null) : StockFile
     {
         $this->comp_height = $comp_height;
         return $this;
@@ -1454,7 +1454,7 @@ class StockFile
      * @param int $nb_views total views of the asset by all users
      * @return StockFile
      */
-    public function setNbViews(int $nb_views = null) : StockFile
+    public function setNbViews(?int $nb_views = null) : StockFile
     {
         $this->nb_views = $nb_views;
         return $this;
@@ -1465,7 +1465,7 @@ class StockFile
      * @param int $nb_downloads total downloads of the asset by all users
      * @return StockFile
      */
-    public function setNbDownloads(int $nb_downloads = null) : StockFile
+    public function setNbDownloads(?int $nb_downloads = null) : StockFile
     {
         $this->nb_downloads = $nb_downloads;
         return $this;
@@ -1477,7 +1477,7 @@ class StockFile
      * @param string $name name of the media
      * @return StockFile
      */
-    public function setCategory(int $id = null, string $name = null) : StockFile
+    public function setCategory(?int $id = null, ?string $name = null) : StockFile
     {
         $value = [
             'id' => $id,
@@ -1492,7 +1492,7 @@ class StockFile
      * @param array $keywords arraylist of localised keywords for the file
      * @return StockFile
      */
-    public function setKeywords(array $keywords = null) : StockFile
+    public function setKeywords(?array $keywords = null) : StockFile
     {
         $this->keywords = $keywords;
         return $this;
@@ -1503,7 +1503,7 @@ class StockFile
      * @param bool $has_releases "1" if content has any release IDs else "0"
      * @return StockFile
      */
-    public function setHasReleases(bool $has_releases = null) : StockFile
+    public function setHasReleases(?bool $has_releases = null) : StockFile
     {
         $this->has_releases = $has_releases;
         return $this;
@@ -1514,7 +1514,7 @@ class StockFile
      * @param string $asset_type type of the asset
      * @return StockFile
      */
-    public function setAssetTypeId(string $asset_type = null) : StockFile
+    public function setAssetTypeId(?string $asset_type = null) : StockFile
     {
         $constants_response = new CoreConstants();
         $constant_array = $constants_response->getAssetType();
@@ -1528,7 +1528,7 @@ class StockFile
      * @param string $vector_type file vector type
      * @return StockFile
      */
-    public function setVectorType(string $vector_type = null) : StockFile
+    public function setVectorType(?string $vector_type = null) : StockFile
     {
         $this->vector_type = $vector_type;
         return $this;
@@ -1539,7 +1539,7 @@ class StockFile
      * @param string $content_type mime type of the asset's content
      * @return StockFile
      */
-    public function setContentType(string $content_type = null) : StockFile
+    public function setContentType(?string $content_type = null) : StockFile
     {
         $this->content_type = $content_type;
         return $this;
@@ -1550,7 +1550,7 @@ class StockFile
      * @param float $framerate frame rate for video
      * @return StockFile
      */
-    public function setFrameRate(float $framerate = null) : StockFile
+    public function setFrameRate(?float $framerate = null) : StockFile
     {
         $this->framerate = $framerate;
         return $this;
@@ -1561,7 +1561,7 @@ class StockFile
      * @param int $duration duration of video in milliseconds
      * @return StockFile
      */
-    public function setDuration(int $duration = null) : StockFile
+    public function setDuration(?int $duration = null) : StockFile
     {
         $this->duration = $duration;
         return $this;
@@ -1572,7 +1572,7 @@ class StockFile
      * @param string $stock_id stock identifier
      * @return StockFile
      */
-    public function setStockId(string $stock_id = null) : StockFile
+    public function setStockId(?string $stock_id = null) : StockFile
     {
         $this->stock_id = $stock_id;
         return $this;
@@ -1583,7 +1583,7 @@ class StockFile
      * @param StockFileComps $comps properties for complementary assets
      * @return StockFile
      */
-    public function setComps(StockFileComps $comps = null) : StockFile
+    public function setComps(?StockFileComps $comps = null) : StockFile
     {
         $this->comps = $comps;
         return $this;
@@ -1594,7 +1594,7 @@ class StockFile
      * @param string $details_url url of stock details page for the asset
      * @return StockFile
      */
-    public function setDetailsUrl(string $details_url = null) : StockFile
+    public function setDetailsUrl(?string $details_url = null) : StockFile
     {
         $this->details_url = $details_url;
         return $this;
@@ -1605,7 +1605,7 @@ class StockFile
      * @param string $template_type_id id of the template
      * @return StockFile
      */
-    public function setTemplateTypeId(string $template_type_id = null) : StockFile
+    public function setTemplateTypeId(?string $template_type_id = null) : StockFile
     {
         $constants_response = new CoreConstants();
         $constant_array = $constants_response->getSearchParamsTemplateTypes();
@@ -1619,7 +1619,7 @@ class StockFile
      * @param array $template_category_ids arraylist of template category ids
      * @return StockFile
      */
-    public function setTemplateCategoryIds(array $template_category_ids = null) : StockFile
+    public function setTemplateCategoryIds(?array $template_category_ids = null) : StockFile
     {
         $constants_response = new CoreConstants();
         $constant_array = $constants_response->getSearchParamsTemplateCategories();
@@ -1641,7 +1641,7 @@ class StockFile
      * @param string $marketing_text marketing text for template
      * @return StockFile
      */
-    public function setMarketingText(string $marketing_text = null) : StockFile
+    public function setMarketingText(?string $marketing_text = null) : StockFile
     {
         $this->marketing_text = $marketing_text;
         return $this;
@@ -1652,7 +1652,7 @@ class StockFile
      * @param string $description description text for template
      * @return StockFile
      */
-    public function setDescription(string $description = null) : StockFile
+    public function setDescription(?string $description = null) : StockFile
     {
         $this->description = $description;
         return $this;
@@ -1663,7 +1663,7 @@ class StockFile
      * @param int $size_bytes size of the template file in bytes
      * @return StockFile
      */
-    public function setSizeBytes(int $size_bytes = null) : StockFile
+    public function setSizeBytes(?int $size_bytes = null) : StockFile
     {
         $this->size_bytes = $size_bytes;
         return $this;
@@ -1674,7 +1674,7 @@ class StockFile
      * @param string $premium_level_id premium level id of type {@link AssetPremiumLevel}
      * @return StockFile
      */
-    public function setPremiumLevelId(string $premium_level_id = null) : StockFile
+    public function setPremiumLevelId(?string $premium_level_id = null) : StockFile
     {
         $constants_response = new CoreConstants();
         $constant_array = $constants_response->getAssetPremiumLevel();
@@ -1688,7 +1688,7 @@ class StockFile
      * @param bool $is_premium true for premium assets and false for standard assets
      * @return StockFile
      */
-    public function setIsPremium(bool $is_premium = null) : StockFile
+    public function setIsPremium(?bool $is_premium = null) : StockFile
     {
         $this->is_premium = $is_premium;
         return $this;
@@ -1699,7 +1699,7 @@ class StockFile
      * @param StockFileLicenses $licenses available licenses for the media
      * @return StockFile
      */
-    public function setLicenses(StockFileLicenses $licenses = null) : StockFile
+    public function setLicenses(?StockFileLicenses $licenses = null) : StockFile
     {
         $this->licenses = $licenses;
         return $this;
@@ -1710,7 +1710,7 @@ class StockFile
      * @param string $video_preview_url url for the video preview
      * @return StockFile
      */
-    public function setVideoPreviewUrl(string $video_preview_url = null) : StockFile
+    public function setVideoPreviewUrl(?string $video_preview_url = null) : StockFile
     {
         $this->video_preview_url = $video_preview_url;
         return $this;
@@ -1721,7 +1721,7 @@ class StockFile
      * @param int $video_preview_height height for the video preview in pixels
      * @return StockFile
      */
-    public function setVideoPreviewHeight(int $video_preview_height = null) : StockFile
+    public function setVideoPreviewHeight(?int $video_preview_height = null) : StockFile
     {
         $this->video_preview_height = $video_preview_height;
         return $this;
@@ -1732,7 +1732,7 @@ class StockFile
      * @param int $video_preview_width width for the video preview in pixels
      * @return StockFile
      */
-    public function setVideoPreviewWidth(int $video_preview_width = null) : StockFile
+    public function setVideoPreviewWidth(?int $video_preview_width = null) : StockFile
     {
         $this->video_preview_width = $video_preview_width;
         return $this;
@@ -1743,7 +1743,7 @@ class StockFile
      * @param int $video_preview_content_length file size of video preview in bytes
      * @return StockFile
      */
-    public function setVideoPreviewContentLength(int $video_preview_content_length = null) : StockFile
+    public function setVideoPreviewContentLength(?int $video_preview_content_length = null) : StockFile
     {
         $this->video_preview_content_length = $video_preview_content_length;
         return $this;
@@ -1754,7 +1754,7 @@ class StockFile
      * @param string $video_preview_content_type content type of video preview
      * @return StockFile
      */
-    public function setVideoPreviewContentType(string $video_preview_content_type = null) : StockFile
+    public function setVideoPreviewContentType(?string $video_preview_content_type = null) : StockFile
     {
         $this->video_preview_content_type = $video_preview_content_type;
         return $this;
@@ -1765,7 +1765,7 @@ class StockFile
      * @param string $video_small_preview_url url of the small video preview
      * @return StockFile
      */
-    public function setVideoSmallPreviewUrl(string $video_small_preview_url = null) : StockFile
+    public function setVideoSmallPreviewUrl(?string $video_small_preview_url = null) : StockFile
     {
         $this->video_small_preview_url = $video_small_preview_url;
         return $this;
@@ -1776,7 +1776,7 @@ class StockFile
      * @param int $video_small_preview_height height of the small video preview in pixels
      * @return StockFile
      */
-    public function setVideoSmallPreviewHeight(int $video_small_preview_height = null) : StockFile
+    public function setVideoSmallPreviewHeight(?int $video_small_preview_height = null) : StockFile
     {
         $this->video_small_preview_height = $video_small_preview_height;
         return $this;
@@ -1787,7 +1787,7 @@ class StockFile
      * @param int $video_small_preview_width width of the small video preview in pixels
      * @return StockFile
      */
-    public function setVideoSmallPreviewWidth(int $video_small_preview_width = null) : StockFile
+    public function setVideoSmallPreviewWidth(?int $video_small_preview_width = null) : StockFile
     {
         $this->video_small_preview_width = $video_small_preview_width;
         return $this;
@@ -1798,7 +1798,7 @@ class StockFile
      * @param int $video_small_preview_content_length file size of the small video preview in bytes
      * @return StockFile
      */
-    public function setVideoSmallPreviewContentLength(int $video_small_preview_content_length = null)
+    public function setVideoSmallPreviewContentLength(?int $video_small_preview_content_length = null)
     {
         $this->video_small_preview_content_length = $video_small_preview_content_length;
         return $this;
@@ -1809,7 +1809,7 @@ class StockFile
      * @param string $video_small_preview_content_type content type of the small video preview in bytes
      * @return StockFile
      */
-    public function setVideoSmallPreviewContentType(string $video_small_preview_content_type = null) : StockFile
+    public function setVideoSmallPreviewContentType(?string $video_small_preview_content_type = null) : StockFile
     {
         $this->video_small_preview_content_type = $video_small_preview_content_type;
         return $this;

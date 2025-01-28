@@ -255,6 +255,12 @@ class SearchParameters
     public $filters_premium;
     
     /**
+     * Filter AI generated (gentech) and non-gentech assets.
+     * @var string
+     */
+    public $filters_gentech;
+    
+    /**
      * Asset's model or property releases that can be used in
      * search parameters for searching assets.
      * @var string
@@ -287,6 +293,7 @@ class SearchParameters
         'filters_3d_type_id' => '[filters][3d_type_id][]',
         'filters_template_category_id' => '[filters][template_category_id][]',
         'filters_premium' => '[filters][premium]',
+        'filters_gentech' => '[filters][gentech]',
         'filters_has_releases' => '[filters][has_releases]',
     ];
     
@@ -1090,6 +1097,27 @@ class SearchParameters
     {
         $premium = CoreConstants::getSearchParamsPremium();
         $this->filters_premium = $premium[$filters_premium];
+        return $this;
+    }
+    
+    /**
+     * Get gentech (pricing) level to find the assests.
+     * @return string|null
+     */
+    public function getFilterGentech() : ?string
+    {
+        return $this->filters_gentech;
+    }
+    
+    /**
+     * Sets gentech (pricing) level to find the assests.
+     * @param string $filters_gentech
+     * @return SearchParameters object
+     */
+    public function setFilterGentech(string $filters_gentech) : SearchParameters
+    {
+        $gentech = CoreConstants::getSearchParamsGentech();
+        $this->filters_gentech = $gentech[$filters_gentech];
         return $this;
     }
     

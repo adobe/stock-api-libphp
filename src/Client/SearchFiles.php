@@ -304,7 +304,7 @@ class SearchFiles
     public function totalSearchPages() : int
     {
         if (!$this->_initial_invalid_state && ($this->_current_response->getNbResults() != null)) {
-            return (integer) ceil((double) $this->_current_response->getNbResults() / $this->_current_request->getSearchParams()->getLimit());
+            return (int) ceil((float) $this->_current_response->getNbResults() / $this->_current_request->getSearchParams()->getLimit());
         }
 
         return SearchFiles::SEARCH_FILES_RETURN_ERROR;
@@ -331,7 +331,7 @@ class SearchFiles
     {
         if (!$this->_initial_invalid_state && ($this->_current_response->getNbResults() != null)) {
             $offset_value = $this->_current_request->getSearchParams()->getOffset();
-            $result = (integer) (ceil((double) $offset_value / $this->_current_request->getSearchParams()->getLimit()));
+            $result = (int) (ceil((float) $offset_value / $this->_current_request->getSearchParams()->getLimit()));
             return $result;
         }
 
